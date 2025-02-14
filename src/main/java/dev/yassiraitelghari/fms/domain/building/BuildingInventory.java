@@ -22,8 +22,8 @@ public class BuildingInventory {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id ;
     private double totalQuantity;
-    private LocalDateTime creationDate;
-    private LocalDateTime updateDate;
+    private LocalDateTime creationDate ;
+    private LocalDateTime updateDate ;
     @ManyToOne
     @JoinColumn(name = "food_id")
     private Food food ;

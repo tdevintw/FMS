@@ -22,8 +22,8 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id ;
     private double totalPrice ;
-    private LocalDateTime createdAt ;
-    private LocalDateTime updateAt ;
+    private LocalDateTime creationDate ;
+    private LocalDateTime updateDate ;
     @OneToOne
     @JoinColumn(name = "order_id")
     private Order order;

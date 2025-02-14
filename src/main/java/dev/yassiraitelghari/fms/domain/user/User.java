@@ -16,6 +16,6 @@ public abstract class User {
     protected String email ;
     protected String username ;
     protected String password ;
-    protected LocalDateTime joinedAt ;
-    protected LocalDateTime updatedAt ;
+    private LocalDateTime creationDate ;
+    private LocalDateTime updateDate ;
 }

@@ -28,7 +28,7 @@ public class Building {
     private String name ;
     private String location;
     private LocalDateTime creationDate ;
-    private LocalDateTime updateTime ;
+    private LocalDateTime updateDate ;
     @Enumerated(EnumType.STRING)
     private BuildingType buildingType;
     @ManyToOne

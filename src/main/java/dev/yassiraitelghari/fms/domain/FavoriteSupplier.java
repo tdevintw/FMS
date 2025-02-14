@@ -26,6 +26,6 @@ public class FavoriteSupplier {
     @ManyToOne
     @JoinColumn(name = "supplier_id", nullable = false)
     private SupplierDetails supplier ;
-    private LocalDateTime addedAt ;
+    private LocalDateTime creationDate ;
     private double ordersCount ;
 }

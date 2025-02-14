@@ -23,7 +23,7 @@ public class Order {
     private UUID id ;
     private double quantity ;
     private LocalDateTime creationDate ;
-    private LocalDateTime updateDate;
+    private LocalDateTime updateDate ;
     @ManyToOne
     @JoinColumn(name = "supplier_inventory_id")
     private SupplierInventory supplierInventory ;

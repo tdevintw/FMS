@@ -22,7 +22,7 @@ public class Food {
     private UUID id ;
     private String food ;
     private LocalDateTime creationDate ;
-    private LocalDateTime updateTime ;
+    private LocalDateTime updateDate ;
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category ;

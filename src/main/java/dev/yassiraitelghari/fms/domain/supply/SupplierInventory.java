@@ -28,7 +28,7 @@ public class SupplierInventory {
     private UUID id ;
     private double price;
     private LocalDateTime creationDate ;
-    private LocalDateTime updateTime ;
+    private LocalDateTime updateDate ;
     @OneToMany(mappedBy = "supplierInventory", cascade = CascadeType.ALL)
     private List<AvailableLocation> availableLocations;
     @ManyToOne
