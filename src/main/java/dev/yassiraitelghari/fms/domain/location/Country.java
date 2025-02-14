@@ -1,5 +1,6 @@
 package dev.yassiraitelghari.fms.domain.location;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,8 +13,13 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "countries")
 public class Country {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String country;
+    @OneToMany(mappedBy = "country")
     List<City> cities;
 }

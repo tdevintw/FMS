@@ -1,5 +1,6 @@
 package dev.yassiraitelghari.fms.domain.food;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,10 +13,17 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "categories")
 public class Category {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id ;
     private String category ;
     private LocalDateTime creationDate ;
     private LocalDateTime updateDate ;
+    @OneToMany(mappedBy = "category")
     private List<Food> foods;
+
 }

@@ -1,0 +1,675 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1739521518733-1
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_admins
+                  name: id
+                  type: UUID
+            tableName: admins
+  - changeSet:
+      id: 1739521518733-2
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_available_locations
+                  name: id
+                  type: UUID
+              - column:
+                  name: city_id
+                  type: UUID
+              - column:
+                  name: supplier_inventory_id
+                  type: UUID
+            tableName: available_locations
+  - changeSet:
+      id: 1739521518733-3
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_buildings
+                  name: id
+                  type: UUID
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: location
+                  type: VARCHAR(255)
+              - column:
+                  name: creation_date
+                  type: DATETIME
+              - column:
+                  name: update_time
+                  type: DATETIME
+              - column:
+                  name: building_type
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: manager_id
+                  type: UUID
+            tableName: buildings
+  - changeSet:
+      id: 1739521518733-4
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_buildings_inventories
+                  name: id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: total_quantity
+                  type: DOUBLE
+              - column:
+                  name: creation_date
+                  type: DATETIME
+              - column:
+                  name: update_date
+                  type: DATETIME
+              - column:
+                  name: food_id
+                  type: UUID
+              - column:
+                  name: building_id
+                  type: UUID
+            tableName: buildings_inventories
+  - changeSet:
+      id: 1739521518733-5
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_categories
+                  name: id
+                  type: UUID
+              - column:
+                  name: category
+                  type: VARCHAR(255)
+              - column:
+                  name: creation_date
+                  type: DATETIME
+              - column:
+                  name: update_date
+                  type: DATETIME
+            tableName: categories
+  - changeSet:
+      id: 1739521518733-6
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_cities
+                  name: id
+                  type: UUID
+              - column:
+                  name: city
+                  type: VARCHAR(255)
+              - column:
+                  name: country_id
+                  type: UUID
+            tableName: cities
+  - changeSet:
+      id: 1739521518733-7
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_countries
+                  name: id
+                  type: UUID
+              - column:
+                  name: country
+                  type: VARCHAR(255)
+            tableName: countries
+  - changeSet:
+      id: 1739521518733-8
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_favorite_suppliers
+                  name: id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: manager_id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: supplier_id
+                  type: UUID
+              - column:
+                  name: added_at
+                  type: DATETIME
+              - column:
+                  constraints:
+                    nullable: false
+                  name: orders_count
+                  type: DOUBLE
+            tableName: favorite_suppliers
+  - changeSet:
+      id: 1739521518733-9
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_foods
+                  name: id
+                  type: UUID
+              - column:
+                  name: food
+                  type: VARCHAR(255)
+              - column:
+                  name: creation_date
+                  type: DATETIME
+              - column:
+                  name: update_time
+                  type: DATETIME
+              - column:
+                  name: category_id
+                  type: UUID
+            tableName: foods
+  - changeSet:
+      id: 1739521518733-10
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_managers
+                  name: id
+                  type: UUID
+            tableName: managers
+  - changeSet:
+      id: 1739521518733-11
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_orders
+                  name: id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: quantity
+                  type: DOUBLE
+              - column:
+                  name: creation_date
+                  type: DATETIME
+              - column:
+                  name: update_date
+                  type: DATETIME
+              - column:
+                  name: supplier_inventory_id
+                  type: UUID
+              - column:
+                  name: building_id
+                  type: UUID
+              - column:
+                  name: order_status
+                  type: SMALLINT
+            tableName: orders
+  - changeSet:
+      id: 1739521518733-12
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_payments
+                  name: id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: total_price
+                  type: DOUBLE
+              - column:
+                  name: created_at
+                  type: DATETIME
+              - column:
+                  name: update_at
+                  type: DATETIME
+              - column:
+                  name: order_id
+                  type: UUID
+            tableName: payments
+  - changeSet:
+      id: 1739521518733-13
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_shipments
+                  name: id
+                  type: UUID
+              - column:
+                  name: current_location
+                  type: VARCHAR(255)
+              - column:
+                  name: creation_date
+                  type: DATETIME
+              - column:
+                  name: update_date
+                  type: DATETIME
+              - column:
+                  name: shipper_id
+                  type: UUID
+              - column:
+                  name: order_id
+                  type: UUID
+            tableName: shipments
+  - changeSet:
+      id: 1739521518733-14
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_shippers
+                  name: id
+                  type: UUID
+            tableName: shippers
+  - changeSet:
+      id: 1739521518733-15
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_suppliers
+                  name: id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: is_supplier_registered
+                  type: BOOLEAN
+              - column:
+                  name: location
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: rate
+                  type: DOUBLE
+            tableName: suppliers
+  - changeSet:
+      id: 1739521518733-16
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_suppliers_inventory
+                  name: id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: price
+                  type: DOUBLE
+              - column:
+                  name: creation_date
+                  type: DATETIME
+              - column:
+                  name: update_time
+                  type: DATETIME
+              - column:
+                  constraints:
+                    nullable: false
+                  name: supplier_id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: food_id
+                  type: UUID
+            tableName: suppliers_inventory
+  - changeSet:
+      id: 1739521518733-17
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_users
+                  name: id
+                  type: UUID
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+              - column:
+                  name: username
+                  type: VARCHAR(255)
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+              - column:
+                  name: joined_at
+                  type: DATETIME
+              - column:
+                  name: updated_at
+                  type: DATETIME
+            tableName: users
+  - changeSet:
+      id: 1739521518733-18
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: order_id
+            constraintName: uc_payments_order
+            tableName: payments
+  - changeSet:
+      id: 1739521518733-19
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: id
+            baseTableName: admins
+            constraintName: FK_ADMINS_ON_ID
+            referencedColumnNames: id
+            referencedTableName: users
+  - changeSet:
+      id: 1739521518733-20
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: city_id
+            baseTableName: available_locations
+            constraintName: FK_AVAILABLE_LOCATIONS_ON_CITY
+            referencedColumnNames: id
+            referencedTableName: cities
+  - changeSet:
+      id: 1739521518733-21
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: supplier_inventory_id
+            baseTableName: available_locations
+            constraintName: FK_AVAILABLE_LOCATIONS_ON_SUPPLIER_INVENTORY
+            referencedColumnNames: id
+            referencedTableName: suppliers_inventory
+  - changeSet:
+      id: 1739521518733-22
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: building_id
+            baseTableName: buildings_inventories
+            constraintName: FK_BUILDINGS_INVENTORIES_ON_BUILDING
+            referencedColumnNames: id
+            referencedTableName: buildings
+  - changeSet:
+      id: 1739521518733-23
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: food_id
+            baseTableName: buildings_inventories
+            constraintName: FK_BUILDINGS_INVENTORIES_ON_FOOD
+            referencedColumnNames: id
+            referencedTableName: foods
+  - changeSet:
+      id: 1739521518733-24
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: manager_id
+            baseTableName: buildings
+            constraintName: FK_BUILDINGS_ON_MANAGER
+            referencedColumnNames: id
+            referencedTableName: managers
+  - changeSet:
+      id: 1739521518733-25
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: country_id
+            baseTableName: cities
+            constraintName: FK_CITIES_ON_COUNTRY
+            referencedColumnNames: id
+            referencedTableName: countries
+  - changeSet:
+      id: 1739521518733-26
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: manager_id
+            baseTableName: favorite_suppliers
+            constraintName: FK_FAVORITE_SUPPLIERS_ON_MANAGER
+            referencedColumnNames: id
+            referencedTableName: managers
+  - changeSet:
+      id: 1739521518733-27
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: supplier_id
+            baseTableName: favorite_suppliers
+            constraintName: FK_FAVORITE_SUPPLIERS_ON_SUPPLIER
+            referencedColumnNames: id
+            referencedTableName: suppliers
+  - changeSet:
+      id: 1739521518733-28
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: category_id
+            baseTableName: foods
+            constraintName: FK_FOODS_ON_CATEGORY
+            referencedColumnNames: id
+            referencedTableName: categories
+  - changeSet:
+      id: 1739521518733-29
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: id
+            baseTableName: managers
+            constraintName: FK_MANAGERS_ON_ID
+            referencedColumnNames: id
+            referencedTableName: users
+  - changeSet:
+      id: 1739521518733-30
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: building_id
+            baseTableName: orders
+            constraintName: FK_ORDERS_ON_BUILDING
+            referencedColumnNames: id
+            referencedTableName: buildings
+  - changeSet:
+      id: 1739521518733-31
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: supplier_inventory_id
+            baseTableName: orders
+            constraintName: FK_ORDERS_ON_SUPPLIER_INVENTORY
+            referencedColumnNames: id
+            referencedTableName: suppliers_inventory
+  - changeSet:
+      id: 1739521518733-32
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: order_id
+            baseTableName: payments
+            constraintName: FK_PAYMENTS_ON_ORDER
+            referencedColumnNames: id
+            referencedTableName: orders
+  - changeSet:
+      id: 1739521518733-33
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: order_id
+            baseTableName: shipments
+            constraintName: FK_SHIPMENTS_ON_ORDER
+            referencedColumnNames: id
+            referencedTableName: orders
+  - changeSet:
+      id: 1739521518733-34
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: shipper_id
+            baseTableName: shipments
+            constraintName: FK_SHIPMENTS_ON_SHIPPER
+            referencedColumnNames: id
+            referencedTableName: shippers
+  - changeSet:
+      id: 1739521518733-35
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: id
+            baseTableName: shippers
+            constraintName: FK_SHIPPERS_ON_ID
+            referencedColumnNames: id
+            referencedTableName: users
+  - changeSet:
+      id: 1739521518733-36
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: food_id
+            baseTableName: suppliers_inventory
+            constraintName: FK_SUPPLIERS_INVENTORY_ON_FOOD
+            referencedColumnNames: id
+            referencedTableName: foods
+  - changeSet:
+      id: 1739521518733-37
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: supplier_id
+            baseTableName: suppliers_inventory
+            constraintName: FK_SUPPLIERS_INVENTORY_ON_SUPPLIER
+            referencedColumnNames: id
+            referencedTableName: suppliers
+  - changeSet:
+      id: 1739521518733-38
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: id
+            baseTableName: suppliers
+            constraintName: FK_SUPPLIERS_ON_ID
+            referencedColumnNames: id
+            referencedTableName: users
+

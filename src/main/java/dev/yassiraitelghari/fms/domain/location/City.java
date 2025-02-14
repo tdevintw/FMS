@@ -2,6 +2,7 @@ package dev.yassiraitelghari.fms.domain.location;
 
 import dev.yassiraitelghari.fms.domain.supply.SupplierInventory;
 import dev.yassiraitelghari.fms.domain.user.SupplierDetails;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,9 +14,16 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "cities")
 public class City {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private  UUID id ;
     private  String city;
+    @ManyToOne
+    @JoinColumn(name = "country_id")
     private Country country;
+    @OneToMany(mappedBy = "city" )
     private List<AvailableLocation> availableLocations ;
 }

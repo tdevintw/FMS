@@ -1,5 +1,6 @@
 package dev.yassiraitelghari.fms.domain.supply;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,10 +13,18 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "payments")
+
 public class Payment {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id ;
     private double totalPrice ;
     private LocalDateTime createdAt ;
     private LocalDateTime updateAt ;
+    @OneToOne
+    @JoinColumn(name = "order_id")
     private Order order;
 }

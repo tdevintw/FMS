@@ -2,6 +2,7 @@ package dev.yassiraitelghari.fms.domain.supply;
 
 import dev.yassiraitelghari.fms.domain.user.ShipperDetails;
 import dev.yassiraitelghari.fms.domain.user.SupplierDetails;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,11 +15,18 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "shipments")
 public class Shipment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id ;
     private String currentLocation ;
     private LocalDateTime creationDate ;
     private LocalDateTime updateDate ;
+    @ManyToOne
+    @JoinColumn(name = "shipper_id")
     private ShipperDetails shipper;
+    @OneToOne
     private Order order ;
 }

@@ -3,6 +3,7 @@ package dev.yassiraitelghari.fms.domain.building;
 import dev.yassiraitelghari.fms.domain.enums.BuildingType;
 import dev.yassiraitelghari.fms.domain.supply.Order;
 import dev.yassiraitelghari.fms.domain.user.ManagerDetails;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,14 +17,25 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "buildings")
 public class Building {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+
     private UUID id ;
     private String name ;
     private String location;
     private LocalDateTime creationDate ;
     private LocalDateTime updateTime ;
+    @Enumerated(EnumType.STRING)
     private BuildingType buildingType;
+    @ManyToOne
+    @JoinColumn(name = "manager_id", nullable = false)
     private ManagerDetails manager ;
+    @OneToMany(mappedBy = "building", cascade = CascadeType.ALL)
     private List<BuildingInventory> buildingInventories;
+    @OneToMany(mappedBy = "building", cascade = CascadeType.ALL)
     private List<Order> orders;
 }
