@@ -2,7 +2,7 @@ package dev.yassiraitelghari.fms.domain.building;
 
 import dev.yassiraitelghari.fms.domain.enums.BuildingType;
 import dev.yassiraitelghari.fms.domain.supply.Order;
-import dev.yassiraitelghari.fms.domain.user.ManagerDetails;
+import dev.yassiraitelghari.fms.domain.user.Manager;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,7 +33,7 @@ public class Building {
     private BuildingType buildingType;
     @ManyToOne
     @JoinColumn(name = "manager_id", nullable = false)
-    private ManagerDetails manager ;
+    private Manager manager ;
     @OneToMany(mappedBy = "building", cascade = CascadeType.ALL)
     private List<BuildingInventory> buildingInventories;
     @OneToMany(mappedBy = "building", cascade = CascadeType.ALL)

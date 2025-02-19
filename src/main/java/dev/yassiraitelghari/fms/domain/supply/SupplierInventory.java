@@ -2,8 +2,7 @@ package dev.yassiraitelghari.fms.domain.supply;
 
 import dev.yassiraitelghari.fms.domain.food.Food;
 import dev.yassiraitelghari.fms.domain.location.AvailableLocation;
-import dev.yassiraitelghari.fms.domain.location.City;
-import dev.yassiraitelghari.fms.domain.user.SupplierDetails;
+import dev.yassiraitelghari.fms.domain.user.Supplier;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,7 +32,7 @@ public class SupplierInventory {
     private List<AvailableLocation> availableLocations;
     @ManyToOne
     @JoinColumn(name = "supplier_id", nullable = false)
-    private SupplierDetails supplier ;
+    private Supplier supplier ;
     @ManyToOne
     @JoinColumn(name = "food_id", nullable = false)
     private Food food ;

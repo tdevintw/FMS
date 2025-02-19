@@ -1,7 +1,5 @@
 package dev.yassiraitelghari.fms.domain.location;
 
-import dev.yassiraitelghari.fms.domain.supply.SupplierInventory;
-import dev.yassiraitelghari.fms.domain.user.SupplierDetails;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -10,7 +10,9 @@ import java.util.UUID;
 @Table(name = "users")
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class User {
+@Getter
+@Setter
+public class User {
     @Id
     protected UUID id ;
     protected String email ;

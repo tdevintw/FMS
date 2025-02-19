@@ -2,7 +2,6 @@ package dev.yassiraitelghari.fms.domain.user;
 
 import dev.yassiraitelghari.fms.domain.FavoriteSupplier;
 import dev.yassiraitelghari.fms.domain.supply.SupplierInventory;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -19,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "suppliers")
-public class SupplierDetails extends User {
+public class Supplier extends User {
     private boolean isSupplierRegistered;
     private String location;
     private double rate;

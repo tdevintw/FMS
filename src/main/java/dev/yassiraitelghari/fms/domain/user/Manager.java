@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "managers")
-public class ManagerDetails extends User{
+public class Manager extends User{
     @OneToMany(mappedBy = "manager", cascade = CascadeType.ALL)
     private List<FavoriteSupplier> favoriteSuppliers;
     @OneToMany(mappedBy = "manager", cascade = CascadeType.ALL)

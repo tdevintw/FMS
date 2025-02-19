@@ -1,7 +1,6 @@
 package dev.yassiraitelghari.fms.domain.supply;
 
-import dev.yassiraitelghari.fms.domain.user.ShipperDetails;
-import dev.yassiraitelghari.fms.domain.user.SupplierDetails;
+import dev.yassiraitelghari.fms.domain.user.Shipper;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,7 +25,7 @@ public class Shipment {
     private LocalDateTime updateDate ;
     @ManyToOne
     @JoinColumn(name = "shipper_id")
-    private ShipperDetails shipper;
+    private Shipper shipper;
     @OneToOne
     private Order order ;
 }

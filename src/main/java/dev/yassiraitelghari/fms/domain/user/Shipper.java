@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "shippers")
-public class ShipperDetails  extends User{
+public class Shipper extends User{
    @OneToMany(mappedBy = "shipper" )
    private List<Shipment> shipments;
 }

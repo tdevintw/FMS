@@ -1,7 +1,7 @@
 package dev.yassiraitelghari.fms.domain;
 
-import dev.yassiraitelghari.fms.domain.user.ManagerDetails;
-import dev.yassiraitelghari.fms.domain.user.SupplierDetails;
+import dev.yassiraitelghari.fms.domain.user.Manager;
+import dev.yassiraitelghari.fms.domain.user.Supplier;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,10 +22,10 @@ public class FavoriteSupplier {
     private UUID id ;
     @ManyToOne
     @JoinColumn(name = "manager_id", nullable = false)
-    private ManagerDetails manager;
+    private Manager manager;
     @ManyToOne
     @JoinColumn(name = "supplier_id", nullable = false)
-    private SupplierDetails supplier ;
+    private Supplier supplier ;
     private LocalDateTime creationDate ;
     private double ordersCount ;
 }
