@@ -1,6 +1,7 @@
 package dev.yassiraitelghari.fms.service.auth;
 
 
+import dev.yassiraitelghari.fms.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -16,12 +17,12 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
-public class JwtServiceImpl implements JwtService {
+public class JwtService {
 
     private final String SECRET ;
     private final UserService userService;
 
-    public JwtServiceImpl(@Value("${jwt.secret.key}") String SECRET, UserService userService) {
+    public JwtService@Value("${jwt.secret.key}") String SECRET, UserService userService) {
         this.SECRET = SECRET;
         this.userService = userService;
     }
