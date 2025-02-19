@@ -22,27 +22,20 @@ public class JwtService {
     private final String SECRET ;
     private final UserService userService;
 
-    public JwtService@Value("${jwt.secret.key}") String SECRET, UserService userService) {
-        this.SECRET = SECRET;
+    public JwtService( UserService userService) {
+        this.SECRET = "U3VwZXJTZWN1cmVTaWduYXR1cmVLZXlGcm9tQ2hhdEdQVCE=";
         this.userService = userService;
     }
 
-    @Override
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    @Override
     public String generateToken(String username) {
         return generateToken(new HashMap<>(), username);
     }
 
-    @Override
-    public String generateToken(Map<String, Object> claims, String username) {
-        claims.put("role", extractRole(username));
-        // put permissions
-        claims.put("permissions", extractRole(username).getAuthorities());
-        claims.put("username", username);
+    public String generateToken(Map<String, Object> claims, String username) {claims.put("username", username);
         userService.findByUsername(username).ifPresent(user -> claims.put("id", user.getId()));
 
         return Jwts
@@ -55,12 +48,10 @@ public class JwtService {
                 .compact();
     }
 
-    @Override
     public String generateRefreshToken(String username) {
         return generateRefreshToken(new HashMap<>(), username);
     }
 
-    @Override
     public String generateRefreshToken(Map<String, Object> claims, String username) {
         return Jwts
                 .builder()
@@ -72,7 +63,6 @@ public class JwtService {
                 .compact();
     }
 
-    @Override
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = getClaims(token);
         return claimsResolver.apply(claims);
@@ -88,40 +78,26 @@ public class JwtService {
                 .getBody();
     }
 
-    @Override
     public boolean isTokenValid(String token, String username) {
         final String extractedUsername = extractUsername(token);
         return (extractedUsername.equals(username) && !isTokenExpired(token));
     }
 
-    @Override
     public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
-    @Override
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    @Override
-    public Role extractRole(String username)  {
-        User user = userService.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
-        Role role = user.getRole();
-        if (role == null) {
-            throw new RooleNotFoundException("Role not found");
-        }
-        return role;
-    }
 
     private Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    @Override
     public boolean validateToken(String token) {
         try {
             getClaims(token);

@@ -1,5 +1,10 @@
 package dev.yassiraitelghari.fms.service.auth;
 
+import dev.yassiraitelghari.fms.domain.user.User;
+import dev.yassiraitelghari.fms.dto.request.register.UserDTO;
+import dev.yassiraitelghari.fms.dto.response.TokenVM;
+import dev.yassiraitelghari.fms.exception.UsernameOrPasswordInvalidException;
+import dev.yassiraitelghari.fms.mapper.UserMapper;
 import dev.yassiraitelghari.fms.repository.UserRepository;
 import dev.yassiraitelghari.fms.service.UserService;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -18,44 +23,36 @@ public class AuthService {
 
         private final UserRepository userRepository;
         private final JwtService jwtService;
-//        private final UserVMMapper userVMMapper;
+        private final UserMapper userMapper;
         private final UserService userService;
         private final PasswordEncoder passwordEncoder;
 
-        @Override
-        public TokenVM register(@Valid RegisterVM registerVM, String clientOrigin) {
+    public AuthService(UserRepository userRepository, JwtService jwtService, UserMapper userMapper, UserService userService, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.jwtService = jwtService;
+        this.userMapper = userMapper;
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
+    }
 
-            userService.findByUsername(registerVM.getUsername())
-                    .ifPresent(existingUser -> {
-                        throw new UserNameAlreadyExistsException("Username already exists");
-                    });
+    public TokenVM register(@Valid UserDTO registerVM, String clientOrigin) {
 
-            userService.findByEmail(registerVM.getEmail())
-                    .ifPresent(existingUser -> {
-                        throw new UserNameAlreadyExistsException("Email already exists");
-                    });
-
-            User newUser = userVMMapper.registerVMtoUser(registerVM);
+            User newUser = userMapper.registredUserDTOToUser(registerVM);
 
 
             newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-            newUser.setCreatedAt(LocalDateTime.now());
-            newUser.setUpdatedAt(LocalDateTime.now());
-            newUser.setPreferredLanguage("en");
-            newUser.setRole(Role.USER);
-            newUser.setVerificationToken(generateVerificationToken());
+            newUser.setCreationDate(LocalDateTime.now());
+            newUser.setUpdateDate(LocalDateTime.now());
 
             User savedUser = userRepository.save(newUser);
             String authToken = jwtService.generateToken(savedUser.getUsername());
             String refreshToken = jwtService.generateRefreshToken(savedUser.getUsername());
 
-            emailService.sendVerificationEmail(newUser.getEmail(), newUser.getVerificationToken(), clientOrigin);
 
             return TokenVM.builder().token(authToken).refreshToken(refreshToken).build();
         }
 
 
-        @Override
         public TokenVM login(String username, String password) {
 
             Optional<User> opUser;
@@ -76,7 +73,6 @@ public class AuthService {
         }
 
 
-        @Override
         public TokenVM refresh(String refreshToken) {
 
             if(jwtService.isTokenExpired(refreshToken)) {
@@ -95,21 +91,6 @@ public class AuthService {
         }
 
 
-        public void resetPassword(String token, String newPassword) {
-            User user = userRepository.findByPasswordResetToken(token)
-                    .orElseThrow(() -> new RuntimeException("Invalid password reset token."));
-
-            if (user.getPasswordResetTokenExpiry().isBefore(LocalDateTime.now())) {
-                throw new RuntimeException("Password reset token has expired.");
-            }
-
-            user.setPassword(passwordEncoder.encode(newPassword));
-            user.setPasswordResetToken(null);
-            user.setPasswordResetTokenExpiry(null);
-            userRepository.save(user);
-
-        }
-//--------------------------- helper methods ------------------------------
 
         public String generateVerificationToken() {
             String token = UUID.randomUUID().toString();
