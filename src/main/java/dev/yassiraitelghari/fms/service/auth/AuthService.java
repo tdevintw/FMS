@@ -21,11 +21,11 @@ import java.util.UUID;
 public class AuthService {
 
 
-        private final UserRepository userRepository;
-        private final JwtService jwtService;
-        private final UserMapper userMapper;
-        private final UserService userService;
-        private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final JwtService jwtService;
+    private final UserMapper userMapper;
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     public AuthService(UserRepository userRepository, JwtService jwtService, UserMapper userMapper, UserService userService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -37,82 +37,87 @@ public class AuthService {
 
     public TokenVM register(@Valid UserDTO registerVM, String clientOrigin) {
 
-            User newUser = userMapper.registredUserDTOToUser(registerVM);
+        User newUser = userMapper.registredUserDTOToUser(registerVM);
 
 
-            newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-            newUser.setCreationDate(LocalDateTime.now());
-            newUser.setUpdateDate(LocalDateTime.now());
+        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        newUser.setCreationDate(LocalDateTime.now());
+        newUser.setUpdateDate(LocalDateTime.now());
+        newUser.setVerificationToken(generateVerificationToken());
+        User savedUser = null;
+        try {
+            savedUser = userRepository.save(newUser);
 
-            User savedUser = userRepository.save(newUser);
-            String authToken = jwtService.generateToken(savedUser.getUsername());
-            String refreshToken = jwtService.generateRefreshToken(savedUser.getUsername());
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+        }
+        String authToken = jwtService.generateToken(savedUser.getUsername());
+        String refreshToken = jwtService.generateRefreshToken(savedUser.getUsername());
 
 
-            return TokenVM.builder().token(authToken).refreshToken(refreshToken).build();
+        return TokenVM.builder().token(authToken).refreshToken(refreshToken).build();
+    }
+
+
+    public TokenVM login(String username, String password) {
+
+        Optional<User> opUser;
+        if (isEmail(username)) opUser = userRepository.findByEmail(username);
+        else opUser = userRepository.findByUsername(username);
+
+        return opUser.filter(user -> passwordEncoder.matches(password, user.getPassword()))
+                .map(authenticatedUser -> {
+
+                    String authToken = jwtService.generateToken(authenticatedUser.getUsername());
+                    String refreshToken = jwtService.generateRefreshToken(authenticatedUser.getUsername());
+                    return TokenVM.builder()
+                            .token(authToken)
+                            .refreshToken(refreshToken)
+                            .build();
+                })
+                .orElseThrow(() -> new UsernameOrPasswordInvalidException("Invalid credentials."));
+    }
+
+
+    public TokenVM refresh(String refreshToken) {
+
+        if (jwtService.isTokenExpired(refreshToken)) {
+            throw new ExpiredJwtException(null, null, "Refresh token has expired");
+        }
+        String username = jwtService.extractUsername(refreshToken);
+
+        if (!jwtService.isTokenValid(refreshToken, username)) {
+            throw new UsernameOrPasswordInvalidException("Invalid refresh token");
         }
 
-
-        public TokenVM login(String username, String password) {
-
-            Optional<User> opUser;
-            if (isEmail(username)) opUser = userRepository.findByEmailAndDeletedFalse(username);
-            else opUser = userRepository.findByUsernameAndDeletedFalse(username);
-
-            return opUser.filter(user -> passwordEncoder.matches(password, user.getPassword()))
-                    .map(authenticatedUser -> {
-
-                        String authToken = jwtService.generateToken(authenticatedUser.getUsername());
-                        String refreshToken = jwtService.generateRefreshToken(authenticatedUser.getUsername());
-                        return TokenVM.builder()
-                                .token(authToken)
-                                .refreshToken(refreshToken)
-                                .build();
-                    })
-                    .orElseThrow(() -> new UsernameOrPasswordInvalidException("Invalid credentials."));
-        }
+        String newAccessToken = jwtService.generateToken(username);
 
 
-        public TokenVM refresh(String refreshToken) {
-
-            if(jwtService.isTokenExpired(refreshToken)) {
-                throw new ExpiredJwtException(null, null, "Refresh token has expired");
-            }
-            String username = jwtService.extractUsername(refreshToken);
-
-            if (!jwtService.isTokenValid(refreshToken,username )) {
-                throw new UsernameOrPasswordInvalidException("Invalid refresh token");
-            }
-
-            String newAccessToken = jwtService.generateToken(username);
+        return new TokenVM(newAccessToken, refreshToken);
+    }
 
 
-            return new TokenVM(newAccessToken, refreshToken);
-        }
+    public String generateVerificationToken() {
+        String token = UUID.randomUUID().toString();
 
+        List<User> user = userRepository.findAllByVerificationToken(token);
 
+        if (!user.isEmpty()) return generateVerificationToken();
 
-        public String generateVerificationToken() {
-            String token = UUID.randomUUID().toString();
+        return token;
+    }
 
-            List<User> user = userRepository.findAllByVerificationToken(token);
+    public String generatePasswordResetToken() {
+        String token = UUID.randomUUID().toString();
 
-            if(!user.isEmpty()) return generateVerificationToken();
+        List<User> user = userRepository.findAllByPasswordResetToken(token);
 
-            return token;
-        }
+        if (!user.isEmpty()) return generatePasswordResetToken();
 
-        public String generatePasswordResetToken() {
-            String token = UUID.randomUUID().toString();
+        return token;
+    }
 
-            List<User>  user = userRepository.findAllByPasswordResetToken(token);
-
-            if(!user.isEmpty()) return generatePasswordResetToken();
-
-            return token;
-        }
-
-        private boolean isEmail(String input) {
-            return input != null && input.matches("^[A-Za-z0-9+_.-]+@(.+)$");
-        }
+    private boolean isEmail(String input) {
+        return input != null && input.matches("^[A-Za-z0-9+_.-]+@(.+)$");
+    }
 }

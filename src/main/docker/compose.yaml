@@ -1,17 +1,11 @@
 version: '3.8'
 services:
   postgres:
-    container_name: fms
+    container_name: fms-db
     image: 'postgres:latest'
     environment:
-      - 'POSTGRES_DB=fms'
+      - 'POSTGRES_DB=fms-db'
       - 'POSTGRES_PASSWORD=root'
       - 'POSTGRES_USER=root'
     ports:
       - '5432:5432'
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
-volumes:
-  postgres_data:
-    driver: local

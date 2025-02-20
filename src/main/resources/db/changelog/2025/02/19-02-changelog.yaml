@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1739975522551-1
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: password_reset_token
+                  type: VARCHAR(255)
+              - column:
+                  name: password_reset_token_expiry
+                  type: DATETIME
+              - column:
+                  name: verification_token
+                  type: VARCHAR(255)
+            tableName: users
+

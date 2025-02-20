@@ -1,5 +1,7 @@
 package dev.yassiraitelghari.fms.config;
 
+
+
 import dev.yassiraitelghari.fms.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -31,7 +33,10 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/auth/login",
                                 "/api/auth/register",
-                                "/api/auth/verify"
+                                "/api/auth/verify",
+                                "/api/auth/forgot-password",
+                                "api/auth//reset-password",
+                                "/swagger-ui/**", "/v3/api-docs/**"
                         ).permitAll()
                         .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated()

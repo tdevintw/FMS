@@ -7,7 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -17,13 +17,12 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
-public class JwtService {
+public class JwtService  {
 
-    private final String SECRET ;
+    private final String SECRET = "U3VwZXJTZWN1cmVTaWduYXR1cmVLZXlGcm9tQ2hhdEdQVCE=" ;
     private final UserService userService;
 
     public JwtService( UserService userService) {
-        this.SECRET = "U3VwZXJTZWN1cmVTaWduYXR1cmVLZXlGcm9tQ2hhdEdQVCE=";
         this.userService = userService;
     }
 

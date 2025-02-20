@@ -2,7 +2,6 @@ package dev.yassiraitelghari.fms.service;
 
 import dev.yassiraitelghari.fms.domain.user.User;
 import dev.yassiraitelghari.fms.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +21,7 @@ public class UserService {
 
     public Optional<User> findByUsername(String userName) {
 
-        return userRepository.findByUsernameAndDeletedFalse(userName);
+        return userRepository.findByUsername(userName);
 
     }
 
@@ -37,14 +36,14 @@ public class UserService {
     public Page<User> searchByUsernameOrCin(String searchKeyword, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
 
-        return userRepository.findByUsernameContainingOrEmailContainingAndDeletedFalse(searchKeyword, searchKeyword, pageable);
+        return userRepository.findByUsernameContainingOrEmailContaining(searchKeyword, searchKeyword, pageable);
     }
 
     public Optional<User> findByEmail(String email) {
         if (email == null || email.isEmpty()) {
             throw new IllegalArgumentException("Email cannot be null");
         }
-        return userRepository.findByEmailAndDeletedFalse(email);
+        return userRepository.findByEmail(email);
     }
 
     public User findUserById(UUID id) {

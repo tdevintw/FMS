@@ -36,14 +36,16 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenVM> login(
-                                         @RequestBody @Valid UserLoginDTO request) {
+    public ResponseEntity<?> login(
+                                         @RequestBody @Valid UserLoginDTO request , HttpServletRequest httpRequest) {
 
-        TokenVM response = authenticationService.login(request.getUsername(), request.getPassword());
-        if (response.getToken() == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-        return ResponseEntity.ok(response);
+//        TokenVM response = authenticationService.login(request.getUsername(), request.getPassword());
+//        if (response.getToken() == null) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+//        }
+//        return ResponseEntity.ok(response);
+      String r= httpRequest.getHeader(HttpHeaders.ORIGIN);
+      return ResponseEntity.ok(r);
     }
 
 
