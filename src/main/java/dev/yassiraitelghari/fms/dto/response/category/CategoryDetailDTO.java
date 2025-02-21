@@ -13,8 +13,6 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryDetailDTO {
-   private  UUID id;
-   private String category;
+public class CategoryDetailDTO extends CategoryDTO{
    private List<FoodDTO> foods;
 }

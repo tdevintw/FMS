@@ -36,17 +36,17 @@ public class FoodService {
 
     public FoodDTO add(FoodCreateDTO food) {
         UUID id = food.getCategoryId();
-        Category category = categoryService.findById(id).orElseThrow(() -> new CategoryUUIDNotFound("Category UUID not found"));
+        Category category = categoryService.getById(id);
         Food newFood = new Food();
         newFood.setFood(food.getFood());
         newFood.setCategory(category);
         category.setFood(newFood);
-        categoryService.save(category);
+        categoryService.edit(category);
         return foodMapper.foodToFoodDTO(newFood);
     }
 
     public FoodDTO edit(FoodUpdateDTO food, UUID id) {
-        Category category = categoryService.findById(id).orElseThrow(() -> new CategoryUUIDNotFound("Category UUID not found"));
+        Category category = categoryService.getById(id);
         Food updatedFood = foodRepository.findById(id).orElseThrow(() -> new FoodUUIDNotFound("Food UUID not found"));
         updatedFood.setFood(food.getFood());
         updatedFood.setCategory(category);

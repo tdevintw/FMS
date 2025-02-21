@@ -1,63 +1,66 @@
 package dev.yassiraitelghari.fms.service.food;
 
 import dev.yassiraitelghari.fms.domain.food.Category;
-import dev.yassiraitelghari.fms.dto.request.CategoryDTO;
+import dev.yassiraitelghari.fms.dto.request.category.CategoryCreateDTO;
+import dev.yassiraitelghari.fms.dto.request.category.CategoryUpdateDTO;
+import dev.yassiraitelghari.fms.dto.response.category.CategoryDTO;
+import dev.yassiraitelghari.fms.dto.response.category.CategoryDetailDTO;
+import dev.yassiraitelghari.fms.exception.CategoryUUIDNotFound;
 import dev.yassiraitelghari.fms.mapper.CategoryMapper;
 import dev.yassiraitelghari.fms.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
+
     public CategoryService(CategoryRepository categoryRepository, CategoryMapper categoryMapper) {
         this.categoryRepository = categoryRepository;
         this.categoryMapper = categoryMapper;
     }
 
-    public Category create(CategoryDTO categoryDTO) {
-        Category category = categoryMapper.categoryDTOToCategory(categoryDTO);
-        category.setCreationDate(LocalDateTime.now());
-        category.setUpdateDate(LocalDateTime.now());
-        return categoryRepository.save(category);
-    }
-
-    public boolean delete(UUID id) {
-        if (this.categoryRepository.findById(id).isEmpty()) return false;
-        else categoryRepository.deleteById(id);
-        return true;
-    }
-
-    public Optional<Category> findById(UUID id) {
-        return categoryRepository.findById(id);
-    }
-
-//    public List<dev.yassiraitelghari.fms.dto.response.CategoryDTO> findByCategory(String category) {
-//        return categoryRepository.findAllByCategoryContainingIgnoreCase(category);
-//    }
-
-    public Category edit(UUID id, CategoryDTO categoryDTO) {
-        Optional<Category> category = this.categoryRepository.findById(id);
-        if (category.isEmpty()) return null;
-        else {
-            category.get().setCategory(categoryDTO.getCategory());
-            return categoryRepository.save(category.get());
-        }
-    }
-
-    public List<dev.yassiraitelghari.fms.dto.response.CategoryDTO> getAll() {
+    public List<CategoryDetailDTO> getAll(){
         List<Category> categories = categoryRepository.findAll();
-        return categories.stream().map(categoryMapper::categoryToCategoryDTO).toList();
+        return categories.stream().map(categoryMapper::categoryToCategoryDetailDTO).collect(Collectors.toList());
     }
 
-    public Category save(Category category){
+    public CategoryDetailDTO findById(UUID id) {
+        Category category = this.getById(id);
+        return categoryMapper.categoryToCategoryDetailDTO(category);
+    }
+
+    public Category getById(UUID id) {
+        return categoryRepository.findById(id).orElseThrow(() -> new CategoryUUIDNotFound("Category UUID not found"));
+    }
+
+    public CategoryDTO add(CategoryCreateDTO category) {
+        Category newCategory = new Category();
+        newCategory.setCategory(category.getCategory());
+        Category savedCategory = categoryRepository.save(newCategory);
+        return categoryMapper.categoryToCategoryDTO(savedCategory);
+    }
+
+    public CategoryDetailDTO edit(UUID id, CategoryUpdateDTO category) {
+        Category updatedCategory = this.getById(id);
+        updatedCategory.setCategory(category.getCategory());
+        categoryRepository.save(updatedCategory);
+        return categoryMapper.categoryToCategoryDetailDTO(updatedCategory);
+    }
+
+
+    public Category edit(Category category) {
         return categoryRepository.save(category);
+    }
+
+    public void delete(UUID id) {
+        Category category = this.getById(id);
+        categoryRepository.deleteById(category.getId());
     }
 
 }

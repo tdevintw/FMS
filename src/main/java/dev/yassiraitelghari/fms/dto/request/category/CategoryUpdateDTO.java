@@ -1,16 +1,13 @@
-package dev.yassiraitelghari.fms.dto.response.category;
+package dev.yassiraitelghari.fms.dto.request.category;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryDTO {
-    protected UUID id ;
-    protected String category;
+public class CategoryUpdateDTO extends CategoryCreateDTO{
 }
