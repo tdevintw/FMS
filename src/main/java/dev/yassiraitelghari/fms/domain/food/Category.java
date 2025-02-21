@@ -25,5 +25,4 @@ public class Category {
     private LocalDateTime updateDate ;
     @OneToMany(mappedBy = "category")
     private List<Food> foods;
-
 }
