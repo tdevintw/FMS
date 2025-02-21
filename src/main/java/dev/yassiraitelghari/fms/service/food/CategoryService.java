@@ -34,13 +34,13 @@ public class CategoryService {
         return true;
     }
 
-    public Optional<Category> findByID(UUID id) {
+    public Optional<Category> findById(UUID id) {
         return categoryRepository.findById(id);
     }
 
-    public List<Category> findAll(String category) {
-        return categoryRepository.findAllByCategoryContainingIgnoreCase(category);
-    }
+//    public List<dev.yassiraitelghari.fms.dto.response.CategoryDTO> findByCategory(String category) {
+//        return categoryRepository.findAllByCategoryContainingIgnoreCase(category);
+//    }
 
     public Category edit(UUID id, CategoryDTO categoryDTO) {
         Optional<Category> category = this.categoryRepository.findById(id);
@@ -50,4 +50,14 @@ public class CategoryService {
             return categoryRepository.save(category.get());
         }
     }
+
+    public List<dev.yassiraitelghari.fms.dto.response.CategoryDTO> getAll() {
+        List<Category> categories = categoryRepository.findAll();
+        return categories.stream().map(categoryMapper::categoryToCategoryDTO).toList();
+    }
+
+    public Category save(Category category){
+        return categoryRepository.save(category);
+    }
+
 }

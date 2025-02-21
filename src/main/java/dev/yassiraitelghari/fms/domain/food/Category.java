@@ -23,6 +23,12 @@ public class Category {
     private String category ;
     private LocalDateTime creationDate ;
     private LocalDateTime updateDate ;
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", cascade = CascadeType.PERSIST)
     private List<Food> foods;
+
+
+    public void  setFood(Food food){
+        foods.add(food);
+    }
+
 }
