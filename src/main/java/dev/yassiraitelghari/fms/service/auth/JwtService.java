@@ -1,13 +1,16 @@
 package dev.yassiraitelghari.fms.service.auth;
 
 
+import dev.yassiraitelghari.fms.domain.enums.Role;
+import dev.yassiraitelghari.fms.domain.user.User;
+import dev.yassiraitelghari.fms.exception.RoleNotFoundException;
+import dev.yassiraitelghari.fms.exception.UserNotFoundException;
 import dev.yassiraitelghari.fms.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -19,10 +22,10 @@ import java.util.function.Function;
 @Service
 public class JwtService  {
 
-    private final String SECRET = "U3VwZXJTZWN1cmVTaWduYXR1cmVLZXlGcm9tQ2hhdEdQVCE=" ;
+    private final String SECRET="X1zA8!mN9@pQ#rT7$yV2^bK5&dF4*eG6(HzL0)wJ3_CxY" ;
     private final UserService userService;
 
-    public JwtService( UserService userService) {
+    public JwtService(UserService userService) {
         this.userService = userService;
     }
 
@@ -34,7 +37,11 @@ public class JwtService  {
         return generateToken(new HashMap<>(), username);
     }
 
-    public String generateToken(Map<String, Object> claims, String username) {claims.put("username", username);
+    public String generateToken(Map<String, Object> claims, String username) {
+        claims.put("role", extractRole(username));
+        // put permissions
+        claims.put("permissions", extractRole(username).getAuthorities());
+        claims.put("username", username);
         userService.findByUsername(username).ifPresent(user -> claims.put("id", user.getId()));
 
         return Jwts
@@ -90,7 +97,16 @@ public class JwtService  {
         return extractClaim(token, Claims::getExpiration);
     }
 
+    public Role extractRole(String username)  {
+        User user = userService.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
+        Role role = user.getRole();
+        if (role == null) {
+            throw new RoleNotFoundException("Role not found");
+        }
+        return role;
+    }
 
     private Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET);
@@ -105,7 +121,5 @@ public class JwtService  {
             return false;
         }
     }
-
-
 }
 

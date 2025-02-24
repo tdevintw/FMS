@@ -11,7 +11,6 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class BuildingInventoryCreateDTO {
     protected double totalQuantity ;
     protected UUID foodId ;

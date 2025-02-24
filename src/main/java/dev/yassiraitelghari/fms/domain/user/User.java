@@ -1,16 +1,16 @@
 package dev.yassiraitelghari.fms.domain.user;
 
 
+import dev.yassiraitelghari.fms.domain.enums.Role;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
+
 @Table(name = "users")
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -28,10 +28,18 @@ public class User implements UserDetails {
     protected LocalDateTime passwordResetTokenExpiry;
     protected LocalDateTime creationDate ;
     protected LocalDateTime updateDate ;
+    protected boolean isVerified ;
+    protected Role role ;
 
-    @Override
+    protected boolean deleted = false;
+
+    protected LocalDateTime createdAt;
+
+    protected LocalDateTime updatedAt;
+
+
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return role.getAuthorities();
     }
 
     @Override
@@ -54,3 +62,5 @@ public class User implements UserDetails {
         return UserDetails.super.isEnabled();
     }
 }
+
+//

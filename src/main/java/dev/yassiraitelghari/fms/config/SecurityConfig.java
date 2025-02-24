@@ -1,7 +1,6 @@
 package dev.yassiraitelghari.fms.config;
 
 
-
 import dev.yassiraitelghari.fms.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

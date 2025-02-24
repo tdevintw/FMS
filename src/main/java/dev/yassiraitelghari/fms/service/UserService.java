@@ -5,13 +5,16 @@ import dev.yassiraitelghari.fms.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
 
-@Service
-public class UserService {
+@Service("userService")
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -33,10 +36,10 @@ public class UserService {
         return userPage;
     }
 
-    public Page<User> searchByUsernameOrCin(String searchKeyword, int page, int size) {
+    public Page<User> searchByUsername(String username, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
 
-        return userRepository.findByUsernameContainingOrEmailContaining(searchKeyword, searchKeyword, pageable);
+        return userRepository.findByUsernameContainingOrEmailContaining(username, username, pageable);
     }
 
     public Optional<User> findByEmail(String email) {
@@ -55,6 +58,18 @@ public class UserService {
     public boolean existsById(UUID id) {
 
         return userRepository.existsById(id);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPassword(),
+                user.getAuthorities()
+        );
     }
 
 }

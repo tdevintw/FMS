@@ -1,6 +1,5 @@
 package dev.yassiraitelghari.fms.config;
 
-import dev.yassiraitelghari.fms.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,12 +11,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
-@RequiredArgsConstructor
 public class AppConfig {
-
-
-
     private final UserDetailsService customUserDetailsService;
+
+    public AppConfig(UserDetailsService customUserDetailsService) {
+        this.customUserDetailsService = customUserDetailsService;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -36,4 +35,3 @@ public class AppConfig {
         return new RestTemplate();
     }
 }
-

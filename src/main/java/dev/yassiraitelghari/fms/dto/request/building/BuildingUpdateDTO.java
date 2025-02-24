@@ -9,6 +9,5 @@ import org.hibernate.annotations.SecondaryRow;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class BuildingUpdateDTO extends BuildingCreateDTO{
 }

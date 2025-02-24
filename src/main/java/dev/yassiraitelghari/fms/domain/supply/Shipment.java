@@ -16,7 +16,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "shipments")
-public class Shipment {
+public class
+Shipment {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id ;

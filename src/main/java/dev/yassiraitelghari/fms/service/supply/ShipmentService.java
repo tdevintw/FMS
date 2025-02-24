@@ -22,13 +22,11 @@ public class ShipmentService {
     private final ShipmentRepository shipmentRepository;
     private final ShipmentMapper shipmentMapper;
     private final OrderService orderService;
-    private final UserService userService;
 
-    public ShipmentService(ShipmentRepository shipmentRepository, ShipmentMapper shipmentMapper, OrderService orderService, ShipmentService shipmentService, UserService userService) {
+    public ShipmentService(ShipmentRepository shipmentRepository, ShipmentMapper shipmentMapper, OrderService orderService, UserService userService) {
         this.shipmentRepository = shipmentRepository;
         this.shipmentMapper = shipmentMapper;
         this.orderService = orderService;
-        this.userService = userService;
     }
 
     public List<ShipmentDetailDTO> getAll() {

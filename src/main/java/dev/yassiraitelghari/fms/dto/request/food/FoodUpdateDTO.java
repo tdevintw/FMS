@@ -9,7 +9,6 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class FoodUpdateDTO extends FoodCreateDTO{
 }

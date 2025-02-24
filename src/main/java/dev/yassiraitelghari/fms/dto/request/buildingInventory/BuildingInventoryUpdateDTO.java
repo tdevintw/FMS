@@ -9,6 +9,5 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class BuildingInventoryUpdateDTO extends BuildingCreateDTO {
 }
