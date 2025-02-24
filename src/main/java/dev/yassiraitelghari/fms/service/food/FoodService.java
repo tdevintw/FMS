@@ -30,8 +30,13 @@ public class FoodService {
     }
 
     public FoodDTO findById(UUID id) {
-        Food food = foodRepository.findById(id).orElseThrow(() -> new FoodUUIDNotFound("Food UUID not found"));
+        Food food = getById(id);
         return foodMapper.foodToFoodDTO(food);
+    }
+
+    public Food getById(UUID id) {
+        return foodRepository.findById(id).orElseThrow(() -> new FoodUUIDNotFound("Food UUID not found"));
+
     }
 
     public FoodDTO add(FoodCreateDTO food) {
@@ -59,7 +64,7 @@ public class FoodService {
         foodRepository.deleteById(id);
     }
 
-    public List<FoodDTO> getAll(){
+    public List<FoodDTO> getAll() {
         List<Food> foods = foodRepository.findAll();
         return foods.stream().map(foodMapper::foodToFoodDTO).collect(Collectors.toList());
     }

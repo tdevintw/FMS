@@ -25,13 +25,3 @@ public class SupplierInventoryCreateDTO {
     protected UUID foodId;
 }
 
-//@OneToMany(mappedBy = "supplierInventory", cascade = CascadeType.ALL)
-//private List<AvailableLocation> availableLocations;
-//@ManyToOne
-//@JoinColumn(name = "supplier_id", nullable = false)
-//private Supplier supplier ;
-//@ManyToOne
-//@JoinColumn(name = "food_id", nullable = false)
-//private Food food ;
-//@OneToMany(mappedBy = "supplierInventory" , cascade = CascadeType.ALL)
-//private List<Order> orders;

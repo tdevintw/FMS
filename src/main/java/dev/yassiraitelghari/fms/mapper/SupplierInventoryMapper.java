@@ -8,7 +8,6 @@ import dev.yassiraitelghari.fms.dto.response.supplierInventory.SupplierInventory
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-
 public interface SupplierInventoryMapper {
     SupplierInventory supplierInventoryCreateDTOToSupplierInventory(SupplierInventoryCreateDTO supplierInventory);
     SupplierInventoryDTO supplierInventoryToSupplierInventoryDTO(SupplierInventory supplierInventory);
