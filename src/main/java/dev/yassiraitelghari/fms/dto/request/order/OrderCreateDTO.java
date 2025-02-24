@@ -14,6 +14,9 @@ import java.util.UUID;
 @AllArgsConstructor
 public class OrderCreateDTO {
     protected double quantity;
-    protected UUID supplierInventoryId;
-    protected UUID buildingId;
+    private UUID supplierInventoryId;
+    private UUID buildingId;
+
+
+
 }

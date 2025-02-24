@@ -1,5 +1,11 @@
 package dev.yassiraitelghari.fms.service.supply;
 
+import dev.yassiraitelghari.fms.domain.supply.Order;
+import dev.yassiraitelghari.fms.dto.request.order.OrderCreateDTO;
+import dev.yassiraitelghari.fms.dto.request.order.OrderUpdateDTO;
+import dev.yassiraitelghari.fms.dto.response.order.OrderDTO;
+import dev.yassiraitelghari.fms.dto.response.order.OrderDetailDTO;
+import dev.yassiraitelghari.fms.exception.OrderUUIDNotFoundException;
 import dev.yassiraitelghari.fms.mapper.OrderMapper;
 import dev.yassiraitelghari.fms.repository.OrderRepository;
 import org.springframework.stereotype.Service;
@@ -22,41 +28,41 @@ public class OrderService {
 
 
     public List<OrderDetailDTO> getAll(){
-        List<Order> cities = OrderRepository.findAll();
-        return cities.stream().map(OrderMapper::OrderToOrderDetailDTO).collect(Collectors.toList());
+        List<Order> orders = orderRepository.findAll();
+        return orders.stream().map(orderMapper::orderToOrderDetailDTO).collect(Collectors.toList());
     }
 
     public OrderDetailDTO findById(UUID id) {
-        Order Order = this.getById(id);
-        return OrderMapper.OrderToOrderDetailDTO(Order);
+        Order order = this.getById(id);
+        return orderMapper.orderToOrderDetailDTO(order);
     }
 
     public Order getById(UUID id) {
-        return OrderRepository.findById(id).orElseThrow(() -> new OrderUUIDNotFound("Order UUID not found"));
+        return orderRepository.findById(id).orElseThrow(() -> new OrderUUIDNotFoundException("Order UUID not found"));
     }
 
-    public OrderDTO add(OrderCreateDTO Order) {
-        Order newOrder = new Order();
-        newOrder.setOrder(Order.getOrder());
-        Order savedOrder = OrderRepository.save(newOrder);
-        return OrderMapper.OrderToOrderDTO(savedOrder);
+    public OrderDTO add(OrderCreateDTO order) {
+        Order newOrder = orderMapper.orderCreateDTOToOrder(order);
+        return orderMapper.orderToOrderDTO(orderRepository.save(newOrder));
+
     }
 
-    public OrderDetailDTO edit(UUID id, OrderUpdateDTO Order) {
+    public OrderDetailDTO edit(UUID id, OrderUpdateDTO order) {
         Order updatedOrder = this.getById(id);
-        updatedOrder.setOrder(Order.getOrder());
-        OrderRepository.save(updatedOrder);
-        return OrderMapper.OrderToOrderDetailDTO(updatedOrder);
+        updatedOrder.setOrderStatus(order.getStatus());
+        updatedOrder.setQuantity(order.getQuantity());
+        return orderMapper.orderToOrderDetailDTO(orderRepository.save(updatedOrder));
+
     }
 
 
-    public Order edit(Order Order) {
-        return OrderRepository.save(Order);
+    public Order edit(Order order) {
+        return orderRepository.save(order);
     }
 
     public void delete(UUID id) {
-        Order Order = this.getById(id);
-        OrderRepository.deleteById(Order.getId());
+        Order order = this.getById(id);
+        orderRepository.deleteById(order.getId());
     }
 
 }
