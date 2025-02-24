@@ -24,4 +24,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
 
     }
+
+    @ExceptionHandler(BuildingUUIDNotFound.class)
+    public ResponseEntity<?> handleCategoryNotFound(BuildingUUIDNotFound ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+
+    }
 }
