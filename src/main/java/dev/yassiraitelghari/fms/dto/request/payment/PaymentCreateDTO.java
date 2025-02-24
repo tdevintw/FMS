@@ -13,5 +13,5 @@ import java.util.UUID;
 @AllArgsConstructor
 public class PaymentCreateDTO {
     protected double totalPrice;
-    protected UUID OrderId;
+    private UUID OrderId;
 }
