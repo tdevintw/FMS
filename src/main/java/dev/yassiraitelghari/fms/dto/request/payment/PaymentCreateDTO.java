@@ -1,0 +1,17 @@
+package dev.yassiraitelghari.fms.dto.request.payment;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.UUID;
+
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class PaymentCreateDTO {
+    protected double totalPrice;
+    protected UUID OrderId;
+}
