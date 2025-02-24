@@ -16,11 +16,13 @@ import dev.yassiraitelghari.fms.mapper.BuildingMapper;
 import dev.yassiraitelghari.fms.mapper.CategoryMapper;
 import dev.yassiraitelghari.fms.repository.BuildingRepository;
 import dev.yassiraitelghari.fms.repository.CategoryRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Service
 public class BuildingService {
     private final BuildingRepository buildingRepository;
     private final BuildingMapper buildingMapper;
