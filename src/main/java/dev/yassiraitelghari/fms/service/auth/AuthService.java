@@ -10,7 +10,7 @@ import dev.yassiraitelghari.fms.exception.UserNotFoundException;
 import dev.yassiraitelghari.fms.exception.UsernameOrPasswordInvalidException;
 import dev.yassiraitelghari.fms.mapper.UserMapper;
 import dev.yassiraitelghari.fms.repository.UserRepository;
-import dev.yassiraitelghari.fms.service.UserService;
+import dev.yassiraitelghari.fms.service.user.UserService;
 import dev.yassiraitelghari.fms.service.email.EmailService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.validation.Valid;
@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service

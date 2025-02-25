@@ -1,21 +1,17 @@
 package dev.yassiraitelghari.fms.service.building;
 
 import dev.yassiraitelghari.fms.domain.building.Building;
-import dev.yassiraitelghari.fms.domain.food.Category;
+import dev.yassiraitelghari.fms.domain.user.Manager;
+import dev.yassiraitelghari.fms.domain.user.User;
 import dev.yassiraitelghari.fms.dto.request.building.BuildingCreateDTO;
 import dev.yassiraitelghari.fms.dto.request.building.BuildingUpdateDTO;
-import dev.yassiraitelghari.fms.dto.request.category.CategoryCreateDTO;
-import dev.yassiraitelghari.fms.dto.request.category.CategoryUpdateDTO;
 import dev.yassiraitelghari.fms.dto.response.building.BuildingDTO;
 import dev.yassiraitelghari.fms.dto.response.building.BuildingDetailDTO;
-import dev.yassiraitelghari.fms.dto.response.category.CategoryDTO;
-import dev.yassiraitelghari.fms.dto.response.category.CategoryDetailDTO;
 import dev.yassiraitelghari.fms.exception.BuildingUUIDNotFound;
-import dev.yassiraitelghari.fms.exception.CategoryUUIDNotFound;
 import dev.yassiraitelghari.fms.mapper.BuildingMapper;
-import dev.yassiraitelghari.fms.mapper.CategoryMapper;
 import dev.yassiraitelghari.fms.repository.BuildingRepository;
-import dev.yassiraitelghari.fms.repository.CategoryRepository;
+import dev.yassiraitelghari.fms.service.user.ManagerService;
+import dev.yassiraitelghari.fms.service.user.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,10 +22,14 @@ import java.util.stream.Collectors;
 public class BuildingService {
     private final BuildingRepository buildingRepository;
     private final BuildingMapper buildingMapper;
+    private final UserService userService;
+    private final ManagerService managerService;
 
-    public BuildingService(BuildingRepository buildingRepository, BuildingMapper buildingMapper) {
+    public BuildingService(BuildingRepository buildingRepository, BuildingMapper buildingMapper, UserService userService, ManagerService managerService) {
         this.buildingRepository = buildingRepository;
         this.buildingMapper = buildingMapper;
+        this.userService = userService;
+        this.managerService = managerService;
     }
 
 
@@ -48,7 +48,9 @@ public class BuildingService {
     }
 
     public BuildingDTO add(BuildingCreateDTO building) {
+        Manager user = managerService.findById(building.getManagerId());
         Building newBuilding = buildingMapper.buildingCreateDTOToBuilding(building);
+        newBuilding.setManager(user);
         return buildingMapper.buildingToBuildingDTO(buildingRepository.save(newBuilding));
     }
 

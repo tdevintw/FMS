@@ -1,6 +1,7 @@
-package dev.yassiraitelghari.fms.service;
+package dev.yassiraitelghari.fms.service.user;
 
 import dev.yassiraitelghari.fms.domain.user.User;
+import dev.yassiraitelghari.fms.exception.UserUUIDNotFound;
 import dev.yassiraitelghari.fms.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,9 +24,11 @@ public class UserService implements UserDetailsService {
     }
 
     public Optional<User> findByUsername(String userName) {
-
         return userRepository.findByUsername(userName);
+    }
 
+    public User findByID(UUID id){
+        return userRepository.findById(id).orElseThrow(()->new UserUUIDNotFound("User UUID Not Found"));
     }
 
     public Page<User> getAllUsers(int page, int size) {
@@ -49,16 +52,6 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(email);
     }
 
-    public User findUserById(UUID id) {
-
-        return userRepository.findById(id).get();
-
-    }
-
-    public boolean existsById(UUID id) {
-
-        return userRepository.existsById(id);
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

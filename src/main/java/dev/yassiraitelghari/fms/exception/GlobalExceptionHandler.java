@@ -24,6 +24,13 @@ public class GlobalExceptionHandler {
     }
 
 
+    @ExceptionHandler(SupplierInventoryUUIDNotFoundException.class)
+    public ResponseEntity<?> handleFoodNotFound(SupplierInventoryUUIDNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+
+    }
+
+
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<?> handleFoodNotFound(UserNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
@@ -57,6 +64,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(CategoryUUIDNotFound.class)
     public ResponseEntity<?> handleCategoryNotFound(CategoryUUIDNotFound ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+
+    }
+
+    @ExceptionHandler(UserUUIDNotFound.class)
+    public ResponseEntity<?> handleCategoryNotFound(UserUUIDNotFound ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
 
     }

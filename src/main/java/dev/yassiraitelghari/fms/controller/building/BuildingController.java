@@ -39,9 +39,9 @@ public class BuildingController {
         return ResponseEntity.status(200).body(building);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
     @PostMapping
-    private ResponseEntity<?> add(@RequestBody BuildingCreateDTO building) {
+    public ResponseEntity<?> add(@RequestBody BuildingCreateDTO building) {
         BuildingDTO newBuilding = buildingService.add(building);
         return ResponseEntity.status(201).body(newBuilding);
     }
@@ -53,7 +53,7 @@ public class BuildingController {
         return ResponseEntity.status(200).body("Building is deleted");
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
     @PutMapping("/{id}")
     public ResponseEntity<?> edit(@PathVariable UUID id, BuildingUpdateDTO building) {
         BuildingDetailDTO updatedBuilding =  buildingService.edit(id , building);

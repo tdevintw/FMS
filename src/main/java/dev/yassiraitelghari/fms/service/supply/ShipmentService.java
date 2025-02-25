@@ -2,7 +2,6 @@ package dev.yassiraitelghari.fms.service.supply;
 
 import dev.yassiraitelghari.fms.domain.supply.Order;
 import dev.yassiraitelghari.fms.domain.supply.Shipment;
-import dev.yassiraitelghari.fms.domain.user.Shipper;
 import dev.yassiraitelghari.fms.dto.request.shipment.ShipmentCreateDTO;
 import dev.yassiraitelghari.fms.dto.request.shipment.ShipmentUpdateDTO;
 import dev.yassiraitelghari.fms.dto.response.shipment.ShipmentDTO;
@@ -10,7 +9,7 @@ import dev.yassiraitelghari.fms.dto.response.shipment.ShipmentDetailDTO;
 import dev.yassiraitelghari.fms.exception.ShipmentUUIDNotFoundException;
 import dev.yassiraitelghari.fms.mapper.ShipmentMapper;
 import dev.yassiraitelghari.fms.repository.ShipmentRepository;
-import dev.yassiraitelghari.fms.service.UserService;
+import dev.yassiraitelghari.fms.service.user.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

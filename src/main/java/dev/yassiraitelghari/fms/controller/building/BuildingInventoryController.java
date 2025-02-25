@@ -20,7 +20,11 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/buildingInventories")
 public class BuildingInventoryController {
-    private BuildingInventoryService buildingInventoryService;
+    private final BuildingInventoryService buildingInventoryService;
+
+    public BuildingInventoryController(BuildingInventoryService buildingInventoryService) {
+        this.buildingInventoryService = buildingInventoryService;
+    }
 
     @GetMapping
     public ResponseEntity<?> getAll() {
@@ -34,25 +38,24 @@ public class BuildingInventoryController {
         return ResponseEntity.status(200).body(buildingInventory);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
     @PostMapping
-    private ResponseEntity<?> add(@RequestBody BuildingInventoryCreateDTO buildingInventory) {
+    public ResponseEntity<?> add(@RequestBody BuildingInventoryCreateDTO buildingInventory) {
         BuildingInventoryDTO newBuildingInventory = buildingInventoryService.add(buildingInventory);
         return ResponseEntity.status(201).body(newBuildingInventory);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable UUID id) {
         buildingInventoryService.delete(id);
         return ResponseEntity.status(200).body("BuildingInventory is deleted");
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
     @PutMapping("/{id}")
     public ResponseEntity<?> edit(@PathVariable UUID id, BuildingInventoryUpdateDTO buildingInventory) {
         BuildingInventoryDetailDTO updatedBuildingInventory =  buildingInventoryService.edit(id , buildingInventory);
         return  ResponseEntity.status(200).body(updatedBuildingInventory);
     }
-
 }

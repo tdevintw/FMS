@@ -5,7 +5,7 @@ import dev.yassiraitelghari.fms.domain.enums.Role;
 import dev.yassiraitelghari.fms.domain.user.User;
 import dev.yassiraitelghari.fms.exception.RoleNotFoundException;
 import dev.yassiraitelghari.fms.exception.UserNotFoundException;
-import dev.yassiraitelghari.fms.service.UserService;
+import dev.yassiraitelghari.fms.service.user.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

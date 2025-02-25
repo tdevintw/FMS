@@ -32,19 +32,19 @@ public class FoodController {
         return ResponseEntity.status(200).body(foods);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
     @PostMapping
     public ResponseEntity<?> add(FoodCreateDTO food) {
         return ResponseEntity.status(201).body(foodService.add(food));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@RequestBody FoodUpdateDTO food, @PathVariable UUID id) {
         return ResponseEntity.status(201).body(foodService.edit(food, id));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable UUID id){
         foodService.delete(id);
