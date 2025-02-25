@@ -50,7 +50,8 @@ public class CityController {
         return ResponseEntity.status(201).body(cityService.edit(id , city));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')"@DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable UUID id){
         cityService.delete(id);
         return ResponseEntity.status(200).body("city Was deleted");

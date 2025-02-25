@@ -51,7 +51,7 @@ public class CategoryController {
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> edit(@PathVariable UUID id, CategoryUpdateDTO category) {
+    public ResponseEntity<?> edit(@PathVariable UUID id,@RequestBody CategoryUpdateDTO category) {
        CategoryDetailDTO updatedCategory =  categoryService.edit(id , category);
        return  ResponseEntity.status(200).body(updatedCategory);
     }

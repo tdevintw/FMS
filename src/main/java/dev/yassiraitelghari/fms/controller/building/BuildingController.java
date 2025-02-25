@@ -41,7 +41,7 @@ public class BuildingController {
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
     @PostMapping
-    public ResponseEntity<?> add(@RequestBody BuildingCreateDTO building) {
+    public  ResponseEntity<?> add(@RequestBody BuildingCreateDTO building) {
         BuildingDTO newBuilding = buildingService.add(building);
         return ResponseEntity.status(201).body(newBuilding);
     }
