@@ -24,7 +24,7 @@ public class EmailService {
     }
 
     public void sendPasswordResetEmail(String email, String resetToken, String clientOrigin) {
-        String resetLink = "<a href=http://localhost:9999/verify-email?token=" +  resetToken+"></a>";
+        String resetLink = "<a href=http://localhost:9999/reset-password?token=y" +  resetToken+"></a>";
 
         sendMail(
                 email,

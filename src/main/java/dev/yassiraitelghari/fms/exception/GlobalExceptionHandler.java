@@ -69,4 +69,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(errors) ;
     }
 
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<?> handleCategoryNotFound(InvalidCredentialsException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+
+    }
+
+
 }
