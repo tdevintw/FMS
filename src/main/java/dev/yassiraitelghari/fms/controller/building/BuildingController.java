@@ -19,7 +19,12 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/buildings")
 public class BuildingController {
-    private BuildingService buildingService;
+
+    private final BuildingService buildingService;
+
+    public BuildingController(BuildingService buildingService) {
+        this.buildingService = buildingService;
+    }
 
     @GetMapping
     public ResponseEntity<?> getAll() {
