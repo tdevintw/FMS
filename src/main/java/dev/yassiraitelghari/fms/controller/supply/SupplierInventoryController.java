@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/supplierInventorys")
+@RequestMapping("/api/supplierInventories")
 public class SupplierInventoryController {
     private final SupplierInventoryService supplierInventoryService;
 

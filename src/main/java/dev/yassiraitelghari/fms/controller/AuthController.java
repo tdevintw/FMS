@@ -55,7 +55,7 @@ public class AuthController {
         if (clientOrigin == null) {
             clientOrigin = request.getHeader(HttpHeaders.REFERER);
         }
-        authService.forgotPassword(email,clientOrigin);
+        authService.forgotPassword(email, clientOrigin);
         return ResponseEntity.ok("Password reset email sent.");
     }
 

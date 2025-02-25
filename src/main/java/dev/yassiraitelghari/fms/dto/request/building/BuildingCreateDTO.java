@@ -1,5 +1,7 @@
 package dev.yassiraitelghari.fms.dto.request.building;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,8 +14,16 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BuildingCreateDTO {
-    protected String name;
-    protected String location;
-    protected String buildingType;
-    protected UUID managerId;
+
+    @NotBlank(message = "Building name is required.")
+    private String name;
+
+    @NotBlank(message = "Location is required.")
+    private String location;
+
+    @NotBlank(message = "Building type is required.")
+    private String buildingType;
+
+    @NotNull(message = "Manager ID is required.")
+    private UUID managerId;
 }
