@@ -13,11 +13,23 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleGlobalException(Exception ex) {
+        Map<String, Object> errorDetails = new HashMap<>();
+        errorDetails.put("status", 500);
+        errorDetails.put("error", "Internal Server Error");
+        errorDetails.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<?> handleFoodNotFound(UserNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
 
     }
+
     @ExceptionHandler(UserNameAlreadyExistsException.class)
     public ResponseEntity<?> handleFoodNotFound(UserNameAlreadyExistsException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
@@ -29,9 +41,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
 
     }
-
-
-
 
 
     @ExceptionHandler(FoodUUIDNotFound.class)
@@ -59,14 +68,14 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleValidationException(MethodArgumentNotValidException e){
-        Map<String , String> errors = new HashMap<>();
-        e.getBindingResult().getAllErrors().forEach(error->{
-            String fieldName = ((FieldError) error).getField() ;
-            String message = error.getDefaultMessage() ;
-            errors.put(fieldName , message);
+    public ResponseEntity<?> handleValidationException(MethodArgumentNotValidException e) {
+        Map<String, String> errors = new HashMap<>();
+        e.getBindingResult().getAllErrors().forEach(error -> {
+            String fieldName = ((FieldError) error).getField();
+            String message = error.getDefaultMessage();
+            errors.put(fieldName, message);
         });
-        return ResponseEntity.badRequest().body(errors) ;
+        return ResponseEntity.badRequest().body(errors);
     }
 
     @ExceptionHandler(InvalidCredentialsException.class)

@@ -5,6 +5,7 @@ import dev.yassiraitelghari.fms.dto.request.supplierInventory.SupplierInventoryU
 import dev.yassiraitelghari.fms.dto.response.supplierInventory.SupplierInventoryDetailDTO;
 import dev.yassiraitelghari.fms.service.supply.SupplierInventoryService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,16 +34,19 @@ public class SupplierInventoryController {
         return ResponseEntity.status(200).body(supplierInventories);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','SUPPLIER')")
     @PostMapping
     public ResponseEntity<?> add(@RequestBody SupplierInventoryCreateDTO supplierInventory) {
         return ResponseEntity.status(201).body(supplierInventoryService.add(supplierInventory));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','SUPPLIER')")
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@RequestBody SupplierInventoryUpdateDTO supplierInventory, @PathVariable UUID id) {
         return ResponseEntity.status(201).body(supplierInventoryService.edit(id , supplierInventory));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','SUPPLIER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable UUID id){
         supplierInventoryService.delete(id);

@@ -7,6 +7,7 @@ import dev.yassiraitelghari.fms.dto.response.payment.PaymentDTO;
 import dev.yassiraitelghari.fms.dto.response.payment.PaymentDetailDTO;
 import dev.yassiraitelghari.fms.service.supply.PaymentService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,16 +34,19 @@ public class PaymentController {
         return ResponseEntity.status(200).body(payments);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER')")
     @PostMapping
     public ResponseEntity<?> add(@RequestBody  PaymentCreateDTO payment) {
         return ResponseEntity.status(201).body(paymentService.add(payment));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER')")
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@RequestBody PaymentUpdateDTO payment, @PathVariable UUID id) {
         return ResponseEntity.status(201).body(paymentService.edit(id , payment));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable UUID id){
         paymentService.delete(id);

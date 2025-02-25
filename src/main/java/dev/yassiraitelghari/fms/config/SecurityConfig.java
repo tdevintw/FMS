@@ -2,6 +2,8 @@ package dev.yassiraitelghari.fms.config;
 
 
 import dev.yassiraitelghari.fms.filter.JwtAuthenticationFilter;
+import dev.yassiraitelghari.fms.handler.CustomAccessDeniedHandler;
+import dev.yassiraitelghari.fms.handler.CustomAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,22 +36,24 @@ public class SecurityConfig {
                                 "/api/auth/register",
                                 "/api/auth/verify",
                                 "/api/auth/forgot-password",
-                                "/api/auth//reset-password",
-                                "/swagger-ui/**", "/v3/api-docs/**"
+                                "/api/auth/reset-password"
                         ).permitAll()
                         .requestMatchers("/error").permitAll()
-                        .anyRequest().authenticated()
-
+                        .requestMatchers("/api/**").authenticated()
                 )
-
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint())  // Handle 401 Unauthorized
+                        .accessDeniedHandler(new CustomAccessDeniedHandler())  // Handle 403 Forbidden
                 )
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
 
 
 }

@@ -11,6 +11,7 @@ import dev.yassiraitelghari.fms.dto.response.category.CategoryDTO;
 import dev.yassiraitelghari.fms.dto.response.category.CategoryDetailDTO;
 import dev.yassiraitelghari.fms.service.building.BuildingService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,18 +39,21 @@ public class BuildingController {
         return ResponseEntity.status(200).body(building);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @PostMapping
     private ResponseEntity<?> add(@RequestBody BuildingCreateDTO building) {
         BuildingDTO newBuilding = buildingService.add(building);
         return ResponseEntity.status(201).body(newBuilding);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable UUID id) {
         buildingService.delete(id);
         return ResponseEntity.status(200).body("Building is deleted");
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @PutMapping("/{id}")
     public ResponseEntity<?> edit(@PathVariable UUID id, BuildingUpdateDTO building) {
         BuildingDetailDTO updatedBuilding =  buildingService.edit(id , building);

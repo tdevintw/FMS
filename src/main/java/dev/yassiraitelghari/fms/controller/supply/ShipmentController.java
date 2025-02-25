@@ -7,6 +7,7 @@ import dev.yassiraitelghari.fms.dto.response.shipment.ShipmentDTO;
 import dev.yassiraitelghari.fms.dto.response.shipment.ShipmentDetailDTO;
 import dev.yassiraitelghari.fms.service.supply.ShipmentService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,16 +36,19 @@ public class ShipmentController {
         return ResponseEntity.status(200).body(shipments);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','SHIPPER')")
     @PostMapping
     public ResponseEntity<?> add(@RequestBody ShipmentCreateDTO shipment) {
         return ResponseEntity.status(201).body(shipmentService.add(shipment));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','SHIPPER')")
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@RequestBody ShipmentUpdateDTO shipment, @PathVariable UUID id) {
         return ResponseEntity.status(201).body(shipmentService.edit(id, shipment));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','SHIPPER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable UUID id) {
         shipmentService.delete(id);

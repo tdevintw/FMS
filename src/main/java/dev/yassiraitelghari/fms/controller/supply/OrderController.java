@@ -7,6 +7,7 @@ import dev.yassiraitelghari.fms.dto.response.order.OrderDetailDTO;
 
 import dev.yassiraitelghari.fms.service.supply.OrderService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,16 +35,19 @@ public class OrderController {
         return ResponseEntity.status(200).body(orders);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER')")
     @PostMapping
     public ResponseEntity<?> add(@RequestBody OrderCreateDTO order) {
         return ResponseEntity.status(201).body(orderService.add(order));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER')")
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@RequestBody OrderUpdateDTO order, @PathVariable UUID id) {
         return ResponseEntity.status(201).body(orderService.edit(id , order));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable UUID id){
         orderService.delete(id);

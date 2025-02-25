@@ -11,6 +11,7 @@ import dev.yassiraitelghari.fms.dto.response.buildingInventory.BuildingInventory
 import dev.yassiraitelghari.fms.service.building.BuildingInventoryService;
 import dev.yassiraitelghari.fms.service.building.BuildingService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,18 +34,21 @@ public class BuildingInventoryController {
         return ResponseEntity.status(200).body(buildingInventory);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @PostMapping
     private ResponseEntity<?> add(@RequestBody BuildingInventoryCreateDTO buildingInventory) {
         BuildingInventoryDTO newBuildingInventory = buildingInventoryService.add(buildingInventory);
         return ResponseEntity.status(201).body(newBuildingInventory);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable UUID id) {
         buildingInventoryService.delete(id);
         return ResponseEntity.status(200).body("BuildingInventory is deleted");
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @PutMapping("/{id}")
     public ResponseEntity<?> edit(@PathVariable UUID id, BuildingInventoryUpdateDTO buildingInventory) {
         BuildingInventoryDetailDTO updatedBuildingInventory =  buildingInventoryService.edit(id , buildingInventory);
