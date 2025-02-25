@@ -14,7 +14,7 @@ public class EmailService {
 
 
     public void sendVerificationEmail(String email, String verificationToken,String clientOrigin) {
-        String verificationUrl = clientOrigin + "/verify-email?token=" + verificationToken;
+        String verificationUrl = "<a href=http://localhost:9999/verify-email?token=" + verificationToken+"></a>";
 
         sendMail(
                 email,
@@ -24,7 +24,7 @@ public class EmailService {
     }
 
     public void sendPasswordResetEmail(String email, String resetToken, String clientOrigin) {
-        String resetLink = clientOrigin +"/reset-password?token=" + resetToken;
+        String resetLink = "<a href=http://localhost:9999/verify-email?token=" +  resetToken+"></a>";
 
         sendMail(
                 email,

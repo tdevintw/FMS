@@ -19,11 +19,18 @@ spring:
   liquibase:
     enabled: true
     change-log: db/changelog/master.yaml
+
   mail:
     host: smtp.gmail.com
     port: 587
     username: aitelghariyasser@gmail.com
     password: "zqnb vqeu ifvu kzhg"
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 jwt:
   secret:

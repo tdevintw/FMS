@@ -31,7 +31,6 @@ public class User implements UserDetails {
     protected boolean isVerified ;
     protected Role role ;
 
-    protected boolean deleted = false;
 
     protected LocalDateTime createdAt;
 

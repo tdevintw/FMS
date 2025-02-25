@@ -22,7 +22,7 @@ import java.util.function.Function;
 @Service
 public class JwtService  {
 
-    private final String SECRET="X1zA8!mN9@pQ#rT7$yV2^bK5&dF4*eG6(HzL0)wJ3_CxY" ;
+    private final String SECRET="YfB5Djsl4mHYu7l9f8TFSrDhRUv3B3MwPfM02y5T0pE=" ;
     private final UserService userService;
 
     public JwtService(UserService userService) {

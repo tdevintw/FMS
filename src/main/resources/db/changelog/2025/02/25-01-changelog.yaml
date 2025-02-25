@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1740482692433-1
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropColumn:
+            columnName: deleted
+            tableName: users
