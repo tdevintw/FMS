@@ -36,6 +36,12 @@ public class GlobalExceptionHandler {
 
     }
 
+    @ExceptionHandler(CountryUUIDNotFound.class)
+    public ResponseEntity<?> handleCountryUUIDNotFound(CountryUUIDNotFound ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+
+    }
+
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<?> handleUserNotFound(UserNotFoundException ex) {

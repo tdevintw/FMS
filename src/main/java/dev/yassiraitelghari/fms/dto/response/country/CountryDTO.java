@@ -13,6 +13,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CountryDTO {
     protected UUID id;
-    private String country;
+    protected String country;
 
 }
