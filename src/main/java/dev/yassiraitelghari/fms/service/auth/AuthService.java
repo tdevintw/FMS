@@ -10,6 +10,7 @@ import dev.yassiraitelghari.fms.exception.UserNotFoundException;
 import dev.yassiraitelghari.fms.exception.UsernameOrPasswordInvalidException;
 import dev.yassiraitelghari.fms.mapper.UserMapper;
 import dev.yassiraitelghari.fms.repository.UserRepository;
+import dev.yassiraitelghari.fms.service.user.ManagerService;
 import dev.yassiraitelghari.fms.service.user.UserService;
 import dev.yassiraitelghari.fms.service.email.EmailService;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -31,6 +32,7 @@ public class AuthService {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
+    private final ManagerService managerService;
 
     public AuthService(UserRepository userRepository, JwtService jwtService, UserMapper userMapper, UserService userService, PasswordEncoder passwordEncoder, EmailService emailService) {
         this.userRepository = userRepository;
@@ -54,20 +56,16 @@ public class AuthService {
                 });
 
         User newUser = userMapper.registredUserDTOToUser(user);
-
-
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         newUser.setCreatedAt(LocalDateTime.now());
         newUser.setUpdatedAt(LocalDateTime.now());
         newUser.setRole(Role.valueOf(user.getRole()));
         newUser.setVerificationToken(generateVerificationToken());
-
         User savedUser = userRepository.save(newUser);
+
         String authToken = jwtService.generateToken(savedUser.getUsername());
         String refreshToken = jwtService.generateRefreshToken(savedUser.getUsername());
-
         emailService.sendVerificationEmail(newUser.getEmail(), newUser.getVerificationToken(), clientOrigin);
-
         return TokenVM.builder().token(authToken).refreshToken(refreshToken).build();
     }
 
@@ -167,5 +165,13 @@ public class AuthService {
 
     private boolean isEmail(String input) {
         return input != null && input.matches("^[A-Za-z0-9+_.-]+@(.+)$");
+    }
+
+    private void registerUserWithRole(User user , Role role){
+        switch (role){
+            case MANAGER  :
+            case SHIPPER  :
+            case SUPPLIER :
+        }
     }
 }

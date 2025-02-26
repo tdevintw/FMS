@@ -79,9 +79,9 @@ public class CityService {
         updatedCity.setCity(city.getCity());
         updatedCity.setCountry(country);
         cityRepository.save(updatedCity);
-        CityDetailDTO cityDetailDTO =  cityMapper.cityToCityDetailDTO(updatedCity);
+        CityDetailDTO cityDetailDTO = cityMapper.cityToCityDetailDTO(updatedCity);
         cityDetailDTO.setCountryDTO(countryDTO);
-        return cityDetailDTO ;
+        return cityDetailDTO;
     }
 
 

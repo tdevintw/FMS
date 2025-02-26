@@ -25,6 +25,6 @@ public class UserDTO {
     private String email;
 
 
-    @Pattern(regexp = "MANAGER|ADMIN|SUPPLIER|SHIPPER", message = "Role must be MANAGER, ADMIN, SHIPPER or SUPPLIER")
+    @Pattern(regexp = "MANAGER|SUPPLIER|SHIPPER", message = "Role must be MANAGER, SHIPPER or SUPPLIER")
     private  String role;
 }

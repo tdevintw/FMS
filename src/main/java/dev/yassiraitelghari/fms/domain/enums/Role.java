@@ -11,10 +11,6 @@ import dev.yassiraitelghari.fms.domain.enums.Permission.*;
 
 
 public enum Role {
-    USER(
-            Set.of(
-            )
-    ) ,
 
     ADMIN(
             Set.of(
