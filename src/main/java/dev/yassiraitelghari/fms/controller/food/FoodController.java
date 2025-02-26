@@ -4,6 +4,7 @@ import dev.yassiraitelghari.fms.dto.request.food.FoodCreateDTO;
 import dev.yassiraitelghari.fms.dto.request.food.FoodUpdateDTO;
 import dev.yassiraitelghari.fms.dto.response.food.FoodDTO;
 import dev.yassiraitelghari.fms.service.food.FoodService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -34,13 +35,14 @@ public class FoodController {
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
     @PostMapping
-    public ResponseEntity<?> add(FoodCreateDTO food) {
-        return ResponseEntity.status(201).body(foodService.add(food));
+    public ResponseEntity<?> add(@Valid @RequestBody FoodCreateDTO food) {
+        FoodDTO addedFood = foodService.add(food);
+        return ResponseEntity.status(201).body(addedFood);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@RequestBody FoodUpdateDTO food, @PathVariable UUID id) {
+    public ResponseEntity<?> update(@Valid  @RequestBody FoodUpdateDTO food, @PathVariable UUID id) {
         return ResponseEntity.status(201).body(foodService.edit(food, id));
     }
 

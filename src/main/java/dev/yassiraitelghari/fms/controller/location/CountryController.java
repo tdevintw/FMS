@@ -5,6 +5,7 @@ import dev.yassiraitelghari.fms.dto.request.country.CountryUpdateDTO;
 import dev.yassiraitelghari.fms.dto.response.country.CountryDTO;
 import dev.yassiraitelghari.fms.dto.response.country.CountryDetailDTO;
 import dev.yassiraitelghari.fms.service.location.CountryService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -36,13 +37,13 @@ public class CountryController {
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
     @PostMapping
-    public ResponseEntity<?> add(CountryCreateDTO Country) {
+    public ResponseEntity<?> add(@Valid @RequestBody CountryCreateDTO Country) {
         return ResponseEntity.status(201).body(countryService.add(Country));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@RequestBody CountryUpdateDTO country, @PathVariable UUID id) {
+    public ResponseEntity<?> update(@Valid @RequestBody CountryUpdateDTO country, @PathVariable UUID id) {
         return ResponseEntity.status(201).body(countryService.edit(id, country));
     }
 

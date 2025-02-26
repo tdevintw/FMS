@@ -6,6 +6,7 @@ import dev.yassiraitelghari.fms.dto.request.payment.PaymentUpdateDTO;
 import dev.yassiraitelghari.fms.dto.response.payment.PaymentDTO;
 import dev.yassiraitelghari.fms.dto.response.payment.PaymentDetailDTO;
 import dev.yassiraitelghari.fms.service.supply.PaymentService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -36,13 +37,13 @@ public class PaymentController {
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER')")
     @PostMapping
-    public ResponseEntity<?> add(@RequestBody  PaymentCreateDTO payment) {
+    public ResponseEntity<?> add(@Valid  @RequestBody  PaymentCreateDTO payment) {
         return ResponseEntity.status(201).body(paymentService.add(payment));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@RequestBody PaymentUpdateDTO payment, @PathVariable UUID id) {
+    public ResponseEntity<?> update(@Valid @RequestBody PaymentUpdateDTO payment, @PathVariable UUID id) {
         return ResponseEntity.status(201).body(paymentService.edit(id , payment));
     }
 

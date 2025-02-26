@@ -1,6 +1,7 @@
 package dev.yassiraitelghari.fms.dto.request.category;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import lombok.Setter;
 public class CategoryCreateDTO {
 
     @NotBlank(message = "Category is required.")
+    @NotNull(message = "Category is required.")
     @Size(min = 3, message = "Category must be at least 3 characters long.")
     protected String category;
 }

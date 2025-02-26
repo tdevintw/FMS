@@ -10,6 +10,7 @@ import dev.yassiraitelghari.fms.dto.response.buildingInventory.BuildingInventory
 import dev.yassiraitelghari.fms.dto.response.buildingInventory.BuildingInventoryDetailDTO;
 import dev.yassiraitelghari.fms.service.building.BuildingInventoryService;
 import dev.yassiraitelghari.fms.service.building.BuildingService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +41,7 @@ public class BuildingInventoryController {
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
     @PostMapping
-    public ResponseEntity<?> add(@RequestBody BuildingInventoryCreateDTO buildingInventory) {
+    public ResponseEntity<?> add(@Valid  @RequestBody BuildingInventoryCreateDTO buildingInventory) {
         BuildingInventoryDTO newBuildingInventory = buildingInventoryService.add(buildingInventory);
         return ResponseEntity.status(201).body(newBuildingInventory);
     }
@@ -54,7 +55,7 @@ public class BuildingInventoryController {
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> edit(@PathVariable UUID id, BuildingInventoryUpdateDTO buildingInventory) {
+    public ResponseEntity<?> edit(@PathVariable UUID id,@Valid @RequestBody BuildingInventoryUpdateDTO buildingInventory) {
         BuildingInventoryDetailDTO updatedBuildingInventory =  buildingInventoryService.edit(id , buildingInventory);
         return  ResponseEntity.status(200).body(updatedBuildingInventory);
     }

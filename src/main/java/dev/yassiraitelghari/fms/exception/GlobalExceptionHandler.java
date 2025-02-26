@@ -25,26 +25,32 @@ public class GlobalExceptionHandler {
 
 
     @ExceptionHandler(SupplierInventoryUUIDNotFoundException.class)
-    public ResponseEntity<?> handleFoodNotFound(SupplierInventoryUUIDNotFoundException ex) {
+    public ResponseEntity<?> handleSupplierInventoryNotFound(SupplierInventoryUUIDNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+
+    }
+
+    @ExceptionHandler(CityUUIDNotFound.class)
+    public ResponseEntity<?> handleCityUUIDNotFound(CityUUIDNotFound ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
 
     }
 
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<?> handleFoodNotFound(UserNotFoundException ex) {
+    public ResponseEntity<?> handleUserNotFound(UserNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
 
     }
 
-    @ExceptionHandler(UserNameAlreadyExistsException.class)
-    public ResponseEntity<?> handleFoodNotFound(UserNameAlreadyExistsException ex) {
+    @ExceptionHandler(UsernameAlreadyExistsException.class)
+    public ResponseEntity<?> handleUsernameAlreadyExists(UsernameAlreadyExistsException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
 
     }
 
     @ExceptionHandler(RoleNotFoundException.class)
-    public ResponseEntity<?> handleFoodNotFound(RoleNotFoundException ex) {
+    public ResponseEntity<?> handleRoleNotFound(RoleNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
 
     }
@@ -63,19 +69,19 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(CategoryUUIDNotFound.class)
-    public ResponseEntity<?> handleCategoryNotFound(CategoryUUIDNotFound ex) {
+    public ResponseEntity<?> handleCategoryUUIDNotFound(CategoryUUIDNotFound ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
 
     }
 
     @ExceptionHandler(UserUUIDNotFound.class)
-    public ResponseEntity<?> handleCategoryNotFound(UserUUIDNotFound ex) {
+    public ResponseEntity<?> handleUserUUIDNotFound(UserUUIDNotFound ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
 
     }
 
     @ExceptionHandler(BuildingUUIDNotFound.class)
-    public ResponseEntity<?> handleCategoryNotFound(BuildingUUIDNotFound ex) {
+    public ResponseEntity<?> handleBuildingUUIDNotFound(BuildingUUIDNotFound ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
 
     }
@@ -92,7 +98,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(InvalidCredentialsException.class)
-    public ResponseEntity<?> handleCategoryNotFound(InvalidCredentialsException ex) {
+    public ResponseEntity<?> handleInvalidException(InvalidCredentialsException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
 
     }

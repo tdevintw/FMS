@@ -10,6 +10,7 @@ import dev.yassiraitelghari.fms.dto.response.building.BuildingDetailDTO;
 import dev.yassiraitelghari.fms.dto.response.category.CategoryDTO;
 import dev.yassiraitelghari.fms.dto.response.category.CategoryDetailDTO;
 import dev.yassiraitelghari.fms.service.building.BuildingService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +42,7 @@ public class BuildingController {
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
     @PostMapping
-    public  ResponseEntity<?> add(@RequestBody BuildingCreateDTO building) {
+    public  ResponseEntity<?> add( @Valid @RequestBody BuildingCreateDTO building) {
         BuildingDTO newBuilding = buildingService.add(building);
         return ResponseEntity.status(201).body(newBuilding);
     }
@@ -55,7 +56,7 @@ public class BuildingController {
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> edit(@PathVariable UUID id, BuildingUpdateDTO building) {
+    public ResponseEntity<?> edit(@PathVariable UUID id, @Valid BuildingUpdateDTO building) {
         BuildingDetailDTO updatedBuilding =  buildingService.edit(id , building);
         return  ResponseEntity.status(200).body(updatedBuilding);
     }

@@ -47,20 +47,20 @@ public class FoodService {
         newFood.setCategory(category);
         category.setFood(newFood);
         categoryService.edit(category);
-        return foodMapper.foodToFoodDTO(newFood);
+        return foodMapper.foodToFoodDTO(foodRepository.save(newFood));
     }
 
     public FoodDTO edit(FoodUpdateDTO food, UUID id) {
-        Category category = categoryService.getById(id);
+        Category category = categoryService.getById(food.getCategoryId());
         Food updatedFood = foodRepository.findById(id).orElseThrow(() -> new FoodUUIDNotFound("Food UUID not found"));
         updatedFood.setFood(food.getFood());
         updatedFood.setCategory(category);
-        foodRepository.save(updatedFood);
+        updatedFood = foodRepository.save(updatedFood);
         return foodMapper.foodToFoodDTO(updatedFood);
     }
 
     public void delete(UUID id) {
-        Food food = foodRepository.findById(id).orElseThrow(() -> new FoodUUIDNotFound("Food UUID not found"));
+        foodRepository.findById(id).orElseThrow(() -> new FoodUUIDNotFound("Food UUID not found"));
         foodRepository.deleteById(id);
     }
 

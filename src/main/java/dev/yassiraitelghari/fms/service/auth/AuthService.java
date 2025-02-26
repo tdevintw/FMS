@@ -5,7 +5,7 @@ import dev.yassiraitelghari.fms.domain.user.User;
 import dev.yassiraitelghari.fms.dto.request.register.UserDTO;
 import dev.yassiraitelghari.fms.dto.response.TokenVM;
 import dev.yassiraitelghari.fms.exception.InvalidCredentialsException;
-import dev.yassiraitelghari.fms.exception.UserNameAlreadyExistsException;
+import dev.yassiraitelghari.fms.exception.UsernameAlreadyExistsException;
 import dev.yassiraitelghari.fms.exception.UserNotFoundException;
 import dev.yassiraitelghari.fms.exception.UsernameOrPasswordInvalidException;
 import dev.yassiraitelghari.fms.mapper.UserMapper;
@@ -45,12 +45,12 @@ public class AuthService {
 
         userService.findByUsername(user.getUsername())
                 .ifPresent(existingUser -> {
-                    throw new UserNameAlreadyExistsException("Username already exists");
+                    throw new UsernameAlreadyExistsException("Username already exists");
                 });
 
         userService.findByEmail(user.getEmail())
                 .ifPresent(existingUser -> {
-                    throw new UserNameAlreadyExistsException("Email already exists");
+                    throw new UsernameAlreadyExistsException("Email already exists");
                 });
 
         User newUser = userMapper.registredUserDTOToUser(user);

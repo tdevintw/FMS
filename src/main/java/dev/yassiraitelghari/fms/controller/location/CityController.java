@@ -9,6 +9,7 @@ import dev.yassiraitelghari.fms.dto.response.city.CityDetailDTO;
 import dev.yassiraitelghari.fms.dto.response.food.FoodDTO;
 import dev.yassiraitelghari.fms.service.food.FoodService;
 import dev.yassiraitelghari.fms.service.location.CityService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -40,13 +41,13 @@ public class CityController {
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
     @PostMapping
-    public ResponseEntity<?> add(CityCreateDTO city) {
+    public ResponseEntity<?> add(@Valid @RequestBody CityCreateDTO city) {
         return ResponseEntity.status(201).body(cityService.add(city));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@RequestBody CityUpdateDTO city, @PathVariable UUID id) {
+    public ResponseEntity<?> update(@Valid @RequestBody CityUpdateDTO city, @PathVariable UUID id) {
         return ResponseEntity.status(201).body(cityService.edit(id , city));
     }
 

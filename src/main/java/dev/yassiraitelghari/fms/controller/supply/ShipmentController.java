@@ -6,6 +6,7 @@ import dev.yassiraitelghari.fms.dto.request.shipment.ShipmentUpdateDTO;
 import dev.yassiraitelghari.fms.dto.response.shipment.ShipmentDTO;
 import dev.yassiraitelghari.fms.dto.response.shipment.ShipmentDetailDTO;
 import dev.yassiraitelghari.fms.service.supply.ShipmentService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -38,13 +39,13 @@ public class ShipmentController {
 
     @PreAuthorize("hasAnyRole('ADMIN','SHIPPER')")
     @PostMapping
-    public ResponseEntity<?> add(@RequestBody ShipmentCreateDTO shipment) {
+    public ResponseEntity<?> add(@Valid  @RequestBody ShipmentCreateDTO shipment) {
         return ResponseEntity.status(201).body(shipmentService.add(shipment));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','SHIPPER')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@RequestBody ShipmentUpdateDTO shipment, @PathVariable UUID id) {
+    public ResponseEntity<?> update(@Valid @RequestBody ShipmentUpdateDTO shipment, @PathVariable UUID id) {
         return ResponseEntity.status(201).body(shipmentService.edit(id, shipment));
     }
 

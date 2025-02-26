@@ -5,6 +5,7 @@ import dev.yassiraitelghari.fms.dto.request.category.CategoryUpdateDTO;
 import dev.yassiraitelghari.fms.dto.response.category.CategoryDTO;
 import dev.yassiraitelghari.fms.dto.response.category.CategoryDetailDTO;
 import dev.yassiraitelghari.fms.service.food.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -37,7 +38,7 @@ public class CategoryController {
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
     @PostMapping
-    public ResponseEntity<?> add(@RequestBody CategoryCreateDTO category) {
+    public ResponseEntity<?> add(@Valid @RequestBody CategoryCreateDTO category) {
         CategoryDTO newCategory = categoryService.add(category);
         return ResponseEntity.status(201).body(newCategory);
     }
@@ -51,7 +52,7 @@ public class CategoryController {
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> edit(@PathVariable UUID id,@RequestBody CategoryUpdateDTO category) {
+    public ResponseEntity<?> edit(@PathVariable UUID id,@Valid  @RequestBody CategoryUpdateDTO category) {
        CategoryDetailDTO updatedCategory =  categoryService.edit(id , category);
        return  ResponseEntity.status(200).body(updatedCategory);
     }
