@@ -39,19 +39,19 @@ public class CityController {
         return ResponseEntity.status(200).body(cities);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> add(@Valid @RequestBody CityCreateDTO city) {
         return ResponseEntity.status(201).body(cityService.add(city));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@Valid @RequestBody CityUpdateDTO city, @PathVariable UUID id) {
         return ResponseEntity.status(201).body(cityService.edit(id , city));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable UUID id){
         cityService.delete(id);

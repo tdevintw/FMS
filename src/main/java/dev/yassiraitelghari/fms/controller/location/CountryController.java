@@ -35,19 +35,19 @@ public class CountryController {
         return ResponseEntity.status(200).body(countries);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> add(@Valid @RequestBody CountryCreateDTO Country) {
         return ResponseEntity.status(201).body(countryService.add(Country));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@Valid @RequestBody CountryUpdateDTO country, @PathVariable UUID id) {
         return ResponseEntity.status(201).body(countryService.edit(id, country));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable UUID id){
         countryService.delete(id);

@@ -39,21 +39,21 @@ public class BuildingInventoryController {
         return ResponseEntity.status(200).body(buildingInventory);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @PostMapping
     public ResponseEntity<?> add(@Valid  @RequestBody BuildingInventoryCreateDTO buildingInventory) {
         BuildingInventoryDTO newBuildingInventory = buildingInventoryService.add(buildingInventory);
         return ResponseEntity.status(201).body(newBuildingInventory);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable UUID id) {
         buildingInventoryService.delete(id);
         return ResponseEntity.status(200).body("BuildingInventory is deleted");
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @PutMapping("/{id}")
     public ResponseEntity<?> edit(@PathVariable UUID id,@Valid @RequestBody BuildingInventoryUpdateDTO buildingInventory) {
         BuildingInventoryDetailDTO updatedBuildingInventory =  buildingInventoryService.edit(id , buildingInventory);
