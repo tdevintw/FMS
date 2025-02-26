@@ -1,6 +1,7 @@
 package dev.yassiraitelghari.fms.domain.building;
 
 import dev.yassiraitelghari.fms.domain.enums.BuildingType;
+import dev.yassiraitelghari.fms.domain.location.City;
 import dev.yassiraitelghari.fms.domain.supply.Order;
 import dev.yassiraitelghari.fms.domain.user.Manager;
 import jakarta.persistence.*;
@@ -26,11 +27,13 @@ public class Building {
 
     private UUID id ;
     private String name ;
-    private String location;
     private LocalDateTime creationDate ;
     private LocalDateTime updateDate ;
     @Enumerated(EnumType.STRING)
     private BuildingType buildingType;
+    @ManyToOne
+    @JoinColumn(name = "city_id" , nullable = false)
+    private City city ;
     @ManyToOne
     @JoinColumn(name = "manager_id", nullable = false)
     private Manager manager ;

@@ -2,6 +2,8 @@ package dev.yassiraitelghari.fms.service.building;
 
 import dev.yassiraitelghari.fms.domain.building.Building;
 import dev.yassiraitelghari.fms.domain.enums.Role;
+import dev.yassiraitelghari.fms.domain.food.Food;
+import dev.yassiraitelghari.fms.domain.location.City;
 import dev.yassiraitelghari.fms.domain.user.Manager;
 import dev.yassiraitelghari.fms.domain.user.User;
 import dev.yassiraitelghari.fms.dto.request.building.BuildingCreateDTO;
@@ -12,6 +14,8 @@ import dev.yassiraitelghari.fms.exception.BuildingUUIDNotFound;
 import dev.yassiraitelghari.fms.exception.BuildingAccessDeniedException;
 import dev.yassiraitelghari.fms.mapper.BuildingMapper;
 import dev.yassiraitelghari.fms.repository.BuildingRepository;
+import dev.yassiraitelghari.fms.service.food.FoodService;
+import dev.yassiraitelghari.fms.service.location.CityService;
 import dev.yassiraitelghari.fms.service.user.ManagerService;
 import dev.yassiraitelghari.fms.service.user.UserService;
 import org.springframework.security.core.Authentication;
@@ -28,12 +32,14 @@ public class BuildingService {
     private final BuildingMapper buildingMapper;
     private final UserService userService;
     private final ManagerService managerService;
+private final CityService cityService;
 
-    public BuildingService(BuildingRepository buildingRepository, BuildingMapper buildingMapper, UserService userService, ManagerService managerService) {
+    public BuildingService(BuildingRepository buildingRepository, BuildingMapper buildingMapper, UserService userService, ManagerService managerService, FoodService foodService, CityService cityService) {
         this.buildingRepository = buildingRepository;
         this.buildingMapper = buildingMapper;
         this.userService = userService;
         this.managerService = managerService;
+        this.cityService = cityService;
     }
 
 
@@ -53,6 +59,7 @@ public class BuildingService {
 
     public BuildingDTO add(BuildingCreateDTO building) {
         Manager user = managerService.findById(building.getManagerId());
+        City city = cityService.getById(building.getCityId());
         Building newBuilding = buildingMapper.buildingCreateDTOToBuilding(building);
         newBuilding.setManager(user);
         return buildingMapper.buildingToBuildingDTO(buildingRepository.save(newBuilding));

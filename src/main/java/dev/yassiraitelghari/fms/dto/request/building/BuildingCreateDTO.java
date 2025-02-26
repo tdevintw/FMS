@@ -2,6 +2,7 @@ package dev.yassiraitelghari.fms.dto.request.building;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,11 +20,13 @@ public class BuildingCreateDTO {
     private String name;
 
     @NotBlank(message = "Location is required.")
-    private String location;
+    private UUID cityId;
 
-    @NotBlank(message = "Building type is required.")
+    @Pattern(regexp = "HOTEL|MOTEL|RESTAURANT", message = "Role must be HOTEL, MOTEL or RESTAURANT")
     private String buildingType;
 
     @NotNull(message = "Manager ID is required.")
     private UUID managerId;
+
+
 }

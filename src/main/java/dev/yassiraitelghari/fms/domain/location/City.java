@@ -1,5 +1,6 @@
 package dev.yassiraitelghari.fms.domain.location;
 
+import dev.yassiraitelghari.fms.domain.building.Building;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,4 +25,6 @@ public class City {
     private Country country;
     @OneToMany(mappedBy = "city" )
     private List<AvailableLocation> availableLocations ;
+    @OneToMany(mappedBy = "city")
+    private List<Building> buildings ;
 }

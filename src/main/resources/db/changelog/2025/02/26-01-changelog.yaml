@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1740590074922-1
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: city_id
+                  type: UUID
+            tableName: buildings
+  - changeSet:
+      id: 1740590074922-2
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addNotNullConstraint:
+            columnName: city_id
+            tableName: buildings
+  - changeSet:
+      id: 1740590074922-3
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: city_id
+            baseTableName: buildings
+            constraintName: FK_BUILDINGS_ON_CITY
+            referencedColumnNames: id
+            referencedTableName: cities
+  - changeSet:
+      id: 1740590074922-4
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropColumn:
+            columnName: location
+            tableName: buildings
+  - changeSet:
+      id: 1740590074922-5
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropColumn:
+            columnName: updated_at
+            tableName: users
+
