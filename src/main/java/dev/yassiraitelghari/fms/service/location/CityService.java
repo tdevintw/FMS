@@ -11,12 +11,15 @@ import dev.yassiraitelghari.fms.dto.response.category.CategoryDTO;
 import dev.yassiraitelghari.fms.dto.response.category.CategoryDetailDTO;
 import dev.yassiraitelghari.fms.dto.response.city.CityDTO;
 import dev.yassiraitelghari.fms.dto.response.city.CityDetailDTO;
+import dev.yassiraitelghari.fms.dto.response.country.CountryDTO;
 import dev.yassiraitelghari.fms.exception.CategoryUUIDNotFound;
 import dev.yassiraitelghari.fms.exception.CityUUIDNotFound;
 import dev.yassiraitelghari.fms.mapper.CityMapper;
+import dev.yassiraitelghari.fms.mapper.CountryMapper;
 import dev.yassiraitelghari.fms.repository.CityRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -26,22 +29,34 @@ public class CityService {
     private final CityRepository cityRepository;
     private final CityMapper cityMapper;
     private final CountryService countryService;
+    private final CountryMapper countryMapper;
 
-    public CityService(CityRepository cityRepository, CityMapper cityMapper, CountryService countryService) {
+    public CityService(CityRepository cityRepository, CityMapper cityMapper, CountryService countryService, CountryMapper countryMapper) {
         this.cityRepository = cityRepository;
         this.cityMapper = cityMapper;
         this.countryService = countryService;
+        this.countryMapper = countryMapper;
     }
 
 
-    public List<CityDetailDTO> getAll(){
+    public List<CityDetailDTO> getAll() {
         List<City> cities = cityRepository.findAll();
-        return cities.stream().map(cityMapper::cityToCityDetailDTO).collect(Collectors.toList());
+        List<CityDetailDTO> citiesDTO = new ArrayList<>();
+        cities.forEach(city -> {
+            CountryDTO country = countryMapper.countryToCountryDTO(city.getCountry());
+            CityDetailDTO cityDTO = cityMapper.cityToCityDetailDTO(city);
+            cityDTO.setCountryDTO(country);
+            citiesDTO.add(cityDTO);
+        });
+        return citiesDTO;
     }
 
     public CityDetailDTO findById(UUID id) {
         City city = this.getById(id);
-        return cityMapper.cityToCityDetailDTO(city);
+        CountryDTO country = countryMapper.countryToCountryDTO(city.getCountry());
+        CityDetailDTO cityDTO = cityMapper.cityToCityDetailDTO(city);
+        cityDTO.setCountryDTO(country);
+        return cityDTO;
     }
 
     public City getById(UUID id) {
@@ -60,10 +75,13 @@ public class CityService {
     public CityDetailDTO edit(UUID id, CityUpdateDTO city) {
         Country country = countryService.getById(city.getCountryId());
         City updatedCity = this.getById(id);
+        CountryDTO countryDTO = countryMapper.countryToCountryDTO(country);
         updatedCity.setCity(city.getCity());
         updatedCity.setCountry(country);
         cityRepository.save(updatedCity);
-        return cityMapper.cityToCityDetailDTO(updatedCity);
+        CityDetailDTO cityDetailDTO =  cityMapper.cityToCityDetailDTO(updatedCity);
+        cityDetailDTO.setCountryDTO(countryDTO);
+        return cityDetailDTO ;
     }
 
 

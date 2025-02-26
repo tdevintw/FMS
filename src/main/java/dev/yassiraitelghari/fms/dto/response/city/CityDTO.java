@@ -15,5 +15,4 @@ import java.util.UUID;
 public class CityDTO {
     protected UUID id;
     protected String city;
-    protected CountryDTO countryDTO;
 }

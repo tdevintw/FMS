@@ -1,5 +1,6 @@
 package dev.yassiraitelghari.fms.dto.response.city;
 
+import dev.yassiraitelghari.fms.dto.response.country.CountryDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,4 +10,5 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class CityDetailDTO extends CityDTO{
+    protected CountryDTO countryDTO;
 }
