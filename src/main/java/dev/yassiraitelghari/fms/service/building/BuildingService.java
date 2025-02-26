@@ -1,6 +1,7 @@
 package dev.yassiraitelghari.fms.service.building;
 
 import dev.yassiraitelghari.fms.domain.building.Building;
+import dev.yassiraitelghari.fms.domain.enums.Role;
 import dev.yassiraitelghari.fms.domain.user.Manager;
 import dev.yassiraitelghari.fms.domain.user.User;
 import dev.yassiraitelghari.fms.dto.request.building.BuildingCreateDTO;
@@ -8,10 +9,13 @@ import dev.yassiraitelghari.fms.dto.request.building.BuildingUpdateDTO;
 import dev.yassiraitelghari.fms.dto.response.building.BuildingDTO;
 import dev.yassiraitelghari.fms.dto.response.building.BuildingDetailDTO;
 import dev.yassiraitelghari.fms.exception.BuildingUUIDNotFound;
+import dev.yassiraitelghari.fms.exception.BuildingAccessDeniedException;
 import dev.yassiraitelghari.fms.mapper.BuildingMapper;
 import dev.yassiraitelghari.fms.repository.BuildingRepository;
 import dev.yassiraitelghari.fms.service.user.ManagerService;
 import dev.yassiraitelghari.fms.service.user.UserService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -56,6 +60,12 @@ public class BuildingService {
 
     public BuildingDetailDTO edit(UUID id, BuildingUpdateDTO building) {
         Building updatedBuilding = this.getById(id);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        if (user.getRole().equals(Role.MANAGER) && !user.getId().equals(updatedBuilding.getManager().getId())) {
+            throw new BuildingAccessDeniedException("Access Denied To Edit This Building");
+        }
+
         return buildingMapper.buildingToBuildingDetailDTO(edit(buildingMapper.buildingUpdateDTOToBuilding(building)));
     }
 
@@ -66,6 +76,11 @@ public class BuildingService {
 
     public void delete(UUID id) {
         Building building = this.getById(id);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        if (user.getRole().equals(Role.MANAGER) && !user.getId().equals(building.getManager().getId())) {
+            throw new BuildingAccessDeniedException("Access Denied To Delete This Building");
+        }
         buildingRepository.deleteById(building.getId());
     }
 }

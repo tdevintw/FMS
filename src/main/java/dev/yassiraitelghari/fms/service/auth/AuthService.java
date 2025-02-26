@@ -4,13 +4,12 @@ import dev.yassiraitelghari.fms.domain.enums.Role;
 import dev.yassiraitelghari.fms.domain.user.User;
 import dev.yassiraitelghari.fms.dto.request.register.UserDTO;
 import dev.yassiraitelghari.fms.dto.response.TokenVM;
-import dev.yassiraitelghari.fms.exception.InvalidCredentialsException;
-import dev.yassiraitelghari.fms.exception.UsernameAlreadyExistsException;
-import dev.yassiraitelghari.fms.exception.UserNotFoundException;
-import dev.yassiraitelghari.fms.exception.UsernameOrPasswordInvalidException;
+import dev.yassiraitelghari.fms.exception.*;
 import dev.yassiraitelghari.fms.mapper.UserMapper;
 import dev.yassiraitelghari.fms.repository.UserRepository;
 import dev.yassiraitelghari.fms.service.user.ManagerService;
+import dev.yassiraitelghari.fms.service.user.ShipperService;
+import dev.yassiraitelghari.fms.service.user.SupplierService;
 import dev.yassiraitelghari.fms.service.user.UserService;
 import dev.yassiraitelghari.fms.service.email.EmailService;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -33,14 +32,20 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
     private final ManagerService managerService;
+    private final ShipperService shipperService;
+    private final SupplierService supplierService;
 
-    public AuthService(UserRepository userRepository, JwtService jwtService, UserMapper userMapper, UserService userService, PasswordEncoder passwordEncoder, EmailService emailService) {
+
+    public AuthService(UserRepository userRepository, JwtService jwtService, UserMapper userMapper, UserService userService, PasswordEncoder passwordEncoder, EmailService emailService, ManagerService managerService, ShipperService shipperService, SupplierService supplierService) {
         this.userRepository = userRepository;
         this.jwtService = jwtService;
         this.userMapper = userMapper;
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
+        this.managerService = managerService;
+        this.shipperService = shipperService;
+        this.supplierService = supplierService;
     }
 
     public TokenVM register(@Valid UserDTO user, String clientOrigin) {
@@ -58,13 +63,14 @@ public class AuthService {
         User newUser = userMapper.registredUserDTOToUser(user);
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         newUser.setCreatedAt(LocalDateTime.now());
-        newUser.setUpdatedAt(LocalDateTime.now());
+        newUser.setUpdateDate(LocalDateTime.now());
         newUser.setRole(Role.valueOf(user.getRole()));
         newUser.setVerificationToken(generateVerificationToken());
-        User savedUser = userRepository.save(newUser);
 
-        String authToken = jwtService.generateToken(savedUser.getUsername());
-        String refreshToken = jwtService.generateRefreshToken(savedUser.getUsername());
+        registerUserWithRole(newUser, Role.valueOf(user.getRole()));
+
+        String authToken = jwtService.generateToken(newUser.getUsername());
+        String refreshToken = jwtService.generateRefreshToken(newUser.getUsername());
         emailService.sendVerificationEmail(newUser.getEmail(), newUser.getVerificationToken(), clientOrigin);
         return TokenVM.builder().token(authToken).refreshToken(refreshToken).build();
     }
@@ -167,11 +173,19 @@ public class AuthService {
         return input != null && input.matches("^[A-Za-z0-9+_.-]+@(.+)$");
     }
 
-    private void registerUserWithRole(User user , Role role){
-        switch (role){
-            case MANAGER  :
-            case SHIPPER  :
-            case SUPPLIER :
+    private void registerUserWithRole(User user, Role role) {
+        switch (role) {
+            case MANAGER:
+                managerService.add(user);
+                break;
+            case SHIPPER:
+                shipperService.add(user);
+                break;
+            case SUPPLIER:
+                supplierService.add(user);
+                break;
+            default:
+                throw new RoleNotFoundException("Role Not Found");
         }
     }
 }

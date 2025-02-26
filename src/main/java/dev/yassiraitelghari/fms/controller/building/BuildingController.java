@@ -28,19 +28,21 @@ public class BuildingController {
         this.buildingService = buildingService;
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
     @GetMapping
     public ResponseEntity<?> getAll() {
         List<BuildingDetailDTO> buildings = buildingService.getAll();
         return ResponseEntity.status(200).body(buildings);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable UUID id) {
         BuildingDetailDTO building = buildingService.findById(id);
         return ResponseEntity.status(200).body(building);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @PostMapping
     public  ResponseEntity<?> add( @Valid @RequestBody BuildingCreateDTO building) {
         BuildingDTO newBuilding = buildingService.add(building);
@@ -54,7 +56,7 @@ public class BuildingController {
         return ResponseEntity.status(200).body("Building is deleted");
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @PutMapping("/{id}")
     public ResponseEntity<?> edit(@PathVariable UUID id, @Valid BuildingUpdateDTO building) {
         BuildingDetailDTO updatedBuilding =  buildingService.edit(id , building);

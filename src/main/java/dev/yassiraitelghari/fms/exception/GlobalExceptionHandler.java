@@ -110,4 +110,10 @@ public class GlobalExceptionHandler {
     }
 
 
+    @ExceptionHandler(BuildingAccessDeniedException.class)
+    public ResponseEntity<?> handleAccessDeniedToUpdateBuilding(BuildingAccessDeniedException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+
+    }
+
 }

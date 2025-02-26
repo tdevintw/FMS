@@ -26,6 +26,9 @@ public class User implements UserDetails {
     protected String verificationToken;
     protected String passwordResetToken;
     protected LocalDateTime passwordResetTokenExpiry;
+
+
+
     protected LocalDateTime creationDate ;
     protected LocalDateTime updateDate ;
     protected boolean isVerified ;
@@ -34,7 +37,6 @@ public class User implements UserDetails {
 
     protected LocalDateTime createdAt;
 
-    protected LocalDateTime updatedAt;
 
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
