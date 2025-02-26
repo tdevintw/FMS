@@ -2,6 +2,7 @@ package dev.yassiraitelghari.fms.service.location;
 
 import dev.yassiraitelghari.fms.domain.food.Category;
 import dev.yassiraitelghari.fms.domain.location.City;
+import dev.yassiraitelghari.fms.domain.location.Country;
 import dev.yassiraitelghari.fms.dto.request.category.CategoryCreateDTO;
 import dev.yassiraitelghari.fms.dto.request.category.CategoryUpdateDTO;
 import dev.yassiraitelghari.fms.dto.request.city.CityCreateDTO;
@@ -24,11 +25,12 @@ import java.util.stream.Collectors;
 public class CityService {
     private final CityRepository cityRepository;
     private final CityMapper cityMapper;
+    private final CountryService countryService;
 
-
-    public CityService(CityRepository cityRepository, CityMapper cityMapper) {
+    public CityService(CityRepository cityRepository, CityMapper cityMapper, CountryService countryService) {
         this.cityRepository = cityRepository;
         this.cityMapper = cityMapper;
+        this.countryService = countryService;
     }
 
 
@@ -47,15 +49,19 @@ public class CityService {
     }
 
     public CityDTO add(CityCreateDTO city) {
+        Country country = countryService.getById(city.getCountryId());
         City newCity = new City();
         newCity.setCity(city.getCity());
+        newCity.setCountry(country);
         City savedCity = cityRepository.save(newCity);
         return cityMapper.cityToCityDTO(savedCity);
     }
 
     public CityDetailDTO edit(UUID id, CityUpdateDTO city) {
+        Country country = countryService.getById(city.getCountryId());
         City updatedCity = this.getById(id);
         updatedCity.setCity(city.getCity());
+        updatedCity.setCountry(country);
         cityRepository.save(updatedCity);
         return cityMapper.cityToCityDetailDTO(updatedCity);
     }
