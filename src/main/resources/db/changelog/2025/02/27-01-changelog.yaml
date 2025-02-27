@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1740658284647-1
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: payments
+            constraintName: fk_payments_on_order
+  - changeSet:
+      id: 1740658284647-3
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropTable:
+            cascadeConstraints: true
+            tableName: payments
+

@@ -30,10 +30,7 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "building_id")
     private Building building;
-    @OneToOne(mappedBy = "order")
-    private Payment payment;
-    @Enumerated
-    private OrderStatus orderStatus;
+    @Enumerated    private OrderStatus orderStatus;
     @OneToOne(mappedBy = "order")
     private Shipment shipment;
 }
