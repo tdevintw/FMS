@@ -29,13 +29,13 @@ public class BuildingInventoryController {
 
     @GetMapping
     public ResponseEntity<?> getAll() {
-        List<BuildingInventoryDetailDTO> buildings = buildingInventoryService.getAll();
+        List<BuildingInventoryDTO> buildings = buildingInventoryService.getAll();
         return ResponseEntity.status(200).body(buildings);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable UUID id) {
-        BuildingInventoryDetailDTO buildingInventory = buildingInventoryService.findById(id);
+        BuildingInventoryDTO buildingInventory = buildingInventoryService.findById(id);
         return ResponseEntity.status(200).body(buildingInventory);
     }
 

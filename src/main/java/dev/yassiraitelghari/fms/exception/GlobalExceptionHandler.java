@@ -61,6 +61,12 @@ public class GlobalExceptionHandler {
 
     }
 
+    @ExceptionHandler(BuildingInventoryUUIDNotFound.class)
+    public ResponseEntity<?> handleBuildingInventoryNotFound(BuildingInventoryUUIDNotFound ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+
+    }
+
 
     @ExceptionHandler(FoodUUIDNotFound.class)
     public ResponseEntity<?> handleFoodNotFound(FoodUUIDNotFound ex) {
