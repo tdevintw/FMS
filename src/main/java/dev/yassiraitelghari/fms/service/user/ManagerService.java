@@ -1,7 +1,9 @@
 package dev.yassiraitelghari.fms.service.user;
 
+import dev.yassiraitelghari.fms.domain.enums.Role;
 import dev.yassiraitelghari.fms.domain.user.Manager;
 import dev.yassiraitelghari.fms.domain.user.User;
+import dev.yassiraitelghari.fms.exception.BuildingManagerIdException;
 import dev.yassiraitelghari.fms.exception.UserUUIDNotFound;
 import dev.yassiraitelghari.fms.repository.ManagerRepository;
 import org.springframework.stereotype.Service;
@@ -19,7 +21,7 @@ public class ManagerService {
     }
 
     public Manager findById(UUID id){
-        return managerRepository.findById(id).orElseThrow(()->new UserUUIDNotFound("User UUID Not Found"));
+        return managerRepository.findById(id).orElseThrow(()->new UserUUIDNotFound("Manager UUID Not Found , UUID is not a manager id or it doesn't exist !"));
     }
 
     @Transactional

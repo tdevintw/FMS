@@ -112,8 +112,19 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BuildingAccessDeniedException.class)
     public ResponseEntity<?> handleAccessDeniedToUpdateBuilding(BuildingAccessDeniedException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+
+    }
+
+    @ExceptionHandler(BuildingManagerIdException.class)
+    public ResponseEntity<?> handleBuildingManagerIdNotValid(BuildingManagerIdException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
 
+    }
+
+    @ExceptionHandler(NotAuthorizedToAssignBuildingToManagerException.class)
+    public ResponseEntity<?> handleNotAuthorizedToAssignBuilding(NotAuthorizedToAssignBuildingToManagerException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
 }

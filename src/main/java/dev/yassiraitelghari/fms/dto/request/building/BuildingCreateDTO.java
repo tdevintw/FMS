@@ -1,8 +1,6 @@
 package dev.yassiraitelghari.fms.dto.request.building;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,10 +14,10 @@ import java.util.UUID;
 @AllArgsConstructor
 public class BuildingCreateDTO {
 
+    @Size(min = 3 , message = "Building Name should be at least 3 characters" )
     @NotBlank(message = "Building name is required.")
     private String name;
-
-    @NotBlank(message = "Location is required.")
+    @NotNull(message = "City is required")
     private UUID cityId;
 
     @Pattern(regexp = "HOTEL|MOTEL|RESTAURANT", message = "Role must be HOTEL, MOTEL or RESTAURANT")
