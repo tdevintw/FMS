@@ -58,7 +58,7 @@ public class BuildingController {
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> edit(@PathVariable UUID id, @Valid BuildingUpdateDTO building) {
+    public ResponseEntity<?> edit(@PathVariable UUID id, @Valid @RequestBody BuildingUpdateDTO building) {
         BuildingDetailDTO updatedBuilding =  buildingService.edit(id , building);
         return  ResponseEntity.status(200).body(updatedBuilding);
     }

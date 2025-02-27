@@ -60,7 +60,7 @@ public class BuildingService {
 
     public BuildingDTO add(BuildingCreateDTO building) {
         Manager user = managerService.findById(building.getManagerId());
-        isAuthorizedToAssignManageBuilding(user);
+        isAuthorizedToManageBuilding(user);
         City city = cityService.getById(building.getCityId());
         Building newBuilding = buildingMapper.buildingCreateDTOToBuilding(building);
         newBuilding.setManager(user);
@@ -70,13 +70,14 @@ public class BuildingService {
 
     public BuildingDetailDTO edit(UUID id, BuildingUpdateDTO building) {
         Building updatedBuilding = this.getById(id);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) authentication.getPrincipal();
-        if (user.getRole().equals(Role.MANAGER) && !user.getId().equals(updatedBuilding.getManager().getId())) {
-            throw new BuildingAccessDeniedException("Access Denied To Edit This Building");
+        Manager user = managerService.findById(updatedBuilding.getManager().getId());
+        isAuthorizedToManageBuilding(user);
+        updatedBuilding = buildingMapper.buildingUpdateDTOToBuilding(building, updatedBuilding);
+        if (building.getCityId() != null) {
+            City city = cityService.getById(building.getCityId());
+            updatedBuilding.setCity(city);
         }
-
-        return buildingMapper.buildingToBuildingDetailDTO(edit(buildingMapper.buildingUpdateDTOToBuilding(building)));
+        return buildingMapper.buildingToBuildingDetailDTO(edit(updatedBuilding));
     }
 
 
@@ -87,11 +88,11 @@ public class BuildingService {
     public void delete(UUID id) {
         Building building = this.getById(id);
         Manager user = managerService.findById(building.getManager().getId());
-        isAuthorizedToAssignManageBuilding(user);
+        isAuthorizedToManageBuilding(user);
         buildingRepository.deleteById(building.getId());
     }
 
-    public void isAuthorizedToAssignManageBuilding(Manager user) {
+    public void isAuthorizedToManageBuilding(Manager user) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         User authUser = userService.getByUsername(username);
