@@ -2,7 +2,7 @@ package dev.yassiraitelghari.fms.controller;
 
 
 import dev.yassiraitelghari.fms.dto.request.login.UserLoginDTO;
-import dev.yassiraitelghari.fms.dto.request.register.UserDTO;
+import dev.yassiraitelghari.fms.dto.request.register.UserRegisterDTO;
 import dev.yassiraitelghari.fms.dto.response.TokenVM;
 import dev.yassiraitelghari.fms.service.auth.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,7 +24,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<TokenVM> register(@RequestBody @Valid UserDTO user, HttpServletRequest request) {
+    public ResponseEntity<TokenVM> register(@RequestBody @Valid UserRegisterDTO user, HttpServletRequest request) {
 
         String clientOrigin = request.getHeader(HttpHeaders.ORIGIN);
         if (clientOrigin == null) {

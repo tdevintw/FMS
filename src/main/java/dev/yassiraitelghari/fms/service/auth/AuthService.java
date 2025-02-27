@@ -2,7 +2,7 @@ package dev.yassiraitelghari.fms.service.auth;
 
 import dev.yassiraitelghari.fms.domain.enums.Role;
 import dev.yassiraitelghari.fms.domain.user.User;
-import dev.yassiraitelghari.fms.dto.request.register.UserDTO;
+import dev.yassiraitelghari.fms.dto.request.register.UserRegisterDTO;
 import dev.yassiraitelghari.fms.dto.response.TokenVM;
 import dev.yassiraitelghari.fms.exception.*;
 import dev.yassiraitelghari.fms.mapper.UserMapper;
@@ -48,7 +48,7 @@ public class AuthService {
         this.supplierService = supplierService;
     }
 
-    public TokenVM register(@Valid UserDTO user, String clientOrigin) {
+    public TokenVM register(@Valid UserRegisterDTO user, String clientOrigin) {
 
         userService.findByUsername(user.getUsername())
                 .ifPresent(existingUser -> {
