@@ -56,7 +56,7 @@ public class BuildingInventoryController {
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @PutMapping("/{id}")
     public ResponseEntity<?> edit(@PathVariable UUID id,@Valid @RequestBody BuildingInventoryUpdateDTO buildingInventory) {
-        BuildingInventoryDetailDTO updatedBuildingInventory =  buildingInventoryService.edit(id , buildingInventory);
+        BuildingInventoryDTO updatedBuildingInventory =  buildingInventoryService.edit(id , buildingInventory);
         return  ResponseEntity.status(200).body(updatedBuildingInventory);
     }
 }
