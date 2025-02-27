@@ -60,7 +60,7 @@ public class BuildingService {
 
     public BuildingDTO add(BuildingCreateDTO building) {
         Manager user = managerService.findById(building.getManagerId());
-        isAuthorizedToAssignManager(user);
+        isAuthorizedToAssignManageBuilding(user);
         City city = cityService.getById(building.getCityId());
         Building newBuilding = buildingMapper.buildingCreateDTOToBuilding(building);
         newBuilding.setManager(user);
@@ -86,20 +86,17 @@ public class BuildingService {
 
     public void delete(UUID id) {
         Building building = this.getById(id);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) authentication.getPrincipal();
-        if (user.getRole().equals(Role.MANAGER) && !user.getId().equals(building.getManager().getId())) {
-            throw new BuildingAccessDeniedException("Access Denied To Delete This Building");
-        }
+        Manager user = managerService.findById(building.getManager().getId());
+        isAuthorizedToAssignManageBuilding(user);
         buildingRepository.deleteById(building.getId());
     }
 
-    public void isAuthorizedToAssignManager(Manager user) {
+    public void isAuthorizedToAssignManageBuilding(Manager user) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         User authUser = userService.getByUsername(username);
         if (!authUser.getRole().equals(Role.ADMIN) && !authUser.getId().equals(user.getId())) {
-            throw new NotAuthorizedToAssignBuildingToManagerException("You can't add a building for a manager");
+            throw new NotAuthorizedToAssignBuildingToManagerException("You manage this building");
         }
     }
 }
