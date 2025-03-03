@@ -36,7 +36,7 @@ public class AdminController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable UUID id) {
-        supplierService.delete(id);
+        adminService.delete(id);
         return ResponseEntity.status(200).body("Supplier was deleted");
     }
 }

@@ -11,7 +11,9 @@ import dev.yassiraitelghari.fms.repository.ManagerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ManagerService {
@@ -48,6 +50,11 @@ public class ManagerService {
     public void delete(UUID id) {
         Manager manager = findById(id);
         managerRepository.deleteById(id);
+    }
+
+    public List<ManagerDTO> getAll(){
+        List<Manager> managers = managerRepository.findAll();
+        return managers.stream().map(userMapper::managerToManagerDTO).collect(Collectors.toList());
     }
 
 
