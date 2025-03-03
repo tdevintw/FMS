@@ -27,6 +27,6 @@ Shipment {
     @ManyToOne
     @JoinColumn(name = "shipper_id")
     private Shipper shipper;
-    @OneToOne(mappedBy = "shipment")
+    @OneToOne(mappedBy = "shipment", cascade = CascadeType.PERSIST)
     private Order order ;
 }

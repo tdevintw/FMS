@@ -78,6 +78,13 @@ public class ShipmentService {
 
     public void delete(UUID id) {
         Shipment shipment = this.getById(id);
+
+
+        if (shipment.getOrder() != null) {
+            shipment.getOrder().setShipment(null);
+            orderService.edit(shipment.getOrder());
+        }
+
         shipmentRepository.deleteById(shipment.getId());
     }
 
