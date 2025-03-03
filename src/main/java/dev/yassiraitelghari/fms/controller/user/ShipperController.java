@@ -32,7 +32,7 @@ public class ShipperController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@Valid @RequestBody UserUpdateDTO user, @PathVariable UUID id) {
-        return ResponseEntity.status(200).body("Updated");
+        return ResponseEntity.status(200).body(shipperService.update(id , user));
     }
 
     @DeleteMapping("/{id}")

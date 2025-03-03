@@ -38,7 +38,7 @@ public class SupplierController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@Valid @RequestBody UserUpdateDTO user, @PathVariable UUID id) {
-        return ResponseEntity.status(200).body("Updated");
+        return ResponseEntity.status(200).body(supplierService.update(id , user));
     }
 
     @DeleteMapping("/{id}")

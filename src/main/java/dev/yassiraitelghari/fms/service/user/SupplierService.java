@@ -1,12 +1,17 @@
 package dev.yassiraitelghari.fms.service.user;
 
 import dev.yassiraitelghari.fms.domain.user.Manager;
+import dev.yassiraitelghari.fms.domain.user.Shipper;
 import dev.yassiraitelghari.fms.domain.user.Supplier;
 import dev.yassiraitelghari.fms.domain.user.User;
+import dev.yassiraitelghari.fms.dto.request.user.UserUpdateDTO;
+import dev.yassiraitelghari.fms.dto.response.user.ShipperDTO;
 import dev.yassiraitelghari.fms.dto.response.user.SupplierDTO;
 import dev.yassiraitelghari.fms.exception.UserUUIDNotFound;
+import dev.yassiraitelghari.fms.exception.UsernameAlreadyExistsException;
 import dev.yassiraitelghari.fms.mapper.UserMapper;
 import dev.yassiraitelghari.fms.repository.SupplierRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,10 +24,14 @@ public class SupplierService {
 
     private final SupplierRepository supplierRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
 
-    public SupplierService(SupplierRepository supplierRepository, UserMapper userMapper) {
+    public SupplierService(SupplierRepository supplierRepository, UserMapper userMapper, PasswordEncoder passwordEncoder, UserService userService) {
         this.supplierRepository = supplierRepository;
         this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
+        this.userService = userService;
     }
 
 
@@ -49,13 +58,29 @@ public class SupplierService {
         return userMapper.supplierToSupplierDTO(getById(id));
     }
 
-    public void delete(UUID id){
+    public void delete(UUID id) {
         Supplier supplier = getById(id);
         supplierRepository.deleteById(id);
     }
 
-    public List<SupplierDTO> getAll(){
+    public List<SupplierDTO> getAll() {
         return supplierRepository.findAll().stream().map(userMapper::supplierToSupplierDTO).collect(Collectors.toList());
     }
+
+    public SupplierDTO update(UUID id, UserUpdateDTO user) {
+
+
+        Supplier supplier = getById(id);
+        userService.findByUsername(user.getUsername())
+                .ifPresent(existingUser -> {
+                    throw new UsernameAlreadyExistsException("Username already exists");
+                });
+
+        supplier.setUsername(user.getUsername());
+        supplier.setPassword(passwordEncoder.encode(user.getPassword()));
+        supplierRepository.save(supplier);
+        return userMapper.supplierToSupplierDTO(supplier);
+    }
+
 
 }
