@@ -45,7 +45,7 @@ public class OrderController {
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER')")
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@Valid @RequestBody OrderUpdateDTO order, @PathVariable UUID id) {
-        return ResponseEntity.status(201).body(orderService.edit(id , order));
+        return ResponseEntity.status(200).body(orderService.edit(id , order));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER')")

@@ -2,6 +2,7 @@ package dev.yassiraitelghari.fms.dto.request.order;
 
 import dev.yassiraitelghari.fms.domain.enums.OrderStatus;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class OrderUpdateDTO extends OrderCreateDTO {
 
-    @NotNull(message = "Order status is required.")
-    private OrderStatus status;
+    @Pattern(regexp = "PENDING|DELIVERED|REFUSED|IN_DELIVERY", message = "Status must be PENDING ,DELIVERED, REFUSED or IN_DELIVERY")
+    private String status;
 }

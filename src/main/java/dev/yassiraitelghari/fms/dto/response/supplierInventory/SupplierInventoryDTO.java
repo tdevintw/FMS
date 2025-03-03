@@ -1,5 +1,7 @@
 package dev.yassiraitelghari.fms.dto.response.supplierInventory;
 
+import dev.yassiraitelghari.fms.dto.response.food.FoodDTO;
+import dev.yassiraitelghari.fms.dto.response.user.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +16,6 @@ import java.util.UUID;
 public class SupplierInventoryDTO {
     protected UUID id ;
     protected double price ;
-    protected UUID supplierId;
-    protected UUID foodId;
+    protected UserDTO supplier;
+    protected FoodDTO food;
 }

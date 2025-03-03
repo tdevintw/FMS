@@ -74,9 +74,22 @@ public class GlobalExceptionHandler {
 
     }
 
+    @ExceptionHandler(isAuthorizedToManageSupplierInventory.class)
+    public ResponseEntity<?> handleNotAuthorizedToHandleSupplierInventories(isAuthorizedToManageSupplierInventory ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+
+    }
+
     @ExceptionHandler(UsernameOrPasswordInvalidException.class)
     public ResponseEntity<?> handleUsernameOrPasswordInvalid(FoodUUIDNotFound ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+
+    }
+
+
+    @ExceptionHandler(OrderUUIDNotFoundException.class)
+    public ResponseEntity<?> handleOrderUUIDNotFound(OrderUUIDNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
 
     }
 

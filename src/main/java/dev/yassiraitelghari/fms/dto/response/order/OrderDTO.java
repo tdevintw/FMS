@@ -1,5 +1,7 @@
 package dev.yassiraitelghari.fms.dto.response.order;
 
+import dev.yassiraitelghari.fms.dto.response.building.BuildingDTO;
+import dev.yassiraitelghari.fms.dto.response.supplierInventory.SupplierInventoryDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,8 +14,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderDTO {
-    protected UUID id ;
+    protected UUID id;
     private double quantity;
-    protected UUID supplierInventoryId;
-    protected UUID buildingId;
+    protected SupplierInventoryDTO supplierInventory;
+    protected BuildingDTO building;
 }
