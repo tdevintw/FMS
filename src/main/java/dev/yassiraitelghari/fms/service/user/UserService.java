@@ -18,21 +18,30 @@ import java.util.UUID;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final SupplierService supplierService;
+    private final ManagerService managerService;
+    private final AdminService adminService;
+    private final ShipperService shipperService;
 
-    public UserService(UserRepository userRepository) {
+
+    public UserService(UserRepository userRepository, SupplierService supplierService, ManagerService managerService, AdminService adminService, ShipperService shipperService) {
         this.userRepository = userRepository;
+        this.supplierService = supplierService;
+        this.managerService = managerService;
+        this.adminService = adminService;
+        this.shipperService = shipperService;
     }
 
     public Optional<User> findByUsername(String userName) {
         return userRepository.findByUsername(userName);
     }
 
-    public User getByUsername(String username){
-        return userRepository.findByUsername(username).orElseThrow(()->new UsernameNotFoundException("username not found"));
+    public User getByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("username not found"));
     }
 
-    public User findByID(UUID id){
-        return userRepository.findById(id).orElseThrow(()->new UserUUIDNotFound("User UUID Not Found"));
+    public User findByID(UUID id) {
+        return userRepository.findById(id).orElseThrow(() -> new UserUUIDNotFound("User UUID Not Found"));
     }
 
     public Page<User> getAllUsers(int page, int size) {
@@ -57,6 +66,7 @@ public class UserService implements UserDetailsService {
     }
 
 
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
@@ -68,5 +78,7 @@ public class UserService implements UserDetailsService {
                 user.getAuthorities()
         );
     }
+
+
 
 }

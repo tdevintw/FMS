@@ -13,8 +13,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDTO {
-    private UUID id;
-    private String username;
-    private String email;
-    private Role role;
+    protected UUID id;
+    protected String username;
+    protected String email;
+    protected Role role;
 }

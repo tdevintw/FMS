@@ -1,6 +1,5 @@
 package dev.yassiraitelghari.fms.domain.user;
 
-import dev.yassiraitelghari.fms.domain.FavoriteSupplier;
 import dev.yassiraitelghari.fms.domain.building.Building;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -20,8 +19,6 @@ import java.util.List;
 @Entity
 @Table(name = "managers")
 public class Manager extends User{
-    @OneToMany(mappedBy = "manager", cascade = CascadeType.ALL)
-    private List<FavoriteSupplier> favoriteSuppliers;
     @OneToMany(mappedBy = "manager", cascade = CascadeType.ALL)
     private List<Building> buildings ;
 }

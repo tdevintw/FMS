@@ -3,8 +3,10 @@ package dev.yassiraitelghari.fms.service.user;
 import dev.yassiraitelghari.fms.domain.enums.Role;
 import dev.yassiraitelghari.fms.domain.user.Manager;
 import dev.yassiraitelghari.fms.domain.user.User;
+import dev.yassiraitelghari.fms.dto.response.user.ManagerDTO;
 import dev.yassiraitelghari.fms.exception.BuildingManagerIdException;
 import dev.yassiraitelghari.fms.exception.UserUUIDNotFound;
+import dev.yassiraitelghari.fms.mapper.UserMapper;
 import dev.yassiraitelghari.fms.repository.ManagerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,14 +16,15 @@ import java.util.UUID;
 @Service
 public class ManagerService {
     private final ManagerRepository managerRepository;
+    private final UserMapper userMapper;
 
-
-    public ManagerService(ManagerRepository managerRepository) {
+    public ManagerService(ManagerRepository managerRepository, UserMapper userMapper) {
         this.managerRepository = managerRepository;
+        this.userMapper = userMapper;
     }
 
-    public Manager findById(UUID id){
-        return managerRepository.findById(id).orElseThrow(()->new UserUUIDNotFound("Manager UUID Not Found , UUID is not a manager id or it doesn't exist !"));
+    public Manager findById(UUID id) {
+        return managerRepository.findById(id).orElseThrow(() -> new UserUUIDNotFound("Manager UUID Not Found , UUID is not a manager id or it doesn't exist !"));
     }
 
     @Transactional
@@ -37,5 +40,15 @@ public class ManagerService {
 
         managerRepository.save(manager);
     }
+
+    public ManagerDTO getById(UUID id) {
+        return userMapper.managerToManagerDTO(findById(id));
+    }
+
+    public void delete(UUID id) {
+        Manager manager = findById(id);
+        managerRepository.deleteById(id);
+    }
+
 
 }
