@@ -2,6 +2,7 @@ package dev.yassiraitelghari.fms.service.supply;
 
 import dev.yassiraitelghari.fms.domain.supply.Order;
 import dev.yassiraitelghari.fms.domain.supply.Shipment;
+import dev.yassiraitelghari.fms.domain.user.Shipper;
 import dev.yassiraitelghari.fms.dto.request.shipment.ShipmentCreateDTO;
 import dev.yassiraitelghari.fms.dto.request.shipment.ShipmentUpdateDTO;
 import dev.yassiraitelghari.fms.dto.response.shipment.ShipmentDTO;
@@ -9,6 +10,7 @@ import dev.yassiraitelghari.fms.dto.response.shipment.ShipmentDetailDTO;
 import dev.yassiraitelghari.fms.exception.ShipmentUUIDNotFoundException;
 import dev.yassiraitelghari.fms.mapper.ShipmentMapper;
 import dev.yassiraitelghari.fms.repository.ShipmentRepository;
+import dev.yassiraitelghari.fms.service.user.ShipperService;
 import dev.yassiraitelghari.fms.service.user.UserService;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +23,13 @@ public class ShipmentService {
     private final ShipmentRepository shipmentRepository;
     private final ShipmentMapper shipmentMapper;
     private final OrderService orderService;
+    private final ShipperService shipperService;
 
-    public ShipmentService(ShipmentRepository shipmentRepository, ShipmentMapper shipmentMapper, OrderService orderService, UserService userService) {
+    public ShipmentService(ShipmentRepository shipmentRepository, ShipmentMapper shipmentMapper, OrderService orderService, UserService userService, ShipperService shipperService) {
         this.shipmentRepository = shipmentRepository;
         this.shipmentMapper = shipmentMapper;
         this.orderService = orderService;
+        this.shipperService = shipperService;
     }
 
     public List<ShipmentDetailDTO> getAll() {
@@ -43,15 +47,27 @@ public class ShipmentService {
     }
 
     public ShipmentDTO add(ShipmentCreateDTO shipment) {
+        Shipper shipper = shipperService.getById(shipment.getShipperId());
+        Order order = orderService.getById(shipment.getOrderId());
         Shipment newShipment = shipmentMapper.shipmentCreateDTOToShipment(shipment);
-        return shipmentMapper.shipmentToShipmentDTO(shipmentRepository.save(newShipment));
+        newShipment.setShipper(shipper);
+        newShipment.setOrder(order);
+        newShipment = shipmentRepository.save(newShipment);
+        order.setShipment(newShipment);
+        orderService.edit(order);
+        return shipmentMapper.shipmentToShipmentDTO(newShipment);
     }
 
     public ShipmentDetailDTO edit(UUID id, ShipmentUpdateDTO shipment) {
         Shipment updatedShipment = this.getById(id);
+        Shipper shipper = shipperService.getById(shipment.getShipperId());
         Order newOrder = orderService.getById(shipment.getOrderId());
         updatedShipment.setOrder(newOrder);
-        shipmentRepository.save(updatedShipment);
+        updatedShipment.setShipper(shipper);
+        updatedShipment.setCurrentLocation(shipment.getCurrentLocation());
+        updatedShipment = shipmentRepository.save(updatedShipment);
+        newOrder.setShipment(updatedShipment);
+        orderService.edit(newOrder);
         return shipmentMapper.shipmentToShipmentDetailDTO(updatedShipment);
     }
 

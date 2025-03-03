@@ -27,6 +27,6 @@ Shipment {
     @ManyToOne
     @JoinColumn(name = "shipper_id")
     private Shipper shipper;
-    @OneToOne
+    @OneToOne(mappedBy = "shipment")
     private Order order ;
 }

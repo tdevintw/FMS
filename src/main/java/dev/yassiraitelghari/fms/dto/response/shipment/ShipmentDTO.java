@@ -1,5 +1,7 @@
 package dev.yassiraitelghari.fms.dto.response.shipment;
 
+import dev.yassiraitelghari.fms.dto.response.order.OrderDTO;
+import dev.yassiraitelghari.fms.dto.response.user.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,8 +14,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShipmentDTO {
+    protected UUID id ;
     protected String currentLocation;
-    protected UUID shipperId;
-    protected UUID orderId;
+    protected UserDTO shipper;
+    protected OrderDTO order;
 
 }

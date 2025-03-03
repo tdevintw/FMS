@@ -3,9 +3,12 @@ package dev.yassiraitelghari.fms.service.user;
 import dev.yassiraitelghari.fms.domain.user.Manager;
 import dev.yassiraitelghari.fms.domain.user.Shipper;
 import dev.yassiraitelghari.fms.domain.user.User;
+import dev.yassiraitelghari.fms.exception.UserUUIDNotFound;
 import dev.yassiraitelghari.fms.repository.ShipperRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 @Service
 public class ShipperService {
@@ -29,6 +32,10 @@ public class ShipperService {
         shipper.setVerificationToken(user.getVerificationToken());
 
         shipperRepository.save(shipper);
+    }
+
+    public Shipper getById(UUID id){
+        return shipperRepository.findById(id).orElseThrow(()->new UserUUIDNotFound("Shipper UUID Not Found"));
     }
 
 

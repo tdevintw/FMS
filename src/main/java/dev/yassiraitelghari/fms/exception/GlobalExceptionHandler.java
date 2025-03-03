@@ -86,6 +86,12 @@ public class GlobalExceptionHandler {
 
     }
 
+    @ExceptionHandler(ShipmentUUIDNotFoundException.class)
+    public ResponseEntity<?> handleShipmentUUIDNotFound(ShipmentUUIDNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+
+    }
+
 
     @ExceptionHandler(OrderUUIDNotFoundException.class)
     public ResponseEntity<?> handleOrderUUIDNotFound(OrderUUIDNotFoundException ex) {
