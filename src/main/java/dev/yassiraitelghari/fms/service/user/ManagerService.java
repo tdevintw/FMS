@@ -12,6 +12,8 @@ import dev.yassiraitelghari.fms.exception.UserUUIDNotFound;
 import dev.yassiraitelghari.fms.exception.UsernameAlreadyExistsException;
 import dev.yassiraitelghari.fms.mapper.UserMapper;
 import dev.yassiraitelghari.fms.repository.ManagerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,12 +27,17 @@ public class ManagerService {
     private final ManagerRepository managerRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
-    private final UserService userService;
+    private  UserService userService;
 
-    public ManagerService(ManagerRepository managerRepository, UserMapper userMapper, PasswordEncoder passwordEncoder, UserService userService) {
+    public ManagerService(ManagerRepository managerRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
         this.managerRepository = managerRepository;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    @Autowired
+    @Lazy
+    public void setUserService(UserService userService){
         this.userService = userService;
     }
 

@@ -11,6 +11,8 @@ import dev.yassiraitelghari.fms.exception.UserUUIDNotFound;
 import dev.yassiraitelghari.fms.exception.UsernameAlreadyExistsException;
 import dev.yassiraitelghari.fms.mapper.UserMapper;
 import dev.yassiraitelghari.fms.repository.SupplierRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,12 +27,17 @@ public class SupplierService {
     private final SupplierRepository supplierRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
-    private final UserService userService;
+    private UserService userService;
 
-    public SupplierService(SupplierRepository supplierRepository, UserMapper userMapper, PasswordEncoder passwordEncoder, UserService userService) {
+    public SupplierService(SupplierRepository supplierRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
         this.supplierRepository = supplierRepository;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    @Lazy
+    @Autowired
+    public void setUserService(UserService userService){
         this.userService = userService;
     }
 
