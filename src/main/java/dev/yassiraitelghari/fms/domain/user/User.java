@@ -23,6 +23,7 @@ public class User implements UserDetails {
     protected String email ;
     protected String username ;
     protected String password ;
+    private String imageUrl;
     protected String verificationToken;
     protected String passwordResetToken;
     protected LocalDateTime passwordResetTokenExpiry;

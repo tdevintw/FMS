@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -35,15 +36,15 @@ public class FoodController {
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<?> add(@Valid @RequestBody FoodCreateDTO food) {
-        FoodDTO addedFood = foodService.add(food);
+    public ResponseEntity<?> add(@Valid @RequestPart("food") FoodCreateDTO food , @RequestPart("image")MultipartFile file) {
+        FoodDTO addedFood = foodService.add(food, file);
         return ResponseEntity.status(201).body(addedFood);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN'')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@Valid  @RequestBody FoodUpdateDTO food, @PathVariable UUID id) {
-        return ResponseEntity.status(201).body(foodService.edit(food, id));
+    public ResponseEntity<?> update(@Valid  @RequestPart("food") FoodUpdateDTO food, @PathVariable UUID id  , @RequestPart("image")MultipartFile file) {
+        return ResponseEntity.status(201).body(foodService.edit(food, id , file));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")

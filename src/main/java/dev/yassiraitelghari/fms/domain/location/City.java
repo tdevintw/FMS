@@ -20,6 +20,8 @@ public class City {
     @GeneratedValue(strategy = GenerationType.UUID)
     private  UUID id ;
     private  String city;
+    private String imageUrl;
+
     @ManyToOne
     @JoinColumn(name = "country_id")
     private Country country;

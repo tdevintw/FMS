@@ -20,6 +20,7 @@ public class Country {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String country;
+    private String imageUrl;
     @OneToMany(mappedBy = "country")
     List<City> cities;
 }

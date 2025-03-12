@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -37,9 +38,9 @@ public class CategoryController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
-    @PostMapping
-    public ResponseEntity<?> add(@Valid @RequestBody CategoryCreateDTO category) {
-        CategoryDTO newCategory = categoryService.add(category);
+    @PostMapping(consumes = {"multipart/form-data"})
+        public ResponseEntity<?> add(@Valid @RequestPart("category") CategoryCreateDTO category , @RequestPart("image") MultipartFile file){
+        CategoryDTO newCategory = categoryService.add(category , file);
         return ResponseEntity.status(201).body(newCategory);
     }
 
@@ -52,8 +53,8 @@ public class CategoryController {
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> edit(@PathVariable UUID id,@Valid  @RequestBody CategoryUpdateDTO category) {
-       CategoryDetailDTO updatedCategory =  categoryService.edit(id , category);
+    public ResponseEntity<?> edit(@PathVariable UUID id,@Valid @RequestPart("category") CategoryUpdateDTO category , @RequestPart("image") MultipartFile file) {
+       CategoryDetailDTO updatedCategory =  categoryService.edit(id , category , file);
        return  ResponseEntity.status(200).body(updatedCategory);
     }
 
