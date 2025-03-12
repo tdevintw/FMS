@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -37,8 +38,8 @@ public class SupplierController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@Valid @RequestBody UserUpdateDTO user, @PathVariable UUID id) {
-        return ResponseEntity.status(200).body(supplierService.update(id , user));
+    public ResponseEntity<?> update(@Valid @RequestBody UserUpdateDTO user, @PathVariable UUID id, @RequestPart("image") MultipartFile file) {
+        return ResponseEntity.status(200).body(supplierService.update(id , user,file));
     }
 
     @DeleteMapping("/{id}")

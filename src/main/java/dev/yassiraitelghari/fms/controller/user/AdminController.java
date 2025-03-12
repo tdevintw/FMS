@@ -5,6 +5,7 @@ import dev.yassiraitelghari.fms.service.user.AdminService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
@@ -30,8 +31,8 @@ public class AdminController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@Valid @RequestBody UserUpdateDTO user, @PathVariable UUID id) {
-        return ResponseEntity.status(200).body(adminService.update(id , user));
+    public ResponseEntity<?> update(@Valid @RequestPart("user") UserUpdateDTO user, @PathVariable UUID id, @RequestPart("image")MultipartFile file) {
+        return ResponseEntity.status(200).body(adminService.update(id , user , file));
     }
 
     @DeleteMapping("/{id}")

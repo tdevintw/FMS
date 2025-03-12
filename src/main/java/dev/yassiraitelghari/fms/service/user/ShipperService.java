@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -73,7 +74,7 @@ public class ShipperService {
         return shippers.stream().map(userMapper::shipperToShipperDTO).collect(Collectors.toList());
     }
 
-    public ShipperDTO update(UUID id, UserUpdateDTO user) {
+    public ShipperDTO update(UUID id, UserUpdateDTO user, MultipartFile file) {
 
 
         Shipper shipper = getById(id);
