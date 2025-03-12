@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -37,14 +38,14 @@ public class CountryController {
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<?> add(@Valid @RequestBody CountryCreateDTO Country) {
-        return ResponseEntity.status(201).body(countryService.add(Country));
+    public ResponseEntity<?> add(@Valid @RequestPart("country") CountryCreateDTO Country  ,@RequestPart("image") MultipartFile file) {
+        return ResponseEntity.status(201).body(countryService.add(Country, file));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@Valid @RequestBody CountryUpdateDTO country, @PathVariable UUID id) {
-        return ResponseEntity.status(201).body(countryService.edit(id, country));
+    public ResponseEntity<?> update(@Valid @RequestPart("country") CountryUpdateDTO country, @PathVariable UUID id ,@RequestPart("image") MultipartFile file) {
+        return ResponseEntity.status(201).body(countryService.edit(id, country, file));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
