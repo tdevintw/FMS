@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -41,14 +42,14 @@ public class CityController {
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<?> add(@Valid @RequestBody CityCreateDTO city) {
-        return ResponseEntity.status(201).body(cityService.add(city));
+    public ResponseEntity<?> add(@Valid @RequestPart("city") CityCreateDTO city ,@RequestPart("image") MultipartFile file) {
+        return ResponseEntity.status(201).body(cityService.add(city, file));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@Valid @RequestBody CityUpdateDTO city, @PathVariable UUID id) {
-        return ResponseEntity.status(201).body(cityService.edit(id , city));
+    public ResponseEntity<?> update(@Valid @RequestPart("city") CityUpdateDTO city, @PathVariable UUID id ,@RequestPart("image") MultipartFile file) {
+        return ResponseEntity.status(201).body(cityService.edit(id , city , file));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")

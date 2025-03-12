@@ -1,6 +1,7 @@
 package dev.yassiraitelghari.fms.service.location;
 
 import dev.yassiraitelghari.fms.domain.food.Category;
+import dev.yassiraitelghari.fms.domain.food.Food;
 import dev.yassiraitelghari.fms.domain.location.City;
 import dev.yassiraitelghari.fms.domain.location.Country;
 import dev.yassiraitelghari.fms.dto.request.category.CategoryCreateDTO;
@@ -14,11 +15,15 @@ import dev.yassiraitelghari.fms.dto.response.city.CityDetailDTO;
 import dev.yassiraitelghari.fms.dto.response.country.CountryDTO;
 import dev.yassiraitelghari.fms.exception.CategoryUUIDNotFound;
 import dev.yassiraitelghari.fms.exception.CityUUIDNotFound;
+import dev.yassiraitelghari.fms.exception.FoodUUIDNotFound;
 import dev.yassiraitelghari.fms.mapper.CityMapper;
 import dev.yassiraitelghari.fms.mapper.CountryMapper;
 import dev.yassiraitelghari.fms.repository.CityRepository;
+import dev.yassiraitelghari.fms.util.SaveImage;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -63,25 +68,47 @@ public class CityService {
         return cityRepository.findById(id).orElseThrow(() -> new CityUUIDNotFound("City UUID not found"));
     }
 
-    public CityDTO add(CityCreateDTO city) {
-        Country country = countryService.getById(city.getCountryId());
-        City newCity = new City();
-        newCity.setCity(city.getCity());
-        newCity.setCountry(country);
-        City savedCity = cityRepository.save(newCity);
-        return cityMapper.cityToCityDTO(savedCity);
+    public CityDTO add(CityCreateDTO city, MultipartFile file) {
+
+        try {
+
+            Country country = countryService.getById(city.getCountryId());
+            City newCity = new City();
+            newCity.setCity(city.getCity());
+            newCity.setCountry(country);
+            if (!file.isEmpty()) {
+                String imagePath = SaveImage.save(file);
+                newCity.setImageUrl(imagePath);
+            }
+            City savedCity = cityRepository.save(newCity);
+            return cityMapper.cityToCityDTO(savedCity);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
 
-    public CityDetailDTO edit(UUID id, CityUpdateDTO city) {
-        Country country = countryService.getById(city.getCountryId());
-        City updatedCity = this.getById(id);
-        CountryDTO countryDTO = countryMapper.countryToCountryDTO(country);
-        updatedCity.setCity(city.getCity());
-        updatedCity.setCountry(country);
-        cityRepository.save(updatedCity);
-        CityDetailDTO cityDetailDTO = cityMapper.cityToCityDetailDTO(updatedCity);
-        cityDetailDTO.setCountryDTO(countryDTO);
-        return cityDetailDTO;
+    public CityDetailDTO edit(UUID id, CityUpdateDTO city, MultipartFile file) {
+
+        try {
+            Country country = countryService.getById(city.getCountryId());
+            City updatedCity = this.getById(id);
+            CountryDTO countryDTO = countryMapper.countryToCountryDTO(country);
+            updatedCity.setCity(city.getCity());
+            updatedCity.setCountry(country);
+            if (!file.isEmpty()) {
+                String imagePath = SaveImage.save(file);
+                updatedCity.setImageUrl(imagePath);
+            }
+            cityRepository.save(updatedCity);
+            CityDetailDTO cityDetailDTO = cityMapper.cityToCityDetailDTO(updatedCity);
+            cityDetailDTO.setCountryDTO(countryDTO);
+
+            return cityDetailDTO;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
