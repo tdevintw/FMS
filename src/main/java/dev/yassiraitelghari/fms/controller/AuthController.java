@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -25,13 +26,13 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<TokenVM> register(@RequestBody @Valid UserRegisterDTO user, HttpServletRequest request) {
+    public ResponseEntity<TokenVM> register(@RequestPart("user") @Valid UserRegisterDTO user, @RequestPart("image") MultipartFile file, HttpServletRequest request) {
 
         String clientOrigin = request.getHeader(HttpHeaders.ORIGIN);
         if (clientOrigin == null) {
             clientOrigin = request.getHeader(HttpHeaders.REFERER);
         }
-        return ResponseEntity.ok(authService.register(user, clientOrigin));
+        return ResponseEntity.ok(authService.register(user,file,clientOrigin));
     }
 
     @PostMapping("/login")

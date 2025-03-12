@@ -13,11 +13,14 @@ import dev.yassiraitelghari.fms.service.user.ShipperService;
 import dev.yassiraitelghari.fms.service.user.SupplierService;
 import dev.yassiraitelghari.fms.service.user.UserService;
 import dev.yassiraitelghari.fms.service.email.EmailService;
+import dev.yassiraitelghari.fms.util.SaveImage;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -49,7 +52,7 @@ public class AuthService {
         this.supplierService = supplierService;
     }
 
-    public TokenVM register(@Valid UserRegisterDTO user, String clientOrigin) {
+    public TokenVM register(@Valid UserRegisterDTO user, MultipartFile file, String clientOrigin) {
 
         userService.findByUsername(user.getUsername())
                 .ifPresent(existingUser -> {
@@ -61,19 +64,29 @@ public class AuthService {
                     throw new UsernameAlreadyExistsException("Email already exists");
                 });
 
-        User newUser = userMapper.registredUserDTOToUser(user);
-        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-        newUser.setCreatedAt(LocalDateTime.now());
-        newUser.setUpdateDate(LocalDateTime.now());
-        newUser.setRole(Role.valueOf(user.getRole()));
-        newUser.setVerificationToken(generateVerificationToken());
+        try{
+            User newUser = userMapper.registredUserDTOToUser(user);
+            newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+            newUser.setCreatedAt(LocalDateTime.now());
+            newUser.setUpdateDate(LocalDateTime.now());
+            newUser.setRole(Role.valueOf(user.getRole()));
+            newUser.setVerificationToken(generateVerificationToken());
+            if (!file.isEmpty()) {
+                String imagePath = SaveImage.save(file);
+                newUser.setImageUrl(imagePath);
+            }
 
-        registerUserWithRole(newUser, Role.valueOf(user.getRole()));
+            registerUserWithRole(newUser, Role.valueOf(user.getRole()));
 
-        String authToken = jwtService.generateToken(newUser.getUsername());
-        String refreshToken = jwtService.generateRefreshToken(newUser.getUsername());
-        emailService.sendVerificationEmail(newUser.getEmail(), newUser.getVerificationToken(), clientOrigin);
-        return TokenVM.builder().token(authToken).refreshToken(refreshToken).build();
+            String authToken = jwtService.generateToken(newUser.getUsername());
+            String refreshToken = jwtService.generateRefreshToken(newUser.getUsername());
+            emailService.sendVerificationEmail(newUser.getEmail(), newUser.getVerificationToken(), clientOrigin);
+            return TokenVM.builder().token(authToken).refreshToken(refreshToken).build();
+        }catch (IOException e){
+            throw new RuntimeException(e);
+        }
+
+
     }
 
 
