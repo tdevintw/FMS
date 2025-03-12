@@ -77,13 +77,10 @@ public class ShipperService {
 
 
         Shipper shipper = getById(id);
-        userService.findByUsername(user.getUsername())
-                .ifPresent(existingUser -> {
-                    throw new UsernameAlreadyExistsException("Username already exists");
-                });
 
-        shipper.setUsername(user.getUsername());
-        shipper.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (!shipper.getPassword().isEmpty()) {
+            shipper.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         shipperRepository.save(shipper);
         return userMapper.shipperToShipperDTO(shipper);
     }

@@ -3,6 +3,7 @@ package dev.yassiraitelghari.fms.controller;
 
 import dev.yassiraitelghari.fms.dto.request.login.UserLoginDTO;
 import dev.yassiraitelghari.fms.dto.request.register.UserRegisterDTO;
+import dev.yassiraitelghari.fms.dto.request.user.ResetPasswordDTO;
 import dev.yassiraitelghari.fms.dto.response.TokenVM;
 import dev.yassiraitelghari.fms.service.auth.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -60,8 +61,8 @@ public class AuthController {
     }
 
     @PostMapping("/reset-password")
-    public ResponseEntity<String> resetPassword(@RequestParam String token, @RequestParam String newPassword) {
-        authService.resetPassword(token, newPassword);
+    public ResponseEntity<String> resetPassword(@RequestParam String token, @RequestBody @Valid ResetPasswordDTO resetPasswordDTO) {
+        authService.resetPassword(token, resetPasswordDTO);
         return ResponseEntity.ok("Password reset successfully.");
     }
 

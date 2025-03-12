@@ -77,13 +77,10 @@ public class AdminService {
 
 
         Admin admin = getById(id);
-        userService.findByUsername(user.getUsername())
-                .ifPresent(existingUser -> {
-                    throw new UsernameAlreadyExistsException("Username already exists");
-                });
 
-        admin.setUsername(user.getUsername());
-        admin.setPassword(passwordEncoder.encode(user.getPassword()));
+        if(!admin.getPassword().isEmpty()){
+            admin.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         adminRepository.save(admin);
         return userMapper.adminToAdminDTO(admin);
     }

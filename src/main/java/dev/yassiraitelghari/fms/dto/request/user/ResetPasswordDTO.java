@@ -8,21 +8,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserUpdateDTO {
-
+public class ResetPasswordDTO {
+    @NotBlank(message = "Password is required.")
     @Size(min = 8, message = "Password must be at least 8 characters long.")
     @Pattern(regexp = ".*[a-z].*", message = "Password must contain at least one lowercase letter.")
     @Pattern(regexp = ".*[A-Z].*", message = "Password must contain at least one uppercase letter.")
     @Pattern(regexp = ".*[0-9].*", message = "Password must contain at least one digit.")
 
-    private String password;
+    private String newPassword;
 }
-
-

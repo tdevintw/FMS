@@ -78,13 +78,10 @@ public class SupplierService {
 
 
         Supplier supplier = getById(id);
-        userService.findByUsername(user.getUsername())
-                .ifPresent(existingUser -> {
-                    throw new UsernameAlreadyExistsException("Username already exists");
-                });
 
-        supplier.setUsername(user.getUsername());
-        supplier.setPassword(passwordEncoder.encode(user.getPassword()));
+        if(!supplier.getPassword().isEmpty()){
+            supplier.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         supplierRepository.save(supplier);
         return userMapper.supplierToSupplierDTO(supplier);
     }

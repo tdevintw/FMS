@@ -3,6 +3,7 @@ package dev.yassiraitelghari.fms.service.auth;
 import dev.yassiraitelghari.fms.domain.enums.Role;
 import dev.yassiraitelghari.fms.domain.user.User;
 import dev.yassiraitelghari.fms.dto.request.register.UserRegisterDTO;
+import dev.yassiraitelghari.fms.dto.request.user.ResetPasswordDTO;
 import dev.yassiraitelghari.fms.dto.response.TokenVM;
 import dev.yassiraitelghari.fms.exception.*;
 import dev.yassiraitelghari.fms.mapper.UserMapper;
@@ -134,14 +135,14 @@ public class AuthService {
         emailService.sendPasswordResetEmail(user.getEmail(), resetToken, clientOrigin);
     }
 
-    public void resetPassword(String token, String newPassword) {
+    public void resetPassword(String token, ResetPasswordDTO resetPasswordDTO) {
         User user = userRepository.findByPasswordResetToken(token)
                 .orElseThrow(() -> new RuntimeException("Invalid password reset token."));
 
         if (user.getPasswordResetTokenExpiry().isBefore(LocalDateTime.now())) {
             throw new RuntimeException("Password reset token has expired.");
         }
-
+        String newPassword = resetPasswordDTO.getNewPassword();
         user.setPassword(passwordEncoder.encode(newPassword));
         user.setPasswordResetToken(null);
         user.setPasswordResetTokenExpiry(null);

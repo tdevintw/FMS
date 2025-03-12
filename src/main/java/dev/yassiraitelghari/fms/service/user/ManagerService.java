@@ -27,7 +27,7 @@ public class ManagerService {
     private final ManagerRepository managerRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
-    private  UserService userService;
+    private UserService userService;
 
     public ManagerService(ManagerRepository managerRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
         this.managerRepository = managerRepository;
@@ -37,7 +37,7 @@ public class ManagerService {
 
     @Autowired
     @Lazy
-    public void setUserService(UserService userService){
+    public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
@@ -77,13 +77,9 @@ public class ManagerService {
 
 
         Manager manager = findById(id);
-        userService.findByUsername(user.getUsername())
-                .ifPresent(existingUser -> {
-                    throw new UsernameAlreadyExistsException("Username already exists");
-                });
-
-        manager.setUsername(user.getUsername());
-        manager.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (!manager.getPassword().isEmpty()) {
+            manager.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         managerRepository.save(manager);
         return userMapper.managerToManagerDTO(manager);
     }
