@@ -73,7 +73,7 @@ public class CategoryService {
         try {
             Category updatedCategory = this.getById(id);
             updatedCategory.setCategory(category.getCategory());
-            if (!file.isEmpty()) {
+            if (file!=null && !file.isEmpty()) {
                 String originalFilename = file.getOriginalFilename();
                 String extension = "";
                 int dotIndex = originalFilename.lastIndexOf(".");

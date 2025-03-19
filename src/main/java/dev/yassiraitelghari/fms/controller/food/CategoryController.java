@@ -55,7 +55,7 @@ public class CategoryController {
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> edit(@PathVariable UUID id,@Valid @RequestPart("category") CategoryUpdateDTO category , @RequestPart("image") MultipartFile file) {
+    public ResponseEntity<?> edit(@PathVariable UUID id,@Valid @RequestPart("category") CategoryUpdateDTO category ,  @RequestPart(value = "image", required = false) MultipartFile file) {
         CategoryDetailDTO updatedCategory =  categoryService.edit(id , category , file);
         return  ResponseEntity.status(200).body(updatedCategory);
     }
