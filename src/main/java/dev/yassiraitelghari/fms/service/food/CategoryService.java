@@ -8,8 +8,12 @@ import dev.yassiraitelghari.fms.dto.response.category.CategoryDetailDTO;
 import dev.yassiraitelghari.fms.exception.CategoryUUIDNotFound;
 import dev.yassiraitelghari.fms.mapper.CategoryMapper;
 import dev.yassiraitelghari.fms.repository.CategoryRepository;
+import dev.yassiraitelghari.fms.util.SaveImage;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -25,7 +29,7 @@ public class CategoryService {
         this.categoryMapper = categoryMapper;
     }
 
-    public List<CategoryDetailDTO> getAll(){
+    public List<CategoryDetailDTO> getAll() {
         List<Category> categories = categoryRepository.findAll();
         return categories.stream().map(categoryMapper::categoryToCategoryDetailDTO).collect(Collectors.toList());
     }
@@ -39,18 +43,35 @@ public class CategoryService {
         return categoryRepository.findById(id).orElseThrow(() -> new CategoryUUIDNotFound("Category UUID not found"));
     }
 
-    public CategoryDTO add(CategoryCreateDTO category) {
-        Category newCategory = new Category();
-        newCategory.setCategory(category.getCategory());
-        Category savedCategory = categoryRepository.save(newCategory);
-        return categoryMapper.categoryToCategoryDTO(savedCategory);
+    public CategoryDTO add(CategoryCreateDTO category, MultipartFile file) {
+        try {
+            Category newCategory = new Category();
+            newCategory.setCategory(category.getCategory());
+            if(!file.isEmpty()){
+                String imagePath = SaveImage.save(file);
+                newCategory.setImageUrl(imagePath);
+            }
+            Category savedCategory = categoryRepository.save(newCategory);
+            return categoryMapper.categoryToCategoryDTO(savedCategory);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public CategoryDetailDTO edit(UUID id, CategoryUpdateDTO category) {
-        Category updatedCategory = this.getById(id);
-        updatedCategory.setCategory(category.getCategory());
-        categoryRepository.save(updatedCategory);
-        return categoryMapper.categoryToCategoryDetailDTO(updatedCategory);
+    public CategoryDetailDTO edit(UUID id, CategoryUpdateDTO category, MultipartFile file) {
+        try{
+            Category updatedCategory = this.getById(id);
+            updatedCategory.setCategory(category.getCategory());
+            if(!file.isEmpty()){
+                String imagePath = SaveImage.save(file);
+                updatedCategory.setImageUrl(imagePath);
+            }
+            categoryRepository.save(updatedCategory);
+            return categoryMapper.categoryToCategoryDetailDTO(updatedCategory);
+        }catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
 
@@ -62,5 +83,6 @@ public class CategoryService {
         Category category = this.getById(id);
         categoryRepository.deleteById(category.getId());
     }
+
 
 }

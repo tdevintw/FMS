@@ -10,8 +10,11 @@ import dev.yassiraitelghari.fms.exception.FoodUUIDNotFound;
 import dev.yassiraitelghari.fms.mapper.FoodMapper;
 import dev.yassiraitelghari.fms.repository.CategoryRepository;
 import dev.yassiraitelghari.fms.repository.FoodRepository;
+import dev.yassiraitelghari.fms.util.SaveImage;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -39,24 +42,42 @@ public class FoodService {
 
     }
 
-    public FoodDTO add(FoodCreateDTO food) {
-        UUID id = food.getCategoryId();
-        Category category = categoryService.getById(id);
-        Food newFood = new Food();
-        newFood.setFood(food.getFood());
-        newFood.setCategory(category);
-        category.setFood(newFood);
-        categoryService.edit(category);
-        return foodMapper.foodToFoodDTO(foodRepository.save(newFood));
+    public FoodDTO add(FoodCreateDTO food , MultipartFile file) {
+
+        try{
+            UUID id = food.getCategoryId();
+            Category category = categoryService.getById(id);
+            Food newFood = new Food();
+            newFood.setFood(food.getFood());
+            newFood.setCategory(category);
+            category.setFood(newFood);
+            if(!file.isEmpty()){
+                String imagePath = SaveImage.save(file);
+                newFood.setImageUrl(imagePath);
+            }
+            categoryService.edit(category);
+            return foodMapper.foodToFoodDTO(foodRepository.save(newFood));
+        }catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
-    public FoodDTO edit(FoodUpdateDTO food, UUID id) {
-        Category category = categoryService.getById(food.getCategoryId());
-        Food updatedFood = foodRepository.findById(id).orElseThrow(() -> new FoodUUIDNotFound("Food UUID not found"));
-        updatedFood.setFood(food.getFood());
-        updatedFood.setCategory(category);
-        updatedFood = foodRepository.save(updatedFood);
-        return foodMapper.foodToFoodDTO(updatedFood);
+    public FoodDTO edit(FoodUpdateDTO food, UUID id , MultipartFile file) {
+        try{
+            Category category = categoryService.getById(food.getCategoryId());
+            Food updatedFood = foodRepository.findById(id).orElseThrow(() -> new FoodUUIDNotFound("Food UUID not found"));
+            updatedFood.setFood(food.getFood());
+            updatedFood.setCategory(category);
+            if(!file.isEmpty()){
+                String imagePath = SaveImage.save(file);
+                updatedFood.setImageUrl(imagePath);
+            }
+            updatedFood = foodRepository.save(updatedFood);
+            return foodMapper.foodToFoodDTO(updatedFood);
+        }catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void delete(UUID id) {
