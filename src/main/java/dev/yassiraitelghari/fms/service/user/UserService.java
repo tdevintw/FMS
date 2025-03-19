@@ -1,7 +1,9 @@
 package dev.yassiraitelghari.fms.service.user;
 
 import dev.yassiraitelghari.fms.domain.user.User;
+import dev.yassiraitelghari.fms.dto.response.user.UserDTO;
 import dev.yassiraitelghari.fms.exception.UserUUIDNotFound;
+import dev.yassiraitelghari.fms.mapper.UserMapper;
 import dev.yassiraitelghari.fms.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,14 +24,16 @@ public class UserService implements UserDetailsService {
     private final ManagerService managerService;
     private final AdminService adminService;
     private final ShipperService shipperService;
+    private final UserMapper userMapper;
 
 
-    public UserService(UserRepository userRepository, SupplierService supplierService, ManagerService managerService, AdminService adminService, ShipperService shipperService) {
+    public UserService(UserRepository userRepository, SupplierService supplierService, ManagerService managerService, AdminService adminService, ShipperService shipperService, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.supplierService = supplierService;
         this.managerService = managerService;
         this.adminService = adminService;
         this.shipperService = shipperService;
+        this.userMapper = userMapper;
     }
 
     public Optional<User> findByUsername(String userName) {
@@ -79,6 +83,10 @@ public class UserService implements UserDetailsService {
         );
     }
 
+    public UserDTO findByUserDTOById(UUID id){
+        User user = findByID(id);
+        return userMapper.userToUserDTO(user);
+    }
 
 
 }

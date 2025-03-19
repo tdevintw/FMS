@@ -18,4 +18,6 @@ public interface UserMapper {
     ShipperDTO shipperToShipperDTO(Shipper shipper);
 
     AdminDTO adminToAdminDTO(Admin admin);
+
+    UserDTO managerDTOTOUserDTO(ManagerDTO manager);
 }

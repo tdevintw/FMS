@@ -7,6 +7,7 @@ import dev.yassiraitelghari.fms.domain.user.User;
 import dev.yassiraitelghari.fms.dto.request.user.UserUpdateDTO;
 import dev.yassiraitelghari.fms.dto.response.user.AdminDTO;
 import dev.yassiraitelghari.fms.dto.response.user.ManagerDTO;
+import dev.yassiraitelghari.fms.dto.response.user.UserDTO;
 import dev.yassiraitelghari.fms.exception.BuildingManagerIdException;
 import dev.yassiraitelghari.fms.exception.UserUUIDNotFound;
 import dev.yassiraitelghari.fms.exception.UsernameAlreadyExistsException;
@@ -61,6 +62,10 @@ public class ManagerService {
 
     public ManagerDTO getById(UUID id) {
         return userMapper.managerToManagerDTO(findById(id));
+    }
+
+    public UserDTO getManager(ManagerDTO manager){
+        return userMapper.managerDTOTOUserDTO(manager);
     }
 
     public void delete(UUID id) {

@@ -1,7 +1,10 @@
 package dev.yassiraitelghari.fms.controller.user;
 
 import dev.yassiraitelghari.fms.dto.request.user.UserUpdateDTO;
+import dev.yassiraitelghari.fms.dto.response.user.ManagerDTO;
+import dev.yassiraitelghari.fms.dto.response.user.UserDTO;
 import dev.yassiraitelghari.fms.service.user.ManagerService;
+import dev.yassiraitelghari.fms.service.user.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,15 +16,19 @@ import java.util.UUID;
 public class ManagerController {
 
     private final ManagerService managerService ;
+private final UserService userService;
 
-    public ManagerController(ManagerService managerService) {
+
+    public ManagerController(ManagerService managerService, UserService userService) {
         this.managerService = managerService;
+        this.userService = userService;
     }
 
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable UUID id) {
-        return ResponseEntity.status(200).body(managerService.findById(id));
+        UserDTO user = userService.findByUserDTOById(id);
+        return ResponseEntity.status(200).body(user);
     }
 
     @GetMapping
