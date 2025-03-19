@@ -13,4 +13,6 @@ import java.util.UUID;
 public class CategoryDTO {
     protected UUID id ;
     protected String category;
+    private String imageUrl;
+
 }

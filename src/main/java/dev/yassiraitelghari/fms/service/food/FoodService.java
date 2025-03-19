@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -51,8 +52,17 @@ public class FoodService {
             newFood.setFood(food.getFood());
             newFood.setCategory(category);
             category.setFood(newFood);
-            if(!file.isEmpty()){
-                String imagePath = SaveImage.save(file);
+            if (!file.isEmpty()) {
+                String originalFilename = file.getOriginalFilename();
+                String extension = "";
+                int dotIndex = originalFilename.lastIndexOf(".");
+                if (dotIndex > 0) {
+                    extension = originalFilename.substring(dotIndex);
+                    originalFilename = originalFilename.substring(0, dotIndex);
+                }
+                String newFileName = originalFilename + "_" + LocalDateTime.now()
+                        .toString().replace(":", "-") + extension;
+                String imagePath = SaveImage.save(file, newFileName);
                 newFood.setImageUrl(imagePath);
             }
             categoryService.edit(category);
@@ -69,8 +79,17 @@ public class FoodService {
             Food updatedFood = foodRepository.findById(id).orElseThrow(() -> new FoodUUIDNotFound("Food UUID not found"));
             updatedFood.setFood(food.getFood());
             updatedFood.setCategory(category);
-            if(!file.isEmpty()){
-                String imagePath = SaveImage.save(file);
+            if (!file.isEmpty()) {
+                String originalFilename = file.getOriginalFilename();
+                String extension = "";
+                int dotIndex = originalFilename.lastIndexOf(".");
+                if (dotIndex > 0) {
+                    extension = originalFilename.substring(dotIndex);
+                    originalFilename = originalFilename.substring(0, dotIndex);
+                }
+                String newFileName = originalFilename + "_" + LocalDateTime.now()
+                        .toString().replace(":", "-") + extension;
+                String imagePath = SaveImage.save(file, newFileName);
                 updatedFood.setImageUrl(imagePath);
             }
             updatedFood = foodRepository.save(updatedFood);

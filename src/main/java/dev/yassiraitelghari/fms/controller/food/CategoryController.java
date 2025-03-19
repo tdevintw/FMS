@@ -27,9 +27,11 @@ public class CategoryController {
 
     @GetMapping
     public ResponseEntity<?> getAll() {
-        List<CategoryDetailDTO> categories = categoryService.getAll();
+        List<CategoryDTO> categories = categoryService.getAll();
         return ResponseEntity.status(200).body(categories);
     }
+
+
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable UUID id) {

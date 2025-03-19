@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -29,9 +30,9 @@ public class CategoryService {
         this.categoryMapper = categoryMapper;
     }
 
-    public List<CategoryDetailDTO> getAll() {
+    public List<CategoryDTO> getAll() {
         List<Category> categories = categoryRepository.findAll();
-        return categories.stream().map(categoryMapper::categoryToCategoryDetailDTO).collect(Collectors.toList());
+        return categories.stream().map(categoryMapper::categoryToCategoryDTO).collect(Collectors.toList());
     }
 
     public CategoryDetailDTO findById(UUID id) {
@@ -47,8 +48,17 @@ public class CategoryService {
         try {
             Category newCategory = new Category();
             newCategory.setCategory(category.getCategory());
-            if(!file.isEmpty()){
-                String imagePath = SaveImage.save(file);
+            if (!file.isEmpty()) {
+                String originalFilename = file.getOriginalFilename();
+                String extension = "";
+                int dotIndex = originalFilename.lastIndexOf(".");
+                if (dotIndex > 0) {
+                    extension = originalFilename.substring(dotIndex);
+                    originalFilename = originalFilename.substring(0, dotIndex);
+                }
+                String newFileName = originalFilename + "_" + LocalDateTime.now()
+                        .toString().replace(":", "-") + extension;
+                String imagePath = SaveImage.save(file, newFileName);
                 newCategory.setImageUrl(imagePath);
             }
             Category savedCategory = categoryRepository.save(newCategory);
@@ -59,16 +69,25 @@ public class CategoryService {
     }
 
     public CategoryDetailDTO edit(UUID id, CategoryUpdateDTO category, MultipartFile file) {
-        try{
+        try {
             Category updatedCategory = this.getById(id);
             updatedCategory.setCategory(category.getCategory());
-            if(!file.isEmpty()){
-                String imagePath = SaveImage.save(file);
+            if (!file.isEmpty()) {
+                String originalFilename = file.getOriginalFilename();
+                String extension = "";
+                int dotIndex = originalFilename.lastIndexOf(".");
+                if (dotIndex > 0) {
+                    extension = originalFilename.substring(dotIndex);
+                    originalFilename = originalFilename.substring(0, dotIndex);
+                }
+                String newFileName = originalFilename + "_" + LocalDateTime.now()
+                        .toString().replace(":", "-") + extension;
+                String imagePath = SaveImage.save(file, newFileName);
                 updatedCategory.setImageUrl(imagePath);
             }
             categoryRepository.save(updatedCategory);
             return categoryMapper.categoryToCategoryDetailDTO(updatedCategory);
-        }catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
