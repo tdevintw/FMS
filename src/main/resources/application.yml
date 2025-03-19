@@ -1,5 +1,8 @@
 spring:
 
+  resources:
+    static-locations: file:/C:/Users/aitel/OneDrive/Desktop/Java/FMS/uploads/
+
   docker:
     compose:
       enabled: true
@@ -24,7 +27,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: aitelghariyasser@gmail.com
-    password: "aizy bfpz ggqp qihs"
+    password: ${APP_PASSWORD}
     properties:
       mail:
         smtp:

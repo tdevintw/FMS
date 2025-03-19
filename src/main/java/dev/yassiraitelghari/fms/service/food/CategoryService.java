@@ -58,7 +58,8 @@ public class CategoryService {
                 }
                 String newFileName = originalFilename + "_" + LocalDateTime.now()
                         .toString().replace(":", "-") + extension;
-                String imagePath = SaveImage.save(file, newFileName);
+                SaveImage.save(file, newFileName);
+                String imagePath = "http://localhost:9999/uploads/"+newFileName;
                 newCategory.setImageUrl(imagePath);
             }
             Category savedCategory = categoryRepository.save(newCategory);
@@ -82,7 +83,8 @@ public class CategoryService {
                 }
                 String newFileName = originalFilename + "_" + LocalDateTime.now()
                         .toString().replace(":", "-") + extension;
-                String imagePath = SaveImage.save(file, newFileName);
+                SaveImage.save(file, newFileName);
+                String imagePath = "http://localhost:9999/uploads/"+newFileName;
                 updatedCategory.setImageUrl(imagePath);
             }
             categoryRepository.save(updatedCategory);

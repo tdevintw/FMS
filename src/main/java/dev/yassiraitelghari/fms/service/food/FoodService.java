@@ -62,7 +62,8 @@ public class FoodService {
                 }
                 String newFileName = originalFilename + "_" + LocalDateTime.now()
                         .toString().replace(":", "-") + extension;
-                String imagePath = SaveImage.save(file, newFileName);
+                 SaveImage.save(file, newFileName);
+                String imagePath = "http://localhost:9999/uploads/"+newFileName;
                 newFood.setImageUrl(imagePath);
             }
             categoryService.edit(category);
@@ -89,7 +90,8 @@ public class FoodService {
                 }
                 String newFileName = originalFilename + "_" + LocalDateTime.now()
                         .toString().replace(":", "-") + extension;
-                String imagePath = SaveImage.save(file, newFileName);
+                SaveImage.save(file, newFileName);
+                String imagePath = "http://localhost:9999/uploads/"+newFileName;
                 updatedFood.setImageUrl(imagePath);
             }
             updatedFood = foodRepository.save(updatedFood);
