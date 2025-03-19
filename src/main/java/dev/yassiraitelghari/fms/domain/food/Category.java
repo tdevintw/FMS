@@ -21,6 +21,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id ;
     private String category ;
+    private String imageUrl;
     private LocalDateTime creationDate ;
     private LocalDateTime updateDate ;
     @OneToMany(mappedBy = "category", cascade = CascadeType.PERSIST)

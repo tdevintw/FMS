@@ -21,6 +21,7 @@ public class Food {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id ;
     private String food ;
+    private String imageUrl;
     private LocalDateTime creationDate ;
     private LocalDateTime updateDate ;
     @ManyToOne
