@@ -45,7 +45,7 @@ public class CityService {
         cities.forEach(city -> {
             CountryDTO country = countryMapper.countryToCountryDTO(city.getCountry());
             CityDetailDTO cityDTO = cityMapper.cityToCityDetailDTO(city);
-            cityDTO.setCountryDTO(country);
+            cityDTO.setCountry(country);
             citiesDTO.add(cityDTO);
         });
         return citiesDTO;
@@ -55,7 +55,7 @@ public class CityService {
         City city = this.getById(id);
         CountryDTO country = countryMapper.countryToCountryDTO(city.getCountry());
         CityDetailDTO cityDTO = cityMapper.cityToCityDetailDTO(city);
-        cityDTO.setCountryDTO(country);
+        cityDTO.setCountry(country);
         return cityDTO;
     }
 
@@ -80,7 +80,7 @@ public class CityService {
         updatedCity.setCountry(country);
         cityRepository.save(updatedCity);
         CityDetailDTO cityDetailDTO = cityMapper.cityToCityDetailDTO(updatedCity);
-        cityDetailDTO.setCountryDTO(countryDTO);
+        cityDetailDTO.setCountry(countryDTO);
         return cityDetailDTO;
     }
 

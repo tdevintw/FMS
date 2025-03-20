@@ -10,5 +10,5 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class CityDetailDTO extends CityDTO{
-    protected CountryDTO countryDTO;
+    private CountryDTO country;
 }

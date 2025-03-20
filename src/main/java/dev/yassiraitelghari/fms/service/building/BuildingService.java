@@ -49,6 +49,14 @@ public class BuildingService {
         return buildings.stream().map(buildingMapper::buildingToBuildingDetailDTO).collect(Collectors.toList());
     }
 
+    public List<BuildingDetailDTO> getAllOfAManager(UUID id) {
+        Manager manager = managerService.findById(id);
+        List<Building> buildings = manager.getBuildings();
+        return buildings.stream().map(buildingMapper::buildingToBuildingDetailDTO).collect(Collectors.toList());
+    }
+
+
+
     public BuildingDetailDTO findById(UUID id) {
         Building building = this.getById(id);
         return buildingMapper.buildingToBuildingDetailDTO(building);

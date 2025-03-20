@@ -63,4 +63,11 @@ public class BuildingController {
         return  ResponseEntity.status(200).body(updatedBuilding);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
+    @GetMapping("/manager/{id}")
+    public ResponseEntity<?> getAllOfAManager(@PathVariable UUID id) {
+        List<BuildingDetailDTO> buildings = buildingService.getAllOfAManager(id);
+        return ResponseEntity.status(200).body(buildings);
+    }
+
 }
