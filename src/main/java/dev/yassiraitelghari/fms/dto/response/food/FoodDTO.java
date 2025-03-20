@@ -15,5 +15,6 @@ import java.util.UUID;
 public class FoodDTO {
     private UUID id;
     private String food;
+    private String imageUrl;
     private CategoryDTO category;
 }

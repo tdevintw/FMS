@@ -100,4 +100,10 @@ public class SupplierInventoryService {
         }
     }
 
+    public List<SupplierInventoryDTO> getAllOfSupplier(UUID id) {
+        Supplier supplier = supplierService.getById(id);
+        List<SupplierInventory> inventories = supplier.getInventories();
+        return inventories.stream().map(supplierInventoryMapper::supplierInventoryToSupplierInventoryDTO).collect(Collectors.toList());
+    }
+
 }

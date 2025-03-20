@@ -41,9 +41,9 @@ public class FoodController {
         return ResponseEntity.status(201).body(addedFood);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN'')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@Valid  @RequestPart("food") FoodUpdateDTO food, @PathVariable UUID id  , @RequestPart("image")MultipartFile file) {
+    public ResponseEntity<?> update(@Valid  @RequestPart("food") FoodUpdateDTO food, @PathVariable UUID id  , @RequestPart(value = "image" , required = false) MultipartFile file) {
         return ResponseEntity.status(201).body(foodService.edit(food, id , file));
     }
 

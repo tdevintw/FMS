@@ -2,6 +2,7 @@ package dev.yassiraitelghari.fms.controller.supply;
 
 import dev.yassiraitelghari.fms.dto.request.supplierInventory.SupplierInventoryCreateDTO;
 import dev.yassiraitelghari.fms.dto.request.supplierInventory.SupplierInventoryUpdateDTO;
+import dev.yassiraitelghari.fms.dto.response.supplierInventory.SupplierInventoryDTO;
 import dev.yassiraitelghari.fms.dto.response.supplierInventory.SupplierInventoryDetailDTO;
 import dev.yassiraitelghari.fms.service.supply.SupplierInventoryService;
 import jakarta.validation.Valid;
@@ -22,7 +23,6 @@ public class SupplierInventoryController {
     }
 
 
-
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable UUID id) {
         SupplierInventoryDetailDTO supplierInventory = supplierInventoryService.findById(id);
@@ -37,21 +37,28 @@ public class SupplierInventoryController {
 
     @PreAuthorize("hasAnyRole('ADMIN','SUPPLIER')")
     @PostMapping
-    public ResponseEntity<?> add(@Valid  @RequestBody SupplierInventoryCreateDTO supplierInventory) {
+    public ResponseEntity<?> add(@Valid @RequestBody SupplierInventoryCreateDTO supplierInventory) {
         return ResponseEntity.status(201).body(supplierInventoryService.add(supplierInventory));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','SUPPLIER')")
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@Valid @RequestBody SupplierInventoryUpdateDTO supplierInventory, @PathVariable UUID id) {
-        return ResponseEntity.status(201).body(supplierInventoryService.edit(id , supplierInventory));
+        return ResponseEntity.status(201).body(supplierInventoryService.edit(id, supplierInventory));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','SUPPLIER')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable UUID id){
+    public ResponseEntity<?> delete(@PathVariable UUID id) {
         supplierInventoryService.delete(id);
         return ResponseEntity.status(200).body("supplierInventory Was deleted");
     }
+
+    @GetMapping("/supplier/{id}")
+    public ResponseEntity<?> getAllOfSupplier(@PathVariable UUID id) {
+        List<SupplierInventoryDTO> suppliers = supplierInventoryService.getAllOfSupplier(id);
+        return ResponseEntity.status(200).body(suppliers);
+    }
+
 
 }

@@ -66,7 +66,6 @@ public class FoodService {
                 String imagePath = "http://localhost:9999/uploads/"+newFileName;
                 newFood.setImageUrl(imagePath);
             }
-            categoryService.edit(category);
             return foodMapper.foodToFoodDTO(foodRepository.save(newFood));
         }catch (IOException e) {
             throw new RuntimeException(e);
@@ -80,7 +79,7 @@ public class FoodService {
             Food updatedFood = foodRepository.findById(id).orElseThrow(() -> new FoodUUIDNotFound("Food UUID not found"));
             updatedFood.setFood(food.getFood());
             updatedFood.setCategory(category);
-            if (!file.isEmpty()) {
+            if (file!=null && !file.isEmpty()) {
                 String originalFilename = file.getOriginalFilename();
                 String extension = "";
                 int dotIndex = originalFilename.lastIndexOf(".");

@@ -33,6 +33,9 @@ public class CategoryController {
 
 
 
+
+
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable UUID id) {
         CategoryDetailDTO category = categoryService.findById(id);
