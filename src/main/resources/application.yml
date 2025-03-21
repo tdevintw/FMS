@@ -1,7 +1,8 @@
 spring:
 
-  resources:
-    static-locations: file:/C:/Users/aitel/OneDrive/Desktop/Java/FMS/uploads/
+  web :
+     resources:
+       static-locations: file:/C:/Users/aitel/OneDrive/Desktop/Java/FMS/uploads/
 
   docker:
     compose:
