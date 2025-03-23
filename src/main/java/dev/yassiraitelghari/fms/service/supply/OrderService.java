@@ -5,6 +5,7 @@ import dev.yassiraitelghari.fms.domain.enums.OrderStatus;
 import dev.yassiraitelghari.fms.domain.supply.Order;
 import dev.yassiraitelghari.fms.domain.supply.SupplierInventory;
 import dev.yassiraitelghari.fms.domain.user.Manager;
+import dev.yassiraitelghari.fms.domain.user.Supplier;
 import dev.yassiraitelghari.fms.dto.request.order.OrderCreateDTO;
 import dev.yassiraitelghari.fms.dto.request.order.OrderUpdateDTO;
 import dev.yassiraitelghari.fms.dto.response.order.OrderDTO;
@@ -28,13 +29,15 @@ public class OrderService {
     private final BuildingService buildingService;
     private final SupplierInventoryService supplierInventoryService;
     private final ManagerService managerService;
+    private final SupplierService supplierService;
 
-    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, BuildingService buildingService, SupplierService supplierService, SupplierInventoryService supplierInventoryService, ManagerService managerService) {
+    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, BuildingService buildingService ,SupplierInventoryService supplierInventoryService, ManagerService managerService, SupplierService supplierService) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
         this.buildingService = buildingService;
         this.supplierInventoryService = supplierInventoryService;
         this.managerService = managerService;
+        this.supplierService = supplierService;
     }
 
 
@@ -95,6 +98,12 @@ public class OrderService {
     public void delete(UUID id) {
         Order order = this.getById(id);
         orderRepository.deleteById(order.getId());
+    }
+
+    public List<OrderDetailDTO> getOrdersOfASupplier(UUID id){
+        Supplier supplier = supplierService.getById(id);
+       List<Order> orders =  supplier.getInventories().stream().flatMap(inventory->inventory.getOrders().stream()).collect(Collectors.toUnmodifiableList());
+       return orders.stream().map(orderMapper::orderToOrderDetailDTO).collect(Collectors.toList());
     }
 
 }

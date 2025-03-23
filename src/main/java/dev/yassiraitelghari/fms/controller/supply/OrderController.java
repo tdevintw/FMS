@@ -43,6 +43,15 @@ public class OrderController {
     }
 
 
+    @GetMapping("/supplier/{id}")
+    public ResponseEntity<?> getAllOfASupplier(@PathVariable UUID id) {
+        List<OrderDetailDTO> orders = orderService.getOrdersOfASupplier(id);
+        return ResponseEntity.status(200).body(orders);
+    }
+
+
+
+
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER')")
     @PostMapping
     public ResponseEntity<?> add(@Valid  @RequestBody OrderCreateDTO order) {
