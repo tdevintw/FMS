@@ -24,5 +24,6 @@ public class BuildingUpdateDTO {
     private UUID cityId;
     @Pattern(regexp = "HOTEL|MOTEL|RESTAURANT", message = "Role must be HOTEL, MOTEL or RESTAURANT")
     private String buildingType;
-
+    @NotNull(message = "Address is required")
+    private String address;
 }

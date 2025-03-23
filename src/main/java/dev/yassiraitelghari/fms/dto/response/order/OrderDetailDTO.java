@@ -14,6 +14,5 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderDetailDTO extends OrderDTO{
-    private OrderStatus status;
     private ShipmentDTO shipment;
 }

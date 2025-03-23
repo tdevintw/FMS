@@ -2,6 +2,7 @@ package dev.yassiraitelghari.fms.service.supply;
 
 import dev.yassiraitelghari.fms.domain.enums.Role;
 import dev.yassiraitelghari.fms.domain.food.Food;
+import dev.yassiraitelghari.fms.domain.location.City;
 import dev.yassiraitelghari.fms.domain.supply.Order;
 import dev.yassiraitelghari.fms.domain.supply.SupplierInventory;
 import dev.yassiraitelghari.fms.domain.user.Manager;
@@ -17,6 +18,7 @@ import dev.yassiraitelghari.fms.exception.isAuthorizedToManageSupplierInventory;
 import dev.yassiraitelghari.fms.mapper.SupplierInventoryMapper;
 import dev.yassiraitelghari.fms.repository.SupplierInventoryRepository;
 import dev.yassiraitelghari.fms.service.food.FoodService;
+import dev.yassiraitelghari.fms.service.location.CityService;
 import dev.yassiraitelghari.fms.service.user.SupplierService;
 import dev.yassiraitelghari.fms.service.user.UserService;
 import org.springframework.security.core.Authentication;
@@ -34,14 +36,16 @@ public class SupplierInventoryService {
     private final FoodService foodService;
     private final SupplierService supplierService;
     private final UserService userService;
+    private final CityService cityService;
 
-    public SupplierInventoryService(SupplierInventoryRepository supplierInventoryRepository, SupplierInventoryMapper supplierInventoryMapper, FoodService foodService, SupplierService supplierService, UserService userService) {
+    public SupplierInventoryService(SupplierInventoryRepository supplierInventoryRepository, SupplierInventoryMapper supplierInventoryMapper, FoodService foodService, SupplierService supplierService, UserService userService, CityService cityService) {
         this.supplierInventoryRepository = supplierInventoryRepository;
         this.supplierInventoryMapper = supplierInventoryMapper;
         this.foodService = foodService;
         this.supplierService = supplierService;
 
         this.userService = userService;
+        this.cityService = cityService;
     }
 
     public List<SupplierInventoryDetailDTO> getAll() {
@@ -60,10 +64,12 @@ public class SupplierInventoryService {
 
     public SupplierInventoryDTO add(SupplierInventoryCreateDTO supplierInventoryCreateDTO) {
         Food food = foodService.getById(supplierInventoryCreateDTO.getFoodId());
+        City city = cityService.getById(supplierInventoryCreateDTO.getCityId());
         Supplier supplier = supplierService.getById(supplierInventoryCreateDTO.getSupplierId());
         SupplierInventory supplierInventory = supplierInventoryMapper.supplierInventoryCreateDTOToSupplierInventory(supplierInventoryCreateDTO);
         supplierInventory.setFood(food);
         supplierInventory.setSupplier(supplier);
+        supplierInventory.setCity(city);
         return supplierInventoryMapper.supplierInventoryToSupplierInventoryDTO(supplierInventoryRepository.save(supplierInventory));
     }
 
@@ -72,8 +78,10 @@ public class SupplierInventoryService {
         Supplier supplier = supplierService.getById(updatedSupplierInventory.getSupplier().getId());
         isAuthorizedToSupplierInventory(supplier);
         Food food = foodService.getById(supplierInventory.getFoodId());
+        City city = cityService.getById(supplierInventory.getCityId());
         updatedSupplierInventory.setPrice(supplierInventory.getPrice());
         updatedSupplierInventory.setFood(food);
+        updatedSupplierInventory.setCity(city);
         supplierInventoryRepository.save(updatedSupplierInventory);
         return supplierInventoryMapper.supplierInventoryToSupplierInventoryDetailDTO(updatedSupplierInventory);
     }
@@ -105,5 +113,12 @@ public class SupplierInventoryService {
         List<SupplierInventory> inventories = supplier.getInventories();
         return inventories.stream().map(supplierInventoryMapper::supplierInventoryToSupplierInventoryDTO).collect(Collectors.toList());
     }
+
+    public List<SupplierInventoryDTO> getAllInventoriesWithFood(UUID id) {
+        Food food = foodService.getById(id);
+        List<SupplierInventory> inventories = supplierInventoryRepository.findSupplierInventoriesByFood(food);
+        return inventories.stream().map(supplierInventoryMapper::supplierInventoryToSupplierInventoryDTO).collect(Collectors.toList());
+    }
+
 
 }

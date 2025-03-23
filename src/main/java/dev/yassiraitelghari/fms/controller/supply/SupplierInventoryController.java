@@ -60,5 +60,12 @@ public class SupplierInventoryController {
         return ResponseEntity.status(200).body(suppliers);
     }
 
+    @GetMapping("/food/{id}")
+    public ResponseEntity<?> getAllInventoriesWithFood(@PathVariable UUID id) {
+        List<SupplierInventoryDTO> suppliers = supplierInventoryService.getAllInventoriesWithFood(id);
+        return ResponseEntity.status(200).body(suppliers);
+    }
+
+
 
 }

@@ -4,6 +4,7 @@ import dev.yassiraitelghari.fms.domain.building.Building;
 import dev.yassiraitelghari.fms.domain.enums.OrderStatus;
 import dev.yassiraitelghari.fms.domain.supply.Order;
 import dev.yassiraitelghari.fms.domain.supply.SupplierInventory;
+import dev.yassiraitelghari.fms.domain.user.Manager;
 import dev.yassiraitelghari.fms.dto.request.order.OrderCreateDTO;
 import dev.yassiraitelghari.fms.dto.request.order.OrderUpdateDTO;
 import dev.yassiraitelghari.fms.dto.response.order.OrderDTO;
@@ -12,6 +13,7 @@ import dev.yassiraitelghari.fms.exception.OrderUUIDNotFoundException;
 import dev.yassiraitelghari.fms.mapper.OrderMapper;
 import dev.yassiraitelghari.fms.repository.OrderRepository;
 import dev.yassiraitelghari.fms.service.building.BuildingService;
+import dev.yassiraitelghari.fms.service.user.ManagerService;
 import dev.yassiraitelghari.fms.service.user.SupplierService;
 import org.springframework.stereotype.Service;
 
@@ -25,12 +27,14 @@ public class OrderService {
     private final OrderMapper orderMapper;
     private final BuildingService buildingService;
     private final SupplierInventoryService supplierInventoryService;
+    private final ManagerService managerService;
 
-    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, BuildingService buildingService, SupplierService supplierService, SupplierInventoryService supplierInventoryService) {
+    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, BuildingService buildingService, SupplierService supplierService, SupplierInventoryService supplierInventoryService, ManagerService managerService) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
         this.buildingService = buildingService;
         this.supplierInventoryService = supplierInventoryService;
+        this.managerService = managerService;
     }
 
 
@@ -38,6 +42,17 @@ public class OrderService {
         List<Order> orders = orderRepository.findAll();
         return orders.stream().map(orderMapper::orderToOrderDetailDTO).collect(Collectors.toList());
     }
+
+    public List<OrderDetailDTO> getAllOfAManager(UUID id) {
+        Manager manager = managerService.findById(id);
+        List<Building> buildings = manager.getBuildings();
+        List<Order> orders = buildings.stream()
+                .flatMap(building -> building.getOrders().stream())
+                .collect(Collectors.toUnmodifiableList());
+        return orders.stream().map(orderMapper::orderToOrderDetailDTO).collect(Collectors.toList());
+    }
+
+
 
     public OrderDetailDTO findById(UUID id) {
         Order order = this.getById(id);
@@ -68,7 +83,7 @@ public class OrderService {
         updatedOrder.setBuilding(building);
         updatedOrder.setSupplierInventory(supplierInventory);
         OrderDetailDTO orderDetailDTO = orderMapper.orderToOrderDetailDTO(orderRepository.save(updatedOrder));
-        orderDetailDTO.setStatus(OrderStatus.valueOf(order.getStatus()));
+        orderDetailDTO.setOrderStatus(OrderStatus.valueOf(order.getStatus()));
         return orderDetailDTO;
     }
 

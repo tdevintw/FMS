@@ -22,6 +22,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id ;
     private double quantity ;
+    private double totalPrice ;
     private LocalDateTime creationDate ;
     private LocalDateTime updateDate ;
     @ManyToOne

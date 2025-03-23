@@ -23,4 +23,10 @@ public class SupplierInventoryCreateDTO {
 
     @NotNull(message = "Food ID is required.")
     protected UUID foodId;
+
+
+    @NotNull(message = "City ID is required.")
+    protected UUID cityId;
+
+
 }

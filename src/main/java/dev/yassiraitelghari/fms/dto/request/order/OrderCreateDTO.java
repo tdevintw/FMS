@@ -18,6 +18,11 @@ public class OrderCreateDTO {
     @Min(value = 1, message = "Quantity must be at least 1.")
     protected double quantity;
 
+
+    @Min(value = 1, message = "Price must be at least 1.")
+    protected double totalPrice;
+
+
     @NotNull(message = "Supplier Inventory ID is required.")
     private UUID supplierInventoryId;
 

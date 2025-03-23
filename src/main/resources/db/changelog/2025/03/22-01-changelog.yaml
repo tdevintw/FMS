@@ -1,0 +1,68 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1742665960649-1
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: address
+                  type: VARCHAR(255)
+            tableName: buildings
+  - changeSet:
+      id: 1742665960649-2
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: city_id
+                  type: UUID
+            tableName: suppliers_inventory
+  - changeSet:
+      id: 1742665960649-3
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addNotNullConstraint:
+            columnName: city_id
+            tableName: suppliers_inventory
+
+  - changeSet:
+      id: 1742665960649-6
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: city_id
+            baseTableName: suppliers_inventory
+            constraintName: FK_SUPPLIERS_INVENTORY_ON_CITY
+            referencedColumnNames: id
+            referencedTableName: cities
+  - changeSet:
+      id: 1742665960649-7
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropColumn:
+            columnName: image_url
+            tableName: cities
+  - changeSet:
+      id: 1742665960649-8
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropColumn:
+            columnName: image_url
+            tableName: countries
+  - changeSet:
+      id: 1742665960649-9
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropColumn:
+            columnName: image_url
+            tableName: users
+

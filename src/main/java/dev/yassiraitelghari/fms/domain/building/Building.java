@@ -31,6 +31,7 @@ public class Building {
     private LocalDateTime updateDate ;
     @Enumerated(EnumType.STRING)
     private BuildingType buildingType;
+    private String address;
     @ManyToOne
     @JoinColumn(name = "city_id" , nullable = false)
     private City city ;

@@ -1,5 +1,6 @@
 package dev.yassiraitelghari.fms.dto.response.supplierInventory;
 
+import dev.yassiraitelghari.fms.dto.response.city.CityDetailDTO;
 import dev.yassiraitelghari.fms.dto.response.food.FoodDTO;
 import dev.yassiraitelghari.fms.dto.response.user.UserDTO;
 import lombok.AllArgsConstructor;
@@ -18,4 +19,6 @@ public class SupplierInventoryDTO {
     protected double price ;
     protected UserDTO supplier;
     protected FoodDTO food;
+    protected CityDetailDTO city;
+
 }

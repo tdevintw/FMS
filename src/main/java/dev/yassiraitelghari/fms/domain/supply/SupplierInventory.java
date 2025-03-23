@@ -2,6 +2,7 @@ package dev.yassiraitelghari.fms.domain.supply;
 
 import dev.yassiraitelghari.fms.domain.food.Food;
 import dev.yassiraitelghari.fms.domain.location.AvailableLocation;
+import dev.yassiraitelghari.fms.domain.location.City;
 import dev.yassiraitelghari.fms.domain.user.Supplier;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.*;
@@ -38,5 +39,9 @@ public class SupplierInventory {
     private Food food ;
     @OneToMany(mappedBy = "supplierInventory" , cascade = CascadeType.ALL)
     private List<Order> orders;
+    @ManyToOne
+    @JoinColumn(name = "city_id" , nullable = false)
+    private City city ;
+
 
 }

@@ -16,7 +16,4 @@ import java.util.UUID;
 public class ShipmentDTO {
     protected UUID id ;
     protected String currentLocation;
-    protected UserDTO shipper;
-    protected OrderDTO order;
-
 }

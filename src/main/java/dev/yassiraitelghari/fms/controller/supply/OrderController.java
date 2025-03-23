@@ -36,6 +36,13 @@ public class OrderController {
         return ResponseEntity.status(200).body(orders);
     }
 
+    @GetMapping("/manager/{id}")
+    public ResponseEntity<?> getAllOfAManager(@PathVariable UUID id) {
+        List<OrderDetailDTO> orders = orderService.getAllOfAManager(id);
+        return ResponseEntity.status(200).body(orders);
+    }
+
+
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER')")
     @PostMapping
     public ResponseEntity<?> add(@Valid  @RequestBody OrderCreateDTO order) {

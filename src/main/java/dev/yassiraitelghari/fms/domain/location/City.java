@@ -1,6 +1,7 @@
 package dev.yassiraitelghari.fms.domain.location;
 
 import dev.yassiraitelghari.fms.domain.building.Building;
+import dev.yassiraitelghari.fms.domain.supply.SupplierInventory;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,13 +19,15 @@ import java.util.UUID;
 public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private  UUID id ;
-    private  String city;
+    private UUID id;
+    private String city;
     @ManyToOne
     @JoinColumn(name = "country_id")
     private Country country;
-    @OneToMany(mappedBy = "city" )
-    private List<AvailableLocation> availableLocations ;
     @OneToMany(mappedBy = "city")
-    private List<Building> buildings ;
+    private List<AvailableLocation> availableLocations;
+    @OneToMany(mappedBy = "city")
+    private List<Building> buildings;
+    @OneToMany(mappedBy = "city")
+    private List<SupplierInventory> supplierInventories;
 }

@@ -14,7 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class BuildingCreateDTO {
 
-    @Size(min = 3 , message = "Building Name should be at least 3 characters" )
+    @Size(min = 3, message = "Building Name should be at least 3 characters")
     @NotBlank(message = "Building name is required.")
     private String name;
     @NotNull(message = "City is required")
@@ -22,6 +22,8 @@ public class BuildingCreateDTO {
 
     @Pattern(regexp = "HOTEL|MOTEL|RESTAURANT", message = "Role must be HOTEL, MOTEL or RESTAURANT")
     private String buildingType;
+    @NotNull(message = "Address is required")
+    private String address;
 
     @NotNull(message = "Manager ID is required.")
     private UUID managerId;
