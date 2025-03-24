@@ -16,4 +16,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class OrderDetailDTO extends OrderDTO{
     private ShipperDTO shipper;
+    private String currentLocation;
+
 }

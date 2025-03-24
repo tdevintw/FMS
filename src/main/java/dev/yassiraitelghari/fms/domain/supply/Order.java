@@ -24,6 +24,7 @@ public class Order {
     private UUID id ;
     private double quantity ;
     private double totalPrice ;
+    private String currentLocation;
     private LocalDateTime creationDate ;
     private LocalDateTime updateDate ;
     @ManyToOne
@@ -37,4 +38,6 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "shipper_id")
     private Shipper shipper;
+
+
 }

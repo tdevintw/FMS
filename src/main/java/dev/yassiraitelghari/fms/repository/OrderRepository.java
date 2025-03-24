@@ -1,6 +1,7 @@
 package dev.yassiraitelghari.fms.repository;
 
 import dev.yassiraitelghari.fms.domain.supply.Order;
+import dev.yassiraitelghari.fms.domain.user.Shipper;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.jpa.repository.Query;

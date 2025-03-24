@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1742821122031-1
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: current_location
+                  type: VARCHAR(255)
+            tableName: orders
+

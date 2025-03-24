@@ -1,6 +1,7 @@
 package dev.yassiraitelghari.fms.controller.supply;
 
 import dev.yassiraitelghari.fms.dto.request.order.OrderCreateDTO;
+import dev.yassiraitelghari.fms.dto.request.order.OrderLocationDTO;
 import dev.yassiraitelghari.fms.dto.request.order.OrderUpdateDTO;
 import dev.yassiraitelghari.fms.dto.request.user.AssignShipperDTO;
 import dev.yassiraitelghari.fms.dto.response.order.OrderDTO;
@@ -43,6 +44,14 @@ public class OrderController {
         return ResponseEntity.status(200).body(orders);
     }
 
+    @GetMapping("/shipper/{id}")
+    public ResponseEntity<?> getAllOfAShipper(@PathVariable UUID id) {
+        List<OrderDetailDTO> orders = orderService.getAllOfAShipper(id);
+        return ResponseEntity.status(200).body(orders);
+    }
+
+
+
 
     @GetMapping("/supplier/{id}")
     public ResponseEntity<?> getAllOfASupplier(@PathVariable UUID id) {
@@ -70,6 +79,19 @@ public class OrderController {
     public ResponseEntity<?> assignShipper(@RequestBody AssignShipperDTO assignShipperDTO) {
         return ResponseEntity.status(200).body(orderService.assignShipper(assignShipperDTO.getOrderId() , assignShipperDTO.getShipperId()));
     }
+
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
+    @PutMapping("/set-location/{id}")
+    public ResponseEntity<?> updateCurrentLocation(@RequestBody OrderLocationDTO orderLocationDTO , @PathVariable UUID id) {
+        return ResponseEntity.status(200).body(orderService.setCurrentLocation(id , orderLocationDTO.getCurrentLocation()));
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
+    @PutMapping("/set-status-delivered/{id}")
+    public ResponseEntity<?> setStatusToDelivered( @PathVariable UUID id) {
+        return ResponseEntity.status(200).body(orderService.setStatusToDelivered(id));
+    }
+
 
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER')")

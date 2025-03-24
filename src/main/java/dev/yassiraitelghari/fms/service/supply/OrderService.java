@@ -34,7 +34,7 @@ public class OrderService {
     private final SupplierService supplierService;
     private final ShipperService shipperService;
 
-    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, BuildingService buildingService , SupplierInventoryService supplierInventoryService, ManagerService managerService, SupplierService supplierService, ShipperService shipperService) {
+    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, BuildingService buildingService, SupplierInventoryService supplierInventoryService, ManagerService managerService, SupplierService supplierService, ShipperService shipperService) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
         this.buildingService = buildingService;
@@ -59,7 +59,11 @@ public class OrderService {
         return orders.stream().map(orderMapper::orderToOrderDetailDTO).collect(Collectors.toList());
     }
 
-
+    public List<OrderDetailDTO> getAllOfAShipper(UUID id) {
+        Shipper shipper = shipperService.getById(id);
+        List<Order> orders = shipper.getOrders();
+        return orders.stream().map(orderMapper::orderToOrderDetailDTO).collect(Collectors.toList());
+    }
 
     public OrderDetailDTO findById(UUID id) {
         Order order = this.getById(id);
@@ -93,7 +97,17 @@ public class OrderService {
         orderDetailDTO.setOrderStatus(OrderStatus.valueOf(order.getOrderStatus()));
         return orderDetailDTO;
     }
-    public OrderDetailDTO assignShipper(UUID id , UUID shipperId) {
+
+    public OrderDetailDTO setStatusToDelivered(UUID id) {
+        Order updatedOrder = this.getById(id);
+        updatedOrder.setOrderStatus(OrderStatus.DELIVERED);
+        OrderDetailDTO orderDetailDTO = orderMapper.orderToOrderDetailDTO(orderRepository.save(updatedOrder));
+        orderDetailDTO.setOrderStatus(OrderStatus.DELIVERED);
+        return orderDetailDTO;
+    }
+
+
+    public OrderDetailDTO assignShipper(UUID id, UUID shipperId) {
         Order order = this.getById(id);
         Shipper shipper = shipperService.getById(shipperId);
         order.setShipper(shipper);
@@ -102,10 +116,12 @@ public class OrderService {
         return orderMapper.orderToOrderDetailDTO(order);
     }
 
-
-
-
-
+    public OrderDetailDTO setCurrentLocation(UUID id, String currentLocation) {
+        Order order = this.getById(id);
+        order.setCurrentLocation(currentLocation);
+        orderRepository.save(order);
+        return orderMapper.orderToOrderDetailDTO(order);
+    }
 
     public Order edit(Order order) {
         return orderRepository.save(order);
@@ -116,10 +132,10 @@ public class OrderService {
         orderRepository.deleteById(order.getId());
     }
 
-    public List<OrderDetailDTO> getOrdersOfASupplier(UUID id){
+    public List<OrderDetailDTO> getOrdersOfASupplier(UUID id) {
         Supplier supplier = supplierService.getById(id);
-       List<Order> orders =  supplier.getInventories().stream().flatMap(inventory->inventory.getOrders().stream()).collect(Collectors.toUnmodifiableList());
-       return orders.stream().map(orderMapper::orderToOrderDetailDTO).collect(Collectors.toList());
+        List<Order> orders = supplier.getInventories().stream().flatMap(inventory -> inventory.getOrders().stream()).collect(Collectors.toUnmodifiableList());
+        return orders.stream().map(orderMapper::orderToOrderDetailDTO).collect(Collectors.toList());
     }
 
 }
