@@ -1,15 +1,12 @@
 spring:
+  web:
+    resources:
+      static-locations: classpath:/uploads/  # Changed to use container path
 
-  web :
-     resources:
-       static-locations: file:/C:/Users/aitel/OneDrive/Desktop/Java/FMS/uploads/
-
-  docker:
-    compose:
-      enabled: true
-      lifecycle-management: start_only
-      file: src/main/docker/compose.yaml
-
+  datasource:
+    url: jdbc:postgresql://fms-db:5432/fms-db
+    username: root
+    password: root
   jpa:
     hibernate:
       ddl-auto: none
@@ -40,13 +37,5 @@ jwt:
   secret:
     key: "X1zA8!mN9@pQ#rT7$yV2^bK5&dF4*eG6(HzL0)wJ3_CxY"
 
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-          ssl:
-            trust: smtp.gmail.com
 server:
   port: 9999

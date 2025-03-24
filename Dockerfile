@@ -1,17 +1,14 @@
-FROM maven:3.9.5-eclipse-temurin-17 AS build
-WORKDIR /app
+FROM maven:3.8.3-openjdk-17 AS MAVEN_BUILD
 
-COPY pom.xml .
-RUN mvn dependency:go-offline
-COPY src ./src
+
+COPY pom.xml /build/
+COPY src /build/src/
+WORKDIR /build/
 
 RUN mvn clean package -DskipTests
 
-FROM eclipse-temurin:17-jdk
+FROM openjdk:17-jdk
+ARG JAR_FILE=/build/target/*.jar
 WORKDIR /app
-
-COPY --from=build /app/target/*.jar app.jar
-
-EXPOSE 8080
-
+COPY --from=MAVEN_BUILD ${JAR_FILE} /app/app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]

@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: fms
+    ports:
+      - "9999:9999"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://fms-db:5432/fms-db
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    depends_on:
+      - fms-db
+    networks:
+      - fms-network
+
+  fms-db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=fms-db
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=root
+    ports:
+      - '5433:5432'
+    networks:
+      - fms-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+networks:
+  fms-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
