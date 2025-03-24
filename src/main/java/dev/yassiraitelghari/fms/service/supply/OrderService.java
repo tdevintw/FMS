@@ -5,6 +5,7 @@ import dev.yassiraitelghari.fms.domain.enums.OrderStatus;
 import dev.yassiraitelghari.fms.domain.supply.Order;
 import dev.yassiraitelghari.fms.domain.supply.SupplierInventory;
 import dev.yassiraitelghari.fms.domain.user.Manager;
+import dev.yassiraitelghari.fms.domain.user.Shipper;
 import dev.yassiraitelghari.fms.domain.user.Supplier;
 import dev.yassiraitelghari.fms.dto.request.order.OrderCreateDTO;
 import dev.yassiraitelghari.fms.dto.request.order.OrderUpdateDTO;
@@ -15,6 +16,7 @@ import dev.yassiraitelghari.fms.mapper.OrderMapper;
 import dev.yassiraitelghari.fms.repository.OrderRepository;
 import dev.yassiraitelghari.fms.service.building.BuildingService;
 import dev.yassiraitelghari.fms.service.user.ManagerService;
+import dev.yassiraitelghari.fms.service.user.ShipperService;
 import dev.yassiraitelghari.fms.service.user.SupplierService;
 import org.springframework.stereotype.Service;
 
@@ -30,14 +32,16 @@ public class OrderService {
     private final SupplierInventoryService supplierInventoryService;
     private final ManagerService managerService;
     private final SupplierService supplierService;
+    private final ShipperService shipperService;
 
-    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, BuildingService buildingService ,SupplierInventoryService supplierInventoryService, ManagerService managerService, SupplierService supplierService) {
+    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, BuildingService buildingService , SupplierInventoryService supplierInventoryService, ManagerService managerService, SupplierService supplierService, ShipperService shipperService) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
         this.buildingService = buildingService;
         this.supplierInventoryService = supplierInventoryService;
         this.managerService = managerService;
         this.supplierService = supplierService;
+        this.shipperService = shipperService;
     }
 
 
@@ -81,14 +85,26 @@ public class OrderService {
         Order updatedOrder = this.getById(id);
         Building building = buildingService.getById(order.getBuildingId());
         SupplierInventory supplierInventory = supplierInventoryService.getById(order.getSupplierInventoryId());
-        updatedOrder.setOrderStatus(OrderStatus.valueOf(order.getStatus()));
+        updatedOrder.setOrderStatus(OrderStatus.valueOf(order.getOrderStatus()));
         updatedOrder.setQuantity(order.getQuantity());
         updatedOrder.setBuilding(building);
         updatedOrder.setSupplierInventory(supplierInventory);
         OrderDetailDTO orderDetailDTO = orderMapper.orderToOrderDetailDTO(orderRepository.save(updatedOrder));
-        orderDetailDTO.setOrderStatus(OrderStatus.valueOf(order.getStatus()));
+        orderDetailDTO.setOrderStatus(OrderStatus.valueOf(order.getOrderStatus()));
         return orderDetailDTO;
     }
+    public OrderDetailDTO assignShipper(UUID id , UUID shipperId) {
+        Order order = this.getById(id);
+        Shipper shipper = shipperService.getById(shipperId);
+        order.setShipper(shipper);
+        order.setOrderStatus(OrderStatus.IN_DELIVERY);
+        orderRepository.save(order);
+        return orderMapper.orderToOrderDetailDTO(order);
+    }
+
+
+
+
 
 
     public Order edit(Order order) {

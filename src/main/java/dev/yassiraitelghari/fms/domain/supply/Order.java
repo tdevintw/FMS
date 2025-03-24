@@ -2,6 +2,7 @@ package dev.yassiraitelghari.fms.domain.supply;
 
 import dev.yassiraitelghari.fms.domain.building.Building;
 import dev.yassiraitelghari.fms.domain.enums.OrderStatus;
+import dev.yassiraitelghari.fms.domain.user.Shipper;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,7 +34,7 @@ public class Order {
     private Building building;
     @Enumerated
     private OrderStatus orderStatus;
-    @OneToOne
-    @JoinColumn(name = "shipment_id")
-    private Shipment shipment;
+    @ManyToOne
+    @JoinColumn(name = "shipper_id")
+    private Shipper shipper;
 }

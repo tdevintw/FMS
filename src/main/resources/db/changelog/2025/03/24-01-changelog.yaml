@@ -1,0 +1,56 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1742813283857-3
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: orders
+            constraintName: fk_orders_on_shipment
+  - changeSet:
+      id: 1742813283857-4
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: shipments
+            constraintName: fk_shipments_on_shipper
+  - changeSet:
+      id: 1742813283857-1
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: shipper_id
+                  type: UUID
+            tableName: orders
+  - changeSet:
+      id: 1742813283857-2
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: shipper_id
+            baseTableName: orders
+            constraintName: FK_ORDERS_ON_SHIPPER
+            referencedColumnNames: id
+            referencedTableName: shippers
+  - changeSet:
+      id: 1742813283857-6
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropTable:
+            cascadeConstraints: true
+            tableName: shipments
+  - changeSet:
+      id: 1742813283857-7
+      author: Yasser
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropColumn:
+            columnName: shipment_id
+            tableName: orders
+

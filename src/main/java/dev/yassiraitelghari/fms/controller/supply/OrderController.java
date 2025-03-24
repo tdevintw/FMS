@@ -2,6 +2,7 @@ package dev.yassiraitelghari.fms.controller.supply;
 
 import dev.yassiraitelghari.fms.dto.request.order.OrderCreateDTO;
 import dev.yassiraitelghari.fms.dto.request.order.OrderUpdateDTO;
+import dev.yassiraitelghari.fms.dto.request.user.AssignShipperDTO;
 import dev.yassiraitelghari.fms.dto.response.order.OrderDTO;
 import dev.yassiraitelghari.fms.dto.response.order.OrderDetailDTO;
 
@@ -63,6 +64,13 @@ public class OrderController {
     public ResponseEntity<?> update(@Valid @RequestBody OrderUpdateDTO order, @PathVariable UUID id) {
         return ResponseEntity.status(200).body(orderService.edit(id , order));
     }
+
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER')")
+    @PutMapping("/assign-shipper")
+    public ResponseEntity<?> assignShipper(@RequestBody AssignShipperDTO assignShipperDTO) {
+        return ResponseEntity.status(200).body(orderService.assignShipper(assignShipperDTO.getOrderId() , assignShipperDTO.getShipperId()));
+    }
+
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER')")
     @DeleteMapping("/{id}")
