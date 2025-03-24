@@ -101,8 +101,10 @@ public class OrderService {
     public OrderDetailDTO setStatusToDelivered(UUID id) {
         Order updatedOrder = this.getById(id);
         updatedOrder.setOrderStatus(OrderStatus.DELIVERED);
+        updatedOrder.setCurrentLocation("Delivered");
         OrderDetailDTO orderDetailDTO = orderMapper.orderToOrderDetailDTO(orderRepository.save(updatedOrder));
         orderDetailDTO.setOrderStatus(OrderStatus.DELIVERED);
+        orderDetailDTO.setCurrentLocation("Delivered");
         return orderDetailDTO;
     }
 

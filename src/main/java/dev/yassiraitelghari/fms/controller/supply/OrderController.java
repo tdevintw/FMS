@@ -87,7 +87,7 @@ public class OrderController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','SUPPLIER','SHIPPER')")
-    @PutMapping("/set-status-delivered/{id}")
+    @PutMapping("/set-delivered/{id}")
     public ResponseEntity<?> setStatusToDelivered( @PathVariable UUID id) {
         return ResponseEntity.status(200).body(orderService.setStatusToDelivered(id));
     }
